@@ -1,4 +1,4 @@
-#BU Grade System
+# BU Grade System
 
 This repo is a collaboration project among four BU graduates for CS591 OOD course. 
 It is a system that is designed for our CS advisor to easily
