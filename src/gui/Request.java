@@ -15,7 +15,7 @@ public class Request {
 		this.head = _head;
 		params = new ArrayList<Object>();		
 	}
-		
+	
 	/**
 	 * getter()
 	 * */
