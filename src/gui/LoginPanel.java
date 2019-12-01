@@ -48,6 +48,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 		add(loginLabel);
 		
 		userNameField = new JTextField(20);
+		userNameField.setText("cpk");
 		add(userNameField);
 		
 		JLabel passwordLabel = new JLabel("Password: ");
@@ -55,12 +56,13 @@ public class LoginPanel extends JPanel implements ActionListener {
 		add(passwordLabel);
 		
 		passwordField = new JPasswordField(20);
+		passwordField.setText("123");
 		add(passwordField);
 		
 		loginButton = new JButton("Login");
 		add(loginButton);
 		loginButton.addActionListener(this);
-						
+		
 	}
 
 	@Override

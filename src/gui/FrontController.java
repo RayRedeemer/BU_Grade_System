@@ -20,6 +20,7 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: isAthenticUser
 	 * Return Response
 	 * */
 	private boolean isAuthenticUser(Request request) {
@@ -42,6 +43,15 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: logout
+	 * */
+	private boolean logout(Request request) {
+		// Send request to backend
+		
+		return true;
+	}
+	
+	/**
 	 * Method: trackRequest
 	 * @author Ziqi Tan
 	 * @param Request
@@ -61,10 +71,13 @@ public class FrontController {
 					dispatcher.dispatch(request);
 				}
 				break;
-				
+			case LOGOUT:
+				if( logout(request) ) {
+					dispatcher.dispatch(request);
+				}
+				break;
 			default:
 				System.out.println("Error.");
-		
 		}
 		
 	}

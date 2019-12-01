@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -10,6 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /*
 Author: Ziqi Tan
@@ -18,6 +21,8 @@ public class MainFrame extends JFrame {
 	
 	// Singleton Pattern
 	private static MainFrame mainFrame = new MainFrame();
+	
+	private JPanel curPanel;
 	
 	private LoginPanel loginPanel;		
 	private AdminPanel adminPanel;
@@ -38,8 +43,8 @@ public class MainFrame extends JFrame {
 		bgImage = getBgImage("./image/bg-image.jpg");		
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int screenWidth = (int)screenSize.getWidth();
-		int screenHeight = (int)screenSize.getHeight();
+		int screenWidth = (int)(screenSize.getWidth() * 0.75);
+		int screenHeight = (int)(screenSize.getHeight() * 0.75);
 		
 		bgImageIcon = new ImageIcon(bgImage);
 		// If the image is too big for the screen
@@ -51,11 +56,8 @@ public class MainFrame extends JFrame {
 		       
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);         		
 		setLocationRelativeTo(null);   // this will center your frame
-		
-		loginPanel = new LoginPanel();
+				
 		setLoginPanel();
-		
-		adminPanel = new AdminPanel();
 
 		setVisible(true);				
 	}
@@ -108,8 +110,8 @@ public class MainFrame extends JFrame {
 	public int getFrameHeight() {
 		return frameHeight;
 	}
-	public LoginPanel getLoginPanel() {
-		return loginPanel;
+	public JPanel getCurPanel() {
+		return curPanel;
 	}
 	
 	/**
@@ -118,9 +120,13 @@ public class MainFrame extends JFrame {
 	public void setLoginPanel() {
 		// have to redraw
 		// Set a background for JFrame
+		if( loginPanel == null ) {
+			loginPanel = new LoginPanel();
+		}
 		setContentPane(new JLabel(bgImageIcon));
         setLayout(new BorderLayout());
 		add(loginPanel, BorderLayout.NORTH);
+		curPanel = loginPanel;
 		loginPanel.setEnabled(true);
 		loginPanel.setVisible(true);
 		System.out.println("setLoginPanel");
@@ -128,17 +134,33 @@ public class MainFrame extends JFrame {
 	
 	public void setAdminPanel() {
 		// have to redraw
+		if( adminPanel == null ) {
+			adminPanel = new AdminPanel();
+		}
 		setContentPane(new JLabel(bgImageIcon));
         setLayout(new BorderLayout());
 		add(adminPanel, BorderLayout.NORTH);
+		curPanel = adminPanel;
 		adminPanel.setEnabled(true);
 		adminPanel.setVisible(true);
 		System.out.println("setAdminPanel");		
 	}
 	
-	
+	/**
+	 * Method: removeCurPanel
+	 * Function:
+	 * 		Remove current Panel.
+	 * */
+	public void removeCurPanel() {
+		curPanel.setEnabled(false);
+		curPanel.setVisible(false);
+		remove(curPanel);
+	}
+		
+	/**
+	 * Main
+	 * */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		MainFrame.getInstance();
 	}
 

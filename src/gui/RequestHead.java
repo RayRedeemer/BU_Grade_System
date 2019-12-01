@@ -4,5 +4,5 @@ Author: Ziqi Tan
 */
 public enum RequestHead {
 	LOGIN,
-	
+	LOGOUT
 }
