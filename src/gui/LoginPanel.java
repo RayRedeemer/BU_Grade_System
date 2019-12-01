@@ -38,7 +38,6 @@ public class LoginPanel extends JPanel implements ActionListener {
 		
 		// Transparent background
 		setBackground(new Color(0,0,0,0));
-		// setBackground(Color.WHITE);
 		
 		// new font
 		Font font = new Font("Times New Roman", Font.BOLD, 22);
@@ -60,12 +59,18 @@ public class LoginPanel extends JPanel implements ActionListener {
 		
 		loginButton = new JButton("Login");
 		add(loginButton);
+		loginButton.addActionListener(this);
 						
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		// TODO Auto-generated method stub
+		if( event.getActionCommand().equals("Login") ) {
+			Request request = new Request(RequestHead.LOGIN);
+			request.addParams(userNameField.getText());
+			request.addParams(passwordField.getText());
+			FrontController.getInstance().dispatchRequest(request);
+		}
 		
 	}
 		

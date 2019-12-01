@@ -2,17 +2,14 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /*
 Author: Ziqi Tan
@@ -23,7 +20,9 @@ public class MainFrame extends JFrame {
 	private static MainFrame mainFrame = new MainFrame();
 	
 	private LoginPanel loginPanel;		
+	private AdminPanel adminPanel;
 	private BufferedImage bgImage;
+	private ImageIcon bgImageIcon;
 	
 	private int frameWidth;
 	private int frameHeight;
@@ -35,33 +34,29 @@ public class MainFrame extends JFrame {
 	private MainFrame() {
 		System.out.println("A main frame is creating.");
 		setTitle("Grading System");	
-		
-			
+					
 		bgImage = getBgImage("./image/bg-image.jpg");		
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int screenWidth = (int)screenSize.getWidth();
 		int screenHeight = (int)screenSize.getHeight();
 		
-		ImageIcon bgImageIcon = new ImageIcon(bgImage);
+		bgImageIcon = new ImageIcon(bgImage);
 		// If the image is too big for the screen
 		bgImageIcon = resizeImageIcon(bgImageIcon, screenWidth, screenHeight);
 		
 		frameWidth = bgImageIcon.getIconWidth();
 		frameHeight = bgImageIcon.getIconHeight();
 		setSize(frameWidth, frameHeight);
-		
-        // Set a background for JFrame
-        setContentPane(new JLabel(bgImageIcon));
-        setLayout(new BorderLayout());
-        
+		       
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);         		
 		setLocationRelativeTo(null);   // this will center your frame
 		
 		loginPanel = new LoginPanel();
-		add(loginPanel, "North");
 		setLoginPanel();
 		
+		adminPanel = new AdminPanel();
+
 		setVisible(true);				
 	}
 	
@@ -113,14 +108,32 @@ public class MainFrame extends JFrame {
 	public int getFrameHeight() {
 		return frameHeight;
 	}
+	public LoginPanel getLoginPanel() {
+		return loginPanel;
+	}
 	
 	/**
 	 * setter()
 	 * */
 	public void setLoginPanel() {
+		// have to redraw
+		// Set a background for JFrame
+		setContentPane(new JLabel(bgImageIcon));
+        setLayout(new BorderLayout());
+		add(loginPanel, BorderLayout.NORTH);
 		loginPanel.setEnabled(true);
 		loginPanel.setVisible(true);
 		System.out.println("setLoginPanel");
+	}
+	
+	public void setAdminPanel() {
+		// have to redraw
+		setContentPane(new JLabel(bgImageIcon));
+        setLayout(new BorderLayout());
+		add(adminPanel, BorderLayout.NORTH);
+		adminPanel.setEnabled(true);
+		adminPanel.setVisible(true);
+		System.out.println("setAdminPanel");		
 	}
 	
 	
