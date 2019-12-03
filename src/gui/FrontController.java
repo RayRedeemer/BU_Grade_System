@@ -2,6 +2,8 @@ package gui;
 
 import java.util.List;
 
+import share.Request;
+
 /*
 Author: Ziqi Tan
 */

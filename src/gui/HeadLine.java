@@ -10,6 +10,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import share.Request;
+import share.RequestHead;
+
 /*
 Author: Ziqi Tan
 */
