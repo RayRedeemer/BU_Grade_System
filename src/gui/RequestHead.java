@@ -4,5 +4,6 @@ Author: Ziqi Tan
 */
 public enum RequestHead {
 	LOGIN,
-	LOGOUT
+	LOGOUT,
+	GET_COURSE_LIST
 }

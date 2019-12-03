@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -24,6 +25,7 @@ public class MainFrame extends JFrame {
 	
 	private JPanel curPanel;
 	
+	private HeadLine headLine;
 	private LoginPanel loginPanel;		
 	private AdminPanel adminPanel;
 	private BufferedImage bgImage;
@@ -53,7 +55,10 @@ public class MainFrame extends JFrame {
 		frameWidth = bgImageIcon.getIconWidth();
 		frameHeight = bgImageIcon.getIconHeight();
 		setSize(frameWidth, frameHeight);
-		       
+		
+		setContentPane(new JLabel(bgImageIcon));
+		setLayout(new FlowLayout(FlowLayout.CENTER));
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);         		
 		setLocationRelativeTo(null);   // this will center your frame
 				
@@ -118,14 +123,10 @@ public class MainFrame extends JFrame {
 	 * setter()
 	 * */
 	public void setLoginPanel() {
-		// have to redraw
-		// Set a background for JFrame
 		if( loginPanel == null ) {
 			loginPanel = new LoginPanel();
-		}
-		setContentPane(new JLabel(bgImageIcon));
-        setLayout(new BorderLayout());
-		add(loginPanel, BorderLayout.NORTH);
+		}		
+		add(loginPanel);		
 		curPanel = loginPanel;
 		loginPanel.setEnabled(true);
 		loginPanel.setVisible(true);
@@ -133,17 +134,25 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void setAdminPanel() {
-		// have to redraw
+
 		if( adminPanel == null ) {
 			adminPanel = new AdminPanel();
 		}
-		setContentPane(new JLabel(bgImageIcon));
-        setLayout(new BorderLayout());
-		add(adminPanel, BorderLayout.NORTH);
+		add(adminPanel);
 		curPanel = adminPanel;
 		adminPanel.setEnabled(true);
 		adminPanel.setVisible(true);
 		System.out.println("setAdminPanel");		
+	}
+	
+	public void setHeadLine() {
+		if( headLine == null ) {
+			headLine = new HeadLine();
+		}       
+        add(headLine);
+        headLine.setEnabled(true);
+        headLine.setVisible(true);
+        System.out.println("setHeadLine");
 	}
 	
 	/**
@@ -155,6 +164,12 @@ public class MainFrame extends JFrame {
 		curPanel.setEnabled(false);
 		curPanel.setVisible(false);
 		remove(curPanel);
+	}
+	
+	public void removeHeadLine() {
+		headLine.setEnabled(false);
+		headLine.setVisible(false);
+		remove(headLine);
 	}
 		
 	/**

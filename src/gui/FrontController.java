@@ -52,6 +52,14 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: getCourseList
+	 * */
+	private boolean getCourseList() {
+		
+		return true;
+	}
+	
+	/**
 	 * Method: trackRequest
 	 * @author Ziqi Tan
 	 * @param Request
@@ -75,6 +83,8 @@ public class FrontController {
 				if( logout(request) ) {
 					dispatcher.dispatch(request);
 				}
+				break;
+			case GET_COURSE_LIST:
 				break;
 			default:
 				System.out.println("Error.");
