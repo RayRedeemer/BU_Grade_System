@@ -1,7 +1,5 @@
 package backend;
 
-import java.util.ArrayList;
-
 public class Category extends AcademicObject {
 
     private double _weight; //form: percent as #.##...
