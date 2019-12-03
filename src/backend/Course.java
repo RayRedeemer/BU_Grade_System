@@ -5,15 +5,19 @@ import java.util.ArrayList;
 public class Course extends AcademicObject {
 
     private String _semester; //form: (F|S)##
-    private int _curve;
+    private double _curve;
     private ArrayList<Student> _roster;
 
     //course is top level, so null parent
     public Course(int id, String name, String _description) {
         super(id, name, _description, null);
+        _roster = new ArrayList<Student>();
     }
 
     public void calculateGrades() {
+        for (Student s : _roster) {
+            s.setGrade(_curve + s.getAdjustment());
+        }
         for (AcademicObject ao : getAllDescendants()) {
             Category cat = (Category) ao;
             cat.calculateGrades();
@@ -28,11 +32,11 @@ public class Course extends AcademicObject {
         _semester = s;
     }
 
-    public int getCurve() {
+    public double getCurve() {
         return _curve;
     }
 
-    public void setCurve(int c) {
+    public void setCurve(double c) {
         _curve = c;
     }
 

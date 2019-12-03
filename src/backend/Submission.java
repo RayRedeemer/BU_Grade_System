@@ -29,7 +29,7 @@ public class Submission extends AcademicObject{
         }
         double weightedassignment = rawassignment * assignweight;
         double globalscore = weightedassignment * catweight;
-        _student.setGrade(_student.getGrade() + globalscore);
+        _student.setGrade(_student.getGrade() + (globalscore * 100));
     }
 
     public double getScore() {
