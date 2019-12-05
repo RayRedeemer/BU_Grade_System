@@ -1,6 +1,9 @@
 package backend;
 
-public class Student extends Human {
+/**
+ * Class represents a student.
+ */
+public class Student extends Person {
 
     //was initially more general, decided it made more sense to include course info here, use db to differentiate
     //students

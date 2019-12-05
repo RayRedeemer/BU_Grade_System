@@ -2,6 +2,12 @@ package backend;
 
 import java.util.ArrayList;
 
+/**
+ * Class represents a course. This class is currently at the top level of all derived classes.
+ * It records the _semester, _curve value and all students in _roster
+ *
+ * Hierarchy of our design: Course, Category, Assignment and Submission, top to bottom.
+ */
 public class Course extends AcademicObject {
 
     private String _semester; //form: (F|S)##
@@ -14,6 +20,9 @@ public class Course extends AcademicObject {
         _roster = new ArrayList<Student>();
     }
 
+    /**
+     * Compute grades for both students within this course and all Categories under this course, such as exams, hws, etc
+     */
     public void calculateGrades() {
         for (Student s : _roster) {
             s.setGrade(_curve + s.getAdjustment());

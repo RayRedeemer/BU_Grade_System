@@ -2,6 +2,9 @@ package backend;
 
 import java.time.LocalDateTime;
 
+/**
+ * Class represents an assignment. _weight are in the format of 0.##.
+ */
 public class Assignment extends AcademicObject {
 
     private double _maxScore;
@@ -13,6 +16,11 @@ public class Assignment extends AcademicObject {
         super(id, name, description, c);
     }
 
+    /**
+     * Compute Grades given the category weight
+     *
+     * @param catweight double
+     */
     public void calculateGrades(double catweight){
         for (AcademicObject ao : getAllDescendants()) {
             Submission sub = (Submission) ao;
