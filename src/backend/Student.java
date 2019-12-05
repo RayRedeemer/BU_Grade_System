@@ -3,7 +3,7 @@ package backend;
 /**
  * Class represents a student.
  */
-public class Student extends Person {
+public class Student extends Person implements Commentable {
 
     //was initially more general, decided it made more sense to include course info here, use db to differentiate
     //students
@@ -37,8 +37,8 @@ public class Student extends Person {
         return _comment;
     }
 
-    public void setComment(String c) {
-        _comment = c;
+    public void setComment(String comment) {
+        _comment = comment;
     }
 
     public boolean getWithdrawn() {

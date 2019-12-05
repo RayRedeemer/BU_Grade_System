@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Note that _parent should be null if it's at the top level, which in this case, if it is a Course, _descendants also
  * follow this rule if the object is at the lowest level, such as Submission.
  */
-public abstract class AcademicObject {
+public abstract class AcademicObject implements Commentable {
 
     private int _id;
     private String _name;
@@ -57,16 +57,16 @@ public abstract class AcademicObject {
         return _description;
     }
 
-    public void setDescription(String d) {
-        _description = d;
+    public void setDescription(String desc) {
+        _description = desc;
     }
 
     public String getComment() {
         return _comment;
     }
 
-    public void setComment(String c) {
-        _comment = c;
+    public void setComment(String str) {
+        _comment = str;
     }
 
     public AcademicObject getParent() {
