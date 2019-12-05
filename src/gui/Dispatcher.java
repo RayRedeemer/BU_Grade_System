@@ -1,4 +1,8 @@
 package gui;
+
+import share.Request;
+import share.RequestHead;
+
 /*
 Author: Ziqi Tan
 */

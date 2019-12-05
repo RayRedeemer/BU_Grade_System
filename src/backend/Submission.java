@@ -2,6 +2,9 @@ package backend;
 
 import java.time.LocalDateTime;
 
+/**
+ * Class represents a submission. It is at the lowest level so far in our system hierarchy.
+ */
 public class Submission extends AcademicObject{
 
     private double _score;
@@ -21,15 +24,15 @@ public class Submission extends AcademicObject{
     }
 
     public void calculateGrade(double catweight, double assignweight, double maxscore) {
-        double rawassignment;
+        double rawAssignment;
         if (_earnOrLose) {
-            rawassignment = (_score + _bonus) / maxscore;
+            rawAssignment = (_score + _bonus) / maxscore;
         } else {
-            rawassignment = (maxscore + _score + _bonus) / maxscore;
+            rawAssignment = (maxscore + _score + _bonus) / maxscore;
         }
-        double weightedassignment = rawassignment * assignweight;
-        double globalscore = weightedassignment * catweight;
-        _student.setGrade(_student.getGrade() + (globalscore * 100));
+        double weightedAssignment = rawAssignment * assignweight;
+        double globalScore = weightedAssignment * catweight;
+        _student.setGrade(_student.getGrade() + (globalScore * 100));
     }
 
     public double getScore() {

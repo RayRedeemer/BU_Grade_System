@@ -1,4 +1,4 @@
-package backend;
+package share;
 
 public class SharedConstants {
 }

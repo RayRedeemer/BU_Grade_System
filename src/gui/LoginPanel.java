@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import share.Request;
+import share.RequestHead;
+
 /*
 Author: Ziqi Tan
 */
