@@ -3,7 +3,7 @@ package backend;
 import java.time.LocalDateTime;
 
 /**
- * Class represents an assignment. _weight are in the format of 0.##.
+ * Class represents an assignment. _weight is in the format of 0.##.
  */
 public class Assignment extends AcademicObject {
 

@@ -1,7 +1,7 @@
 package backend;
 
 /**
- * Class represents a person with a _name and unique _id.
+ * Class represents a person with a _name and unique _id. All students and instructors should extend from this class
  * There is no id setter as id should not change
  */
 public abstract class Person {

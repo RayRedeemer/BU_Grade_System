@@ -18,6 +18,7 @@ public class Course extends AcademicObject {
     public Course(int id, String name, String _description) {
         super(id, name, _description, null);
         _roster = new ArrayList<Student>();
+        setCurve(0);// curve should be initialized as 0
     }
 
     /**
