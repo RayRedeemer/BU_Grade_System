@@ -15,7 +15,7 @@ public class Course extends AcademicObject {
     private ArrayList<Student> _roster;
 
     //course is top level, so null parent
-    public Course(int id, String name, String _description) {
+    public Course(int id, String name, String _description, String semester) {
         super(id, name, _description, null);
         _roster = new ArrayList<Student>();
         setCurve(0);// curve should be initialized as 0
