@@ -420,6 +420,27 @@ public class DatabasePortal {
         return ret;
     }
 
+    public Student getStudentById(int id) {
+        try {
+            String sql = "SELECT * FROM students WHERE student_id=" + id + ";";
+            Statement stmt = _conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                Student s = new Student(rs.getString(3), rs.getInt(1), rs.getInt(7) == 1);
+                s.setGrade(rs.getDouble(4));
+                s.setBonus(rs.getDouble(5));
+                s.setAdjustment(6);
+                s.setWithdraw(rs.getInt(8) == 1);
+                s.setComment(rs.getString(9));
+                return s;
+            }
+        } catch (Exception e) {
+            System.out.println("Error during getStudentById with id " + id);
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
     public boolean dropStudent(Student s) {
         try {
             String sql = "DELETE FROM students WHERE student_id=" + s.getId() + ";";
@@ -439,6 +460,103 @@ public class DatabasePortal {
             return stmt.executeUpdate(sql) > 0;
         } catch (Exception e) {
             System.out.println("Error while withdrawStudent with student " + s.getId());
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    //
+
+    public Submission addSubmission(Assignment a, Student s, double score, double bonus, boolean style) {
+        try {
+            String sql = "INSERT INTO submissions (student_id, assignment_id, score, bonus, submitted_date, style, comment)\n" +
+                    "VALUES (" + s.getId() + ", " + a.getId() + ", ?, ?, \"\", ?, \"\");";
+            PreparedStatement ps = _conn.prepareStatement(sql);
+            ps.setDouble(1, score);
+            ps.setDouble(2, bonus);
+            if (style) {
+                ps.setInt(3, 1);
+            } else {
+                ps.setInt(3, 0);
+            }
+            ps.execute();
+            ResultSet rs = ps.getGeneratedKeys();
+            if(rs.next()) return new Submission(rs.getInt(1), score, bonus, s, a, style);
+        } catch (Exception e) {
+            System.out.println("Error during addSubmission with params: " + a.getId() + ":" + s.getId() + ":" + score + ":" + bonus + ":" + style);
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public ArrayList<Submission> getSubmissionsByAssignment(Assignment a) {
+        ArrayList<Submission> ret = new ArrayList<Submission>();
+        try {
+            String sql = "SELECT * FROM submissions WHERE assignment_id=" + a.getId() + ";";
+            Statement stmt = _conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()) {
+                Submission sub = new Submission(rs.getInt(1), rs.getDouble(4), rs.getDouble(5), getStudentById(rs.getInt(2)), a, rs.getInt(7) == 1);
+                sub.setComment(rs.getString(8));
+                //TODO add dates here if time
+                ret.add(sub);
+            }
+        } catch (Exception e) {
+            System.out.println("Error during getSubmissionByAssignment with assignment " + a.getId());
+            System.out.println(e.getMessage());
+        }
+        return ret;
+    }
+
+    public Submission getSubmissionById(Assignment a, int id) {
+        try {
+            String sql = "SELECT * FROM submissions WHERE submission_id=" + id + ";";
+            Statement stmt = _conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                Submission sub = new Submission(rs.getInt(1), rs.getDouble(4), rs.getDouble(5), getStudentById(rs.getInt(2)), a, rs.getInt(7) == 1);
+                sub.setComment(rs.getString(8));
+                //TODO add dates here if time
+                return sub;
+            }
+        } catch (Exception e) {
+            System.out.println("Exception during getSubmissionById for id: " + id);
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public boolean updateSubmission(Submission sub){
+        try {
+            //TODO again, dates here if time
+            String sql = "UPDATE submissions\n" +
+                    "SET score=?, bonus=?, style=?, comment=?\n" +
+                    "WHERE submission_id=" + sub.getId() + ";";
+            PreparedStatement ps = _conn.prepareStatement(sql);
+            ps.setDouble(1, sub.getScore());
+            ps.setDouble(2, sub.getBonus());
+            if (sub.getStyle()) {
+                ps.setInt(3, 1);
+            } else {
+                ps.setInt(3,0);
+            }
+            ps.setString(4, sub.getComment());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Error while updating submission: " + sub.getId());
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean deleteSubmission(Submission sub){
+        try {
+            String sql = "DELETE FROM submissions\n" +
+                    "WHERE submission_id=" + sub.getId() + ";";
+            Statement stmt = _conn.createStatement();
+            return stmt.executeUpdate(sql) > 0;
+        } catch (Exception e) {
+            System.out.println("Error while deleting submission: " + sub.getId());
             System.out.println(e.getMessage());
         }
         return false;
