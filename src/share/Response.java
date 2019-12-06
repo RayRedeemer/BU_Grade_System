@@ -28,10 +28,14 @@ public class Response {
 	/**
 	 * setter()
 	 * */
-	public void addBody(Object object) {
+//	public void addBody(Object object) {
+//		body.add(object);
+//	}
+
+	public <T> void addBody(T object){
 		body.add(object);
 	}
-	
+
 	@Override
 	public String toString() {
 		String str = System.getProperty("line.separator") + "head: " + head + System.getProperty("line.separator");
