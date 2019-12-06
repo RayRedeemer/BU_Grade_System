@@ -17,6 +17,7 @@ public class Course extends AcademicObject {
     //course is top level, so null parent
     public Course(int id, String name, String _description, String semester) {
         super(id, name, _description, null);
+        _semester = semester;
         _roster = new ArrayList<Student>();
         setCurve(0);// curve should be initialized as 0
     }
@@ -67,7 +68,7 @@ public class Course extends AcademicObject {
     }
 
     public void withdrawStudent(int index) {
-        _roster.get(index).withdraw();
+        _roster.get(index).setWithdraw(true);
     }
 
 }

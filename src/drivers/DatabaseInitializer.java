@@ -21,6 +21,7 @@ public class DatabaseInitializer {
 
         String courses = "CREATE TABLE courses (\n" +
                 "course_id INTEGER PRIMARY KEY NOT NULL,\n" +
+                "instructor_id INTEGER REFERENCES instructors(instructor_id),\n" +
                 "semester TEXT,\n" +
                 "name TEXT,\n" +
                 "description TEXT,\n" +
@@ -34,6 +35,8 @@ public class DatabaseInitializer {
                 "score DECIMAL(3,2),\n" +
                 "bonus DECIMAL(3,2),\n" +
                 "adjustment DECIMAL(3,2),\n" +
+                "is_grad INTEGER,\n" +
+                "withdrawn INTEGER,\n" +
                 "comment TEXT);";
 
         String categories = "CREATE TABLE categories (\n" +
@@ -48,6 +51,7 @@ public class DatabaseInitializer {
                 "assignment_id INTEGER PRIMARY KEY NOT NULL,\n" +
                 "category_id INTEGER REFERENCES categories(category_id),\n" +
                 "name TEXT,\n" +
+                "description TEXT,\n" +
                 "weight DECIMAL(3,2),\n" +
                 "maxscore DECIMAL(3,2),\n" +
                 "assigned_date TEXT,\n" +
