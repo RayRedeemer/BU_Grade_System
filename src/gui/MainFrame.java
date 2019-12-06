@@ -25,12 +25,12 @@ public class MainFrame extends JFrame {
 	
 	private JPanel curPanel;
 	
-	private HeadLine headLine;
 	private LoginPanel loginPanel;		
 	private AdminPanel adminPanel;
-	private BufferedImage bgImage;
-	private ImageIcon bgImageIcon;
-	private StatisticsPanel statPanel;
+	private CoursePanel coursePanel;
+	private StatPanel statPanel;
+	private CategoryPanel categoryPanel;
+	private OverviewPanel overviewPanel;
 	
 	private int frameWidth;
 	private int frameHeight;
@@ -38,75 +38,30 @@ public class MainFrame extends JFrame {
 	public static MainFrame getInstance() {
 		return mainFrame;
 	}
-		
+	/**
+	 * Constructor
+	 * */
 	private MainFrame() {
+					
+	}
+	
+	public void run() {
 		System.out.println("A main frame is creating.");
 		setTitle("Grading System");	
 					
-		bgImage = getBgImage("./image/bg-image.jpg");		
-		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int screenWidth = (int)(screenSize.getWidth() * 0.75);
-		int screenHeight = (int)(screenSize.getHeight() * 0.75);
-		
-		bgImageIcon = new ImageIcon(bgImage);
-		// If the image is too big for the screen
-		bgImageIcon = resizeImageIcon(bgImageIcon, screenWidth, screenHeight);
-		
-		frameWidth = bgImageIcon.getIconWidth();
-		frameHeight = bgImageIcon.getIconHeight();
+		frameWidth = (int)(screenSize.getWidth() * 0.75);
+		frameHeight = (int)(screenSize.getHeight() * 0.75);
 		setSize(frameWidth, frameHeight);
-		
-		setContentPane(new JLabel(bgImageIcon));
-		setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);         		
 		setLocationRelativeTo(null);   // this will center your frame
-				
-		//setLoginPanel();
-		setStatPanel();
+		
+		setLoginPanel();
 
-		setVisible(true);				
+		setVisible(true);	
 	}
-	
-	/**
-	 * Method: getBgImage
-	 * */
-	private BufferedImage getBgImage(String imagePath) {
-		BufferedImage bgImage = null;
-		try {
-			bgImage = ImageIO.read(new File(imagePath));
-		}
-		catch( Exception error ) {
-			error.printStackTrace();
-		}
-		return bgImage;
-	}
-	
-	/**
-	 * Method: resizeBgImage
-	 * Function: 
-	 * 		If the image is too big for the screen,
-	 * 		resize it.
-	 * */
-	private ImageIcon resizeImageIcon(ImageIcon icon, int targetWidth, int targetHeight ) {
 		
-		int newWidth = icon.getIconWidth();
-		int newHeight = icon.getIconHeight();
-		
-		// keep the width-height ratio
-		if( icon.getIconWidth() > targetWidth ) {
-			newWidth = targetWidth;
-			newHeight = newWidth * icon.getIconHeight() / icon.getIconWidth();
-		}
-		if( newHeight > targetHeight ) {
-			newHeight = targetHeight;
-			newWidth = newHeight * icon.getIconWidth() / icon.getIconHeight();
-		}
-		
-		return new ImageIcon(icon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT));
-	}
-	
 	/**
 	 * getter()
 	 * */
@@ -127,11 +82,11 @@ public class MainFrame extends JFrame {
 	public void setLoginPanel() {
 		if( loginPanel == null ) {
 			loginPanel = new LoginPanel();
-		}		
-		add(loginPanel);		
-		curPanel = loginPanel;
+		}
 		loginPanel.setEnabled(true);
 		loginPanel.setVisible(true);
+		add(loginPanel);		
+		curPanel = loginPanel;	
 		System.out.println("setLoginPanel");
 	}
 	
@@ -147,25 +102,51 @@ public class MainFrame extends JFrame {
 		System.out.println("setAdminPanel");		
 	}
 	
+	public void setCoursePanel(int courseID) {
+		if( coursePanel == null ) {
+			coursePanel = new CoursePanel(courseID);
+		}
+		add(coursePanel);
+		curPanel = coursePanel;
+		coursePanel.setEnabled(true);
+		coursePanel.setVisible(true);
+		System.out.println("setCoursePanel");
+	}
+	
 	public void setStatPanel() {
-		if(statPanel == null) {
-			statPanel = new StatisticsPanel();
+
+		if( statPanel == null ) {
+			statPanel = new StatPanel();
 		}
 		add(statPanel);
 		curPanel = statPanel;
 		statPanel.setEnabled(true);
 		statPanel.setVisible(true);
-		System.out.println("setStatPanel");
+		System.out.println("setStatPanel");		
 	}
 	
-	public void setHeadLine() {
-		if( headLine == null ) {
-			headLine = new HeadLine();
-		}       
-        add(headLine);
-        headLine.setEnabled(true);
-        headLine.setVisible(true);
-        System.out.println("setHeadLine");
+	public void setCategoryPanel() {
+
+		if( categoryPanel == null ) {
+			categoryPanel = new CategoryPanel();
+		}
+		add(categoryPanel);
+		curPanel = categoryPanel;
+		categoryPanel.setEnabled(true);
+		categoryPanel.setVisible(true);
+		System.out.println("setCategoryPanel");		
+	}
+	
+	public void setOverviewPanel() {
+
+		if( overviewPanel == null ) {
+			overviewPanel = new OverviewPanel();
+		}
+		add(overviewPanel);
+		curPanel = overviewPanel;
+		overviewPanel.setEnabled(true);
+		overviewPanel.setVisible(true);
+		System.out.println("setOverviewPanel");		
 	}
 	
 	/**
@@ -178,18 +159,12 @@ public class MainFrame extends JFrame {
 		curPanel.setVisible(false);
 		remove(curPanel);
 	}
-	
-	public void removeHeadLine() {
-		headLine.setEnabled(false);
-		headLine.setVisible(false);
-		remove(headLine);
-	}
 		
 	/**
 	 * Main
 	 * */
 	public static void main(String[] args) {
-		MainFrame.getInstance();
+		MainFrame.getInstance().run();
 	}
 
 }

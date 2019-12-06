@@ -3,6 +3,7 @@ package backend;
 import share.*;
 import db.*;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
@@ -11,7 +12,7 @@ import java.util.Collection;
  * Class serves as the interface between GUI and backend. All APIs must be private
  */
 public class SysPortal implements Statisticsable {
-    private AcademicObject curObject;
+    private AcademicObject _currentObj;
 
     // enum for different request types
     private RequestHead _head;
@@ -29,19 +30,29 @@ public class SysPortal implements Statisticsable {
 //        return res;
 //    }
 
+    /**
+     * Method that the frontend calls to retrieve responses by passing requests with corresponding RequestHead
+     *
+     * @param req
+     * @return
+     */
     public Response getResponse(Request req) {
-
         RequestHead head = req.getHead();
+        _currentObj = req.setCurrentObj();
         Response res = new Response(head, true);
+        List<Object> params = req.getParams();
+        List<Integer> ids = req.getIds();
+
+        setCurrentObj(ids);
 
         switch (head) {
             case LOGIN:
-                boolean isValid = login(req.getParams());
+                boolean isValid = login((String) params.get(0), (String) params.get(1));
                 return new Response(head, isValid);
             case LOGOUT:
                 return res;
             case GET_STUDENT_LIST:
-                for (Student student : getStudentList()) {
+                for (Student student : getStudentListByCourse((Course) _currentObj)) {
                     res.addBody(student);
                 }
                 return res;
@@ -51,12 +62,12 @@ public class SysPortal implements Statisticsable {
                 }
                 return res;
             case GET_CATEGORY_LIST:
-                for (Category category : getCategoryList()) {
+                for (Category category : getCategoryList((Course) _currentObj)) {
                     res.addBody(category);
                 }
                 return res;
             case GET_ASSIGNMENT_LIST:
-                for (Assignment assignment : getAssignmentList()) {
+                for (Assignment assignment : getAssignmentList((Category) _currentObj)) {
                     res.addBody(assignment);
                 }
                 return res;
@@ -66,12 +77,10 @@ public class SysPortal implements Statisticsable {
                 }
                 return res;
             case ADD_STUDENT:
-                Student student = (Student) req.getFirstParam();
-                // todo store to db
+                DatabasePortal.getInstance().addStudent((Course) _currentObj, (String) params.get(0), (Boolean) params.get(1));
                 return res;
             case ADD_COURSE:
-                Course course = (Course) req.getFirstParam();
-                // todo store to db
+                DatabasePortal.getInstance().addStudent((Course) _currentObj, (String) params.get(0), (Boolean) params.get(1));
                 return res;
             case ADD_CATEGORY:
                 Category category = (Category) req.getFirstParam();
@@ -119,50 +128,77 @@ public class SysPortal implements Statisticsable {
         return null;
     }
 
-    private boolean login(List<Object> params) {
-        //db auth params[0] = username, params[1] = password
+    /**
+     * Track the current level of AcademicObject. If user is checking on a Category, then _currentObj will be updated
+     * to that Category object.
+     * @param ids
+     */
+    private void setCurrentObj(ArrayList<Integer> ids) {
+        Course course = DatabasePortal.getInstance().getCourseById(ids.get(0));
+        Category category = DatabasePortal.getInstance().getCategoryById(course, ids.get(1));
+        if (category == null) {
+            _currentObj = course;
+        }
+        Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, ids.get(2));
+        if (assignment == null) {
+            _currentObj = category;
+        }
+        Submission submission = DatabasePortal.getInstance().getSubmissionById(assignment, ids.get(3));
+        if (submission == null) {
+            _currentObj = submission;
+        }
+    }
+
+    /**
+     * instructor login auth
+     *
+     * @param name
+     * @param password
+     * @return
+     */
+    private boolean login(String name, String password) {
+        DatabasePortal.getInstance().getInstructor(name, password);
         return true;
     }
 
     /**
      * add a new student
      */
-    private void addStudent(String name, boolean grad) {
-        int id = -1;// todo  get from db
-        Student newStudent = new Student(name, id, grad);
-        // todo db add
+    private Student addStudent(String name, boolean isGrad) {
+        return DatabasePortal.getInstance().addStudent((Course) _currentObj, name, isGrad);
     }
 
     /**
      * add a new instructor
      */
     private void addInstructor(String name, String password) {
-        int id = -1;// todo get from db
         Instructor newInstructor = new Instructor(name, id, password);
         // todo db add
     }
 
     /**
-     * add a new course
+     * add a new course. null if fails, Course obj if succeeds.
      */
-    private void addCourse(String name, String description, String semester) {
-        int id = -1; // todo get from db
-        Course newCourse = new Course(id, name, description, semester);
-        // todo db add
+    private Course addCourse(int instructorId, String name, String description, String semester) {
+        return DatabasePortal.getInstance().addCourse(instructorId, name, description, semester);
     }
 
     /**
      * add a new Category
      */
-    private void addCategory(int courseID, String name, String description) {
-        // todo get course from db
-        // todo add category obj to db
+    private Category addCategory(int courseId, String name, String description) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        if (course == null) {
+            return null;
+        }
+        return DatabasePortal.getInstance().addCategory(course, name, description);
     }
 
     /**
      * add a new Assignment
      */
-    private void addAssignment(int categoryID, ) {
+    private Assignment addAssignment(int categoryID, String name, String description) {
+
         // todo get course from db
         // todo add category obj to db
     }
@@ -174,31 +210,29 @@ public class SysPortal implements Statisticsable {
         // todo db add
     }
 
-    private List<Course> getCourseList() {
-        // todo db
-        // return db.getAllCourses();
-        return null;
+    private ArrayList<Course> getCourseList() {
+        return DatabasePortal.getInstance().getAllCourses();
     }
 
-    private List<Student> getStudentList() {
-        // todo db
-        // return db.getStudentsById(
-        return null;
+    private ArrayList<Student> getStudentListByCourse(Course course) {
+        return DatabasePortal.getInstance().getStudentsByCourse(course);
+
+//        return DatabasePortal.getInstance().getStudentsByCourse()
     }
 
-    private List<Category> getCategoryList() {
-        // todo db
-        return null;
+    private ArrayList<Category> getCategoryList(Course course) {
+//        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        return DatabasePortal.getInstance().getCategoriesByCourse(course);
     }
 
-    private List<Assignment> getAssignmentList() {
-        // todo db
-        return null;
+    private ArrayList<Assignment> getAssignmentList(Category category) {
+//        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+//        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
+        return DatabasePortal.getInstance().getAssignmentsByCategory(category);
     }
 
-    private List<Submission> getSubmissionList() {
-        // todo db
-        return null;
+    private ArrayList<Submission> getSubmissionList(Assignment assignment) {
+        return DatabasePortal.getInstance().getSubmissionsByAssignment(assignment);
     }
 
 

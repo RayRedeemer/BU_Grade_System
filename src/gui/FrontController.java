@@ -56,8 +56,21 @@ public class FrontController {
 	/**
 	 * Method: getCourseList
 	 * */
-	private boolean getCourseList() {
+	private boolean getCourseList(Request request) {
 		
+		return true;
+	}
+	
+	/**
+	 * Method: selectCourse
+	 * */
+	private boolean selectCourse(Request request) {
+		System.out.println(request.getParams());
+		if( request.getParams().get(0) == null ) {
+			System.out.println("Please select a course.");
+			
+			return false;
+		}
 		return true;
 	}
 	
@@ -87,6 +100,11 @@ public class FrontController {
 				}
 				break;
 			case GET_COURSE_LIST:
+				break;
+			case SELECT_COURSE:
+				if( selectCourse(request) ) {
+					dispatcher.dispatch(request);
+				}
 				break;
 			default:
 				System.out.println("Error.");
