@@ -147,7 +147,7 @@ public class DatabasePortal {
         return ret;
     }
 
-    public Course getCourseById(Instructor i, int id) {
+    public Course getCourseById(int id) {
         try {
             String sql = "SELECT * FROM courses WHERE course_id=" + id + ";";
             Statement stmt = _conn.createStatement();
