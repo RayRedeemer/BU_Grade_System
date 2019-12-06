@@ -11,8 +11,7 @@ import java.util.Collection;
  * Class serves as the interface between GUI and backend. All APIs must be private
  */
 public class SysPortal implements Statisticsable {
-//    private int studentCount;
-//    private int instructorCount;
+    private AcademicObject curObject;
 
     // enum for different request types
     private RequestHead _head;
@@ -177,11 +176,13 @@ public class SysPortal implements Statisticsable {
 
     private List<Course> getCourseList() {
         // todo db
+        // return db.getAllCourses();
         return null;
     }
 
     private List<Student> getStudentList() {
         // todo db
+        // return db.getStudentsById(
         return null;
     }
 
