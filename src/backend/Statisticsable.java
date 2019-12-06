@@ -17,14 +17,14 @@ public interface Statisticsable {
     public double getMedian();
 
     /**
-     * return range
+     * return range lower bound
      * @return
      */
-    public double getRange();
+    public double getRangeLowerBound();
 
     /**
-     * return standard deviation
+     * return range upper bound
      * @return
      */
-    public double getStdDev();
+    public double getRangeUpperBound();
 }

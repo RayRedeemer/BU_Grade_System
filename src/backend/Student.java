@@ -45,8 +45,8 @@ public class Student extends Person implements Commentable {
         return _withdrawn;
     }
 
-    public void withdraw(){
-        _withdrawn = true;
+    public void setWithdraw(boolean w){
+        _withdrawn = w;
     }
 
     public boolean isGradStudent() {
