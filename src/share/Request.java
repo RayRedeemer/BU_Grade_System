@@ -12,6 +12,7 @@ public class Request {
 	
 	private RequestHead head;
 	private List<Object> params;
+	private List<Integer> ids;
 	private AcademicObject currentObj;
 	
 	public Request(RequestHead _head) {
@@ -36,6 +37,10 @@ public class Request {
 
 	public AcademicObject getCurrentObj() {
 		return this.currentObj;
+	}
+
+	public List<Integer> getIds() {
+		return ids;
 	}
 	
 	/**

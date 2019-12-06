@@ -91,7 +91,7 @@ public class DatabasePortal {
         return 0;
     }
 
-    public Course addCourse(int instructor, String name, String description, String semester) {
+    public Course adCourse(int instructor, String name, String description, String semester) {
         try {
             String sql = "INSERT INTO courses (instructor_id, semester, name, description, curve, comment)\n" +
                     "VALUES (" + instructor + ",?,?,?,0.0,\"\");";
