@@ -65,6 +65,7 @@ public class DatabaseInitializer {
                 "score DECIMAL(3,2),\n" +
                 "bonus DECIMAL(3,2),\n" +
                 "submitted_date TEXT,\n" +
+                "style INTEGER,\n" +
                 "comment TEXT);";
 
         try{
