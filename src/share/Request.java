@@ -26,6 +26,10 @@ public class Request {
 	public List<Object> getParams() {
 		return params;
 	}
+
+	public Object getFirstParam() {
+		return params.get(0);
+	}
 	
 	/**
 	 * setter()
