@@ -30,6 +30,7 @@ public class MainFrame extends JFrame {
 	private AdminPanel adminPanel;
 	private BufferedImage bgImage;
 	private ImageIcon bgImageIcon;
+	private StatisticsPanel statPanel;
 	
 	private int frameWidth;
 	private int frameHeight;
@@ -62,7 +63,8 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);         		
 		setLocationRelativeTo(null);   // this will center your frame
 				
-		setLoginPanel();
+		//setLoginPanel();
+		setStatPanel();
 
 		setVisible(true);				
 	}
@@ -143,6 +145,17 @@ public class MainFrame extends JFrame {
 		adminPanel.setEnabled(true);
 		adminPanel.setVisible(true);
 		System.out.println("setAdminPanel");		
+	}
+	
+	public void setStatPanel() {
+		if(statPanel == null) {
+			statPanel = new StatisticsPanel();
+		}
+		add(statPanel);
+		curPanel = statPanel;
+		statPanel.setEnabled(true);
+		statPanel.setVisible(true);
+		System.out.println("setStatPanel");
 	}
 	
 	public void setHeadLine() {
