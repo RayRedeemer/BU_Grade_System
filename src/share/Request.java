@@ -1,5 +1,7 @@
 package share;
 
+import backend.AcademicObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ public class Request {
 	
 	private RequestHead head;
 	private List<Object> params;
+	private AcademicObject currentObj;
 	
 	public Request(RequestHead _head) {
 		this.head = _head;
@@ -29,6 +32,10 @@ public class Request {
 
 	public Object getFirstParam() {
 		return params.get(0);
+	}
+
+	public AcademicObject getCurrentObj() {
+		return this.currentObj;
 	}
 	
 	/**
