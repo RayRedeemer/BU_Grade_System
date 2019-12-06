@@ -28,6 +28,9 @@ public class MainFrame extends JFrame {
 	private LoginPanel loginPanel;		
 	private AdminPanel adminPanel;
 	private CoursePanel coursePanel;
+	private StatPanel statPanel;
+	private CategoryPanel categoryPanel;
+	private OverviewPanel overviewPanel;
 	
 	private int frameWidth;
 	private int frameHeight;
@@ -108,6 +111,42 @@ public class MainFrame extends JFrame {
 		coursePanel.setEnabled(true);
 		coursePanel.setVisible(true);
 		System.out.println("setCoursePanel");
+	}
+	
+	public void setStatPanel() {
+
+		if( statPanel == null ) {
+			statPanel = new StatPanel();
+		}
+		add(statPanel);
+		curPanel = statPanel;
+		statPanel.setEnabled(true);
+		statPanel.setVisible(true);
+		System.out.println("setStatPanel");		
+	}
+	
+	public void setCategoryPanel() {
+
+		if( categoryPanel == null ) {
+			categoryPanel = new CategoryPanel();
+		}
+		add(categoryPanel);
+		curPanel = categoryPanel;
+		categoryPanel.setEnabled(true);
+		categoryPanel.setVisible(true);
+		System.out.println("setCategoryPanel");		
+	}
+	
+	public void setOverviewPanel() {
+
+		if( overviewPanel == null ) {
+			overviewPanel = new OverviewPanel();
+		}
+		add(overviewPanel);
+		curPanel = overviewPanel;
+		overviewPanel.setEnabled(true);
+		overviewPanel.setVisible(true);
+		System.out.println("setOverviewPanel");		
 	}
 	
 	/**
