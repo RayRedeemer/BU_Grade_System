@@ -65,6 +65,7 @@ public class AdminPanel extends JPanel implements ActionListener {
 		int x = (int)(frameWidth*0.4);
 		int y = (int)(frameHeight*0.05);
 
+
 		JLabel titleLabel = new JLabel("Welcome");
 		titleLabel.setBounds(x, y, 200, 50);
 		titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 35));
@@ -72,6 +73,7 @@ public class AdminPanel extends JPanel implements ActionListener {
 		
 		JButton logoutButton = new JButton("Logout");
 		logoutButton.setBounds(titleLabel.getX() + titleLabel.getWidth() + hGap, titleLabel.getY() + 13, 80, 25);
+
 		add(logoutButton);
 		logoutButton.addActionListener(
 				new ActionListener() {
@@ -82,7 +84,7 @@ public class AdminPanel extends JPanel implements ActionListener {
 					}
 				}
 		);
-	
+
 		// set up a table
 		createJTable();
 	

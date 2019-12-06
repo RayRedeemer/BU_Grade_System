@@ -5,7 +5,6 @@ Author: Ziqi Tan
 public enum RequestHead {
 	LOGIN,
 	LOGOUT,
-
 	GET_STUDENT_LIST,
 	GET_COURSE_LIST,
 	GET_CATEGORY_LIST,
