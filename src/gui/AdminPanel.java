@@ -65,13 +65,13 @@ public class AdminPanel extends JPanel implements ActionListener {
 		int x = (int)(frameWidth*0.4);
 		int y = (int)(frameHeight*0.05);
 
-		JLabel loginLabel = new JLabel("Welcome");
-		loginLabel.setBounds(x, y, 200, 50);
-		loginLabel.setFont(new Font("Times New Roman", Font.BOLD, 35));
-		add(loginLabel);
+		JLabel titleLabel = new JLabel("Welcome");
+		titleLabel.setBounds(x, y, 200, 50);
+		titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 35));
+		add(titleLabel);
 		
 		JButton logoutButton = new JButton("Logout");
-		logoutButton.setBounds(loginLabel.getX() + loginLabel.getWidth() + hGap, loginLabel.getY() + 13, 80, 25);
+		logoutButton.setBounds(titleLabel.getX() + titleLabel.getWidth() + hGap, titleLabel.getY() + 13, 80, 25);
 		add(logoutButton);
 		logoutButton.addActionListener(
 				new ActionListener() {
@@ -82,17 +82,14 @@ public class AdminPanel extends JPanel implements ActionListener {
 					}
 				}
 		);
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-                "Course list",
-                TitledBorder.CENTER,
-                TitledBorder.TOP));		
+	
 		// set up a table
 		createJTable();
 	
         // adding it to JScrollPane 
 		int tableWidth = (int) courseListTable.getPreferredSize().getWidth();
         JScrollPane sp = new JScrollPane(courseListTable); 
-        sp.setBounds((int) (frameWidth * 0.25), loginLabel.getY() + loginLabel.getHeight(), 
+        sp.setBounds((int) (frameWidth * 0.25), titleLabel.getY() + titleLabel.getHeight(), 
         		tableWidth, 
         		(int)(frameHeight*0.5));
         add(sp);

@@ -66,6 +66,11 @@ public class FrontController {
 	 * */
 	private boolean selectCourse(Request request) {
 		System.out.println(request.getParams());
+		if( request.getParams().get(0) == null ) {
+			System.out.println("Please select a course.");
+			
+			return false;
+		}
 		return true;
 	}
 	
