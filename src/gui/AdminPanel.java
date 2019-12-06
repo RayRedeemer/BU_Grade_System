@@ -24,13 +24,15 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
+import share.Request;
+import share.RequestHead;
+
 /*
 Author: Ziqi Tan
 */
-public class AdminPanel extends JPanel {
+public class AdminPanel extends JPanel implements ActionListener {
 		
 	private JTable courseListTable;
-	private static final int HEADER_HEIGHT = 32;
 	private String[] columnNames = 
 		{ "Name", "Year", "Semester", "Enrollment Count", "Average Grade" };
 	private String[][] data = { 
@@ -41,6 +43,8 @@ public class AdminPanel extends JPanel {
     }; 
 	private String[][] tableData;
 	
+	private static final int headerHeight = 32;
+	
 	private int selectedRow;
 	private int selectedColumn;
 	private String selectedCourse;
@@ -50,28 +54,71 @@ public class AdminPanel extends JPanel {
 	 * */
 	public AdminPanel() {				
 
-		setBackground(new Color(0,0,0,30));
+		setLayout(null);
 		
-		int frameWidth = MainFrame.getInstance().getFrameWidth();
-		int frameHeight = MainFrame.getInstance().getFrameHeight();
-		int hgap = (int)(frameWidth*0.15);
-		int vgap = (int)(frameHeight*0.03);
-		// FlowLayout
-		setLayout(new FlowLayout(FlowLayout.LEFT, hgap, vgap));
+		int frameWidth = MainFrame.getInstance().getWidth();
+		int frameHeight = MainFrame.getInstance().getHeight();
 		
+		int hGap = 50;
+		int vGap = 50;
+		
+		int x = (int)(frameWidth*0.4);
+		int y = (int)(frameHeight*0.05);
+
+		JLabel loginLabel = new JLabel("Welcome");
+		loginLabel.setBounds(x, y, 200, 50);
+		loginLabel.setFont(new Font("Times New Roman", Font.BOLD, 35));
+		add(loginLabel);
+		
+		JButton logoutButton = new JButton("Logout");
+		logoutButton.setBounds(loginLabel.getX() + loginLabel.getWidth() + hGap, loginLabel.getY() + 13, 80, 25);
+		add(logoutButton);
+		logoutButton.addActionListener(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent event) {
+						Request request = new Request(RequestHead.LOGOUT);
+						FrontController.getInstance().dispatchRequest(request);
+					}
+				}
+		);
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
                 "Course list",
-                TitledBorder.LEFT,
+                TitledBorder.CENTER,
                 TitledBorder.TOP));		
 		// set up a table
 		createJTable();
-			        	        
+	
         // adding it to JScrollPane 
+		int tableWidth = (int) courseListTable.getPreferredSize().getWidth();
         JScrollPane sp = new JScrollPane(courseListTable); 
+        sp.setBounds((int) (frameWidth * 0.25), loginLabel.getY() + loginLabel.getHeight(), 
+        		tableWidth, 
+        		(int)(frameHeight*0.5));
         add(sp);
         
-        // add ControlPanel
-        add(new ControlPanel());
+        int buttonWidth = 130;
+        int textHeight = 25;
+        int buttonX = sp.getX() + tableWidth + hGap;
+        int buttonY = sp.getY();
+        JButton addCourseButton = new JButton("Add Course");
+        addCourseButton.setBounds(buttonX, buttonY, buttonWidth, textHeight);
+		add(addCourseButton);
+		
+		JButton cloneCourseButton = new JButton("Clone Course");
+		cloneCourseButton.setBounds(buttonX, buttonY + vGap, buttonWidth, textHeight);
+		add(cloneCourseButton);
+		
+		JButton selectCourseButton = new JButton("Select Course");
+		selectCourseButton.setBounds(buttonX, buttonY + vGap * 2, buttonWidth, textHeight);
+		add(selectCourseButton);
+		selectCourseButton.addActionListener(this);
+		
+		JButton deleteCourseButton = new JButton("Delete Course");
+		deleteCourseButton.setBounds(buttonX, buttonY + vGap * 3, buttonWidth, textHeight);
+		add(deleteCourseButton);
+		
+		
 	}
 	
 	/**
@@ -79,12 +126,15 @@ public class AdminPanel extends JPanel {
 	 * Function: Create a course list table.
 	 * */
 	private void createJTable() {
-		      
+		
+		int rowHeight = 20;
+		int columnWidth = 110;
+		
         // Initializing the JTable
         courseListTable = new JTable(data, columnNames);
         
         // row height
-        courseListTable.setRowHeight(20);
+        courseListTable.setRowHeight(rowHeight);
         
         // center alignment
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -92,7 +142,8 @@ public class AdminPanel extends JPanel {
         centerRenderer.setVerticalAlignment( JLabel.CENTER );
         
         for( int columnIndex = 0; columnIndex < courseListTable.getModel().getColumnCount(); columnIndex++ ) {
-        	courseListTable.getColumnModel().getColumn(columnIndex).setCellRenderer( centerRenderer );        	
+        	courseListTable.getColumnModel().getColumn(columnIndex).setCellRenderer(centerRenderer); 
+        	courseListTable.getColumnModel().getColumn(columnIndex).setPreferredWidth(columnWidth);
         }
                 
         // Font
@@ -108,55 +159,37 @@ public class AdminPanel extends JPanel {
         
         // header height
         JTableHeader header = courseListTable.getTableHeader();
-        header.setPreferredSize(new Dimension(100, HEADER_HEIGHT));  
+        header.setPreferredSize(new Dimension(columnWidth, headerHeight));  
         
         // Mouse listener
         // select course
-        courseListTable.addMouseListener( new MouseAdapter() {       	
+        courseListTable.addMouseListener(new MouseAdapter() {       	
         	@Override
         	 public void mouseClicked(MouseEvent event) {
-        	    selectedRow = courseListTable.rowAtPoint(event.getPoint());
-        	    selectedColumn = courseListTable.columnAtPoint(event.getPoint());
-        	    System.out.println("Click: " + "Row: " + selectedRow + " Column: " + selectedColumn);
-        	    selectedCourse = data[selectedRow][0];
-        	    System.out.println("Selected course: " + selectedCourse);
+        		try {
+        			selectedRow = courseListTable.rowAtPoint(event.getPoint());
+            	    selectedColumn = courseListTable.columnAtPoint(event.getPoint());
+            	    System.out.println("Click: " + "Row: " + selectedRow + " Column: " + selectedColumn);
+            	    selectedCourse = data[selectedRow][0];
+            	    System.out.println("Selected course: " + selectedCourse);
+        		}
+        		catch( Exception error ) {
+        			System.out.println(error);
+        		}
+        	    
         	 }
         } );
 	}
 	
-	/**
-	 * inner class
-	 * */
-	class ControlPanel extends JPanel implements ActionListener {
-		private JButton addCourseButton;
-		private JButton cloneCourseButton;
-		private JButton selectCourseButton;
-		private JButton deleteCourseButton;
-		
-		public ControlPanel() {
-			setBackground(new Color(0,0,0,0));
-			setLayout(new GridLayout(4, 1, 20, 20));
-			
-			addCourseButton = new JButton("Add Course");
-			add(addCourseButton);
-			
-			cloneCourseButton = new JButton("Clone Course");
-			add(cloneCourseButton);
-			
-			selectCourseButton = new JButton("Select Course");
-			add(selectCourseButton);
-			
-			deleteCourseButton = new JButton("Delete Course");
-			add(deleteCourseButton);
-			
-		}
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		// TODO Auto-generated method stub
+		if( event.getActionCommand().equals("Select Course") ) {
+			Request request = new Request(RequestHead.SELECT_COURSE);
+			request.addParams(selectedCourse);
+			FrontController.getInstance().dispatchRequest(request);
 		}
-		
 	}
 	
 }

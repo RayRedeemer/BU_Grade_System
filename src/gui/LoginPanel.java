@@ -27,20 +27,18 @@ public class LoginPanel extends JPanel implements ActionListener {
 	
 	public LoginPanel() {
 		
-		// setLayout
-		int hgap = 10;
-		int vgap = 50;
-		setLayout(new FlowLayout(FlowLayout.CENTER, hgap, vgap));
-		/**
-		 * FlowLayout constructor
-		 * @params
-		 * 		align - the alignment value
-		 * 		hgap - the horizontal gap between components and between the components and the borders of the Container
-		 * 		vgap - the vertical gap between components and between the components and the borders of the Container
-		 * */
+		setLayout(null);
 		
-		// Transparent background
-		setBackground(new Color(0,0,0,0));
+		int frameWidth = MainFrame.getInstance().getWidth();
+		int frameHeight = MainFrame.getInstance().getHeight();
+		
+		int leftGap = (int)(frameWidth * 0.2);
+		int hGap = (int)(30);
+		int vGap = (int)(50);
+		
+		int labelWidth = 80;
+		int textWidth = 150;
+		int textHeight = 25;
 		
 		// new font
 		Font font = new Font("Times New Roman", Font.BOLD, 22);
@@ -48,24 +46,28 @@ public class LoginPanel extends JPanel implements ActionListener {
 		// Components
 		JLabel loginLabel = new JLabel("Login: ");
 		loginLabel.setFont(font);
+		loginLabel.setBounds(leftGap, vGap, labelWidth, textHeight);
 		add(loginLabel);
 		
-		userNameField = new JTextField(20);
+		userNameField = new JTextField();
+		userNameField.setBounds(loginLabel.getX() + loginLabel.getWidth() + hGap, vGap, textWidth, textHeight);
 		userNameField.setText("cpk");
 		add(userNameField);
 		
 		JLabel passwordLabel = new JLabel("Password: ");
 		passwordLabel.setFont(font);
+		passwordLabel.setBounds(userNameField.getX() + userNameField.getWidth() + hGap, vGap, labelWidth + 30, textHeight);
 		add(passwordLabel);
 		
 		passwordField = new JPasswordField(20);
+		passwordField.setBounds(passwordLabel.getX() + passwordLabel.getWidth() + hGap, vGap, textWidth, textHeight);
 		passwordField.setText("123");
 		add(passwordField);
 		
 		loginButton = new JButton("Login");
+		loginButton.setBounds(passwordField.getX() + passwordField.getWidth() + hGap, vGap, textWidth, textHeight);
 		add(loginButton);
 		loginButton.addActionListener(this);
-		
 	}
 
 	@Override
