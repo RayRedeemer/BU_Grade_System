@@ -25,7 +25,7 @@ import share.RequestHead;
 /*
 Author: Ziqi Tan
 */
-public class CoursePanel extends JPanel {
+public class CoursePanel extends JPanel implements ActionListener {
 	
 	private int courseID;
 	
@@ -46,11 +46,10 @@ public class CoursePanel extends JPanel {
 	private JTable assignmentTable;
 	private int selectedRow;
 	private int selectedColumn;
+	private String selectedCate;
 	
-
 	private static final int headerHeight = 32;
 	
-
 	/**
 	 * Constructor
 	 * */
@@ -89,9 +88,7 @@ public class CoursePanel extends JPanel {
 					}
 				}
 		);
-		
-		
-				       
+			       
         int labelWidth = 150;
         int labelX = titleLabel.getX();
         int labelY = titleLabel.getY() + titleLabel.getHeight();
@@ -136,8 +133,6 @@ public class CoursePanel extends JPanel {
         		(int) (assignmentTable.getPreferredSize().getHeight() + headerHeight + 3));
         add(tableScrollPane);
         
-
-        
         int hButtonX = tableScrollPane.getX();
         int hButtonY = tableScrollPane.getY() + tableScrollPane.getHeight() + vGap;
         JButton stuOverview = new JButton("Student Overview");
@@ -155,6 +150,7 @@ public class CoursePanel extends JPanel {
         JButton returnButton = new JButton("Return");
 		returnButton.setBounds(courseStatistics.getX() + courseStatistics.getWidth() + hGap, hButtonY, (int) (buttonWidth * 1.7), textHeight);
 		add(returnButton);
+		returnButton.addActionListener(this);
 		
         int vButtonX = manageStu.getX() + manageStu.getWidth() + hGap;
         int vButtonY = hButtonY;
@@ -163,9 +159,11 @@ public class CoursePanel extends JPanel {
         addCate.setBounds(vButtonX, vButtonY - vGap * 4, (int) (buttonWidth * 1.7), textHeight);
         add(addCate);
         
+        
         JButton editCate = new JButton("Edit Category");
         editCate.setBounds(vButtonX, vButtonY - vGap * 3, (int) (buttonWidth * 1.7), textHeight);
         add(editCate);
+        editCate.addActionListener(this);
         
         JButton delCate = new JButton("Delete Category");
         delCate.setBounds(vButtonX, vButtonY - vGap * 2, (int) (buttonWidth * 1.7), textHeight);
@@ -173,6 +171,10 @@ public class CoursePanel extends JPanel {
         
 	}
 	
+	/**
+	 * Method: 
+	 * Function: create assignment table
+	 * */
 	private void createAssignmentTable() {
 		
 		int rowHeight = 20;
@@ -187,8 +189,8 @@ public class CoursePanel extends JPanel {
         
         // center alignment
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-        centerRenderer.setVerticalAlignment( JLabel.CENTER );
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        centerRenderer.setVerticalAlignment(JLabel.CENTER);
         
         for( int columnIndex = 0; columnIndex < assignmentTable.getModel().getColumnCount(); columnIndex++ ) {
         	assignmentTable.getColumnModel().getColumn(columnIndex).setCellRenderer( centerRenderer );  
@@ -215,49 +217,34 @@ public class CoursePanel extends JPanel {
         assignmentTable.addMouseListener( new MouseAdapter() {       	
         	@Override
         	 public void mouseClicked(MouseEvent event) {
-        	    selectedRow = assignmentTable.rowAtPoint(event.getPoint());
-        	    selectedColumn = assignmentTable.columnAtPoint(event.getPoint());
-        	    System.out.println("Click: " + "Row: " + selectedRow + " Column: " + selectedColumn);
+        		try {
+        			selectedRow = assignmentTable.rowAtPoint(event.getPoint());
+            	    selectedColumn = assignmentTable.columnAtPoint(event.getPoint());
+            	    System.out.println("Click: " + "Row: " + selectedRow + " Column: " + selectedColumn);
+            	    selectedCate = data[selectedRow][0];
+            	    System.out.println("Selected Cate: " + selectedCate);
+        		}
+        		catch( Exception error ) {
+        			System.out.println(error);
+        		}        	    
         	 }
         } );
-	}		
-	
-	/**
-	 * inner class
-	 * */
-	class CourseInfoPanel extends JPanel {
-		public CourseInfoPanel() {
-			// gridLayout	
-			setBackground(new Color(0,0,0,0));
-			// setLayout(new GridLayout(3, 1, 20, 20));
-			
-			// Request information from backend
-			courseName = "OOD";
-			semester = "Fall19";
-			description = "Various issues in computer science that vary semester to semester." + System.getProperty("line.separator")
-					+ "Please contact the CAS Computer Science Department for detailed descriptions." + System.getProperty("line.separator")
-					+ "Though courses are variable credit, registration for less than four credits requires instructor approval.";
-			
-			Font font = new Font("Times New Roman", Font.BOLD, 18);
-			
-			JLabel courseNameLabel = new JLabel(courseName);
-			courseNameLabel.setFont(font);
-			add(courseNameLabel);
-			
-			JLabel semesterLabel = new JLabel(semester);
-			semesterLabel.setFont(font);
-			add(semesterLabel);
-			
-			JTextArea descriptionArea = new JTextArea();
-			descriptionArea.setBackground(new Color(0, 0, 0, 0));
-			descriptionArea.setText(description);
-			descriptionArea.setFont(font);
-			descriptionArea.setEditable(false);
-			add(descriptionArea);						
-		}		
 	}
-	
 
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		if( event.getActionCommand().equals("Return") ) {
+			// Return to Admin Panel
+			MainFrame.getInstance().removeCurPanel();
+			MainFrame.getInstance().setAdminPanel();
+		}
+		
+		if( event.getActionCommand().equals("Edit Category") ) {
+			MainFrame.getInstance().removeCurPanel();
+			MainFrame.getInstance().setCategoryPanel();
+		}
+		
+	}		
 	
 	
 }
