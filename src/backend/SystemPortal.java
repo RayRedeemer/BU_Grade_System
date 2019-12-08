@@ -384,6 +384,11 @@ public class SystemPortal implements Statisticsable {
         return DatabasePortal.getInstance().updateSubmission(submission);
     }
 
+    private double getSubmissionStatistics(int submissionId) {
+        Submission submission = DatabasePortal.getInstance().getSubmissionById((Assignment) _currentObj, submissionId);
+
+    }
+
 
     private ArrayList<Course> getCourseList() {
         return DatabasePortal.getInstance().getAllCourses();
@@ -391,18 +396,13 @@ public class SystemPortal implements Statisticsable {
 
     private ArrayList<Student> getStudentListByCourse(Course course) {
         return DatabasePortal.getInstance().getStudentsByCourse(course);
-
-//        return DatabasePortal.getInstance().getStudentsByCourse()
     }
 
     private ArrayList<Category> getCategoryList(Course course) {
-//        Course course = DatabasePortal.getInstance().getCourseById(courseId);
         return DatabasePortal.getInstance().getCategoriesByCourse(course);
     }
 
     private ArrayList<Assignment> getAssignmentList(Category category) {
-//        Course course = DatabasePortal.getInstance().getCourseById(courseId);
-//        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
         return DatabasePortal.getInstance().getAssignmentsByCategory(category);
     }
 
@@ -417,6 +417,7 @@ public class SystemPortal implements Statisticsable {
      * @return
      */
     public double getAvg() {
+        double avg =
         return 0;
     }
 

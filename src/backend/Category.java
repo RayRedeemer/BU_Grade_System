@@ -16,6 +16,7 @@ public class Category extends AcademicObject {
         super(category);
         _weight = category.getWeight();
     }
+
     /**
      * Compute grades of the current Category. It passes _weight to all assignments it records.
      */
