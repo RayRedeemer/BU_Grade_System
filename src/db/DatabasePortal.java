@@ -234,6 +234,7 @@ public class DatabasePortal {
     }
 
     public Category getCategoryById(Course c, int id) {
+        if (c == null) return null;
         try {
             String sql = "SELECT * FROM categories WHERE category_id=" + id + ";";
             Statement stmt = _conn.createStatement();
@@ -323,6 +324,7 @@ public class DatabasePortal {
     }
 
     public Assignment getAssignmentById(Category cat, int id) {
+        if (cat == null) return null;
         try {
             String sql = "SELECT * FROM assignments WHERE assignment_id=" + id + ";";
             Statement stmt = _conn.createStatement();
@@ -465,6 +467,32 @@ public class DatabasePortal {
         return false;
     }
 
+    public boolean updateStudent(Student s) {
+        try {
+            String sql = "UPDATE students SET name=?, score=?, bonus=?, adjustment=?, is_grad=?, withdrawn=?, comment=?\n" +
+                    "WHERE student_id=" + s.getId() + ";";
+            PreparedStatement ps = _conn.prepareStatement(sql);
+            ps.setString(1, s.getName());
+            ps.setDouble(2, s.getGrade());
+            ps.setDouble(3, s.getBonus());
+            if (s.isGradStudent()) {
+                ps.setInt(4, 1);
+            } else {
+                ps.setInt(4, 0);
+            }
+            if (s.getWithdrawn()) {
+                ps.setInt(5, 1);
+            } else {
+                ps.setInt(5,0);
+            }
+            ps.setString(6, s.getComment());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Error during updateStudent for id " + s.getId());
+            System.out.println(e.getMessage());
+        }
+    }
+
     //
 
     public Submission addSubmission(Assignment a, Student s, double score, double bonus, boolean style) {
@@ -509,6 +537,7 @@ public class DatabasePortal {
     }
 
     public Submission getSubmissionById(Assignment a, int id) {
+        if (a == null) return null;
         try {
             String sql = "SELECT * FROM submissions WHERE submission_id=" + id + ";";
             Statement stmt = _conn.createStatement();
