@@ -25,6 +25,11 @@ public class Dispatcher {
 			MainFrame.getInstance().setCoursePanel(courseID);
 		}
 		
+		if( request.getHead().equals(RequestHead.UPDATE_CATEGORY) ) {
+			MainFrame.getInstance().removeCurPanel();
+			MainFrame.getInstance().setCategoryPanel();
+		}
+		
 	}
 		
 }

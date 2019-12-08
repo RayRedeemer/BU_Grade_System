@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -98,7 +99,7 @@ public class CoursePanel extends JPanel implements ActionListener {
         JButton editCourseButton = new JButton("Edit Course");
         editCourseButton.setBounds(labelX, labelY, buttonWidth + 30, textHeight);
         add(editCourseButton);
-        
+        editCourseButton.addActionListener(this);
 
         JLabel semesterLabel = new JLabel("Semester: " + semester);
 		semesterLabel.setFont(font);
@@ -138,14 +139,17 @@ public class CoursePanel extends JPanel implements ActionListener {
         JButton stuOverview = new JButton("Student Overview");
         stuOverview.setBounds(hButtonX, hButtonY, (int) (buttonWidth * 1.7), textHeight);
         add(stuOverview);
+        stuOverview.addActionListener(this);
         
         JButton manageStu = new JButton("Manage Student");
         manageStu.setBounds(stuOverview.getX() + stuOverview.getWidth() + hGap, hButtonY, (int) (buttonWidth * 1.7), textHeight);
         add(manageStu);
+        manageStu.addActionListener(this);
         
         JButton courseStatistics = new JButton("Course Statistics");
         courseStatistics.setBounds(manageStu.getX() + manageStu.getWidth() + hGap, hButtonY, (int) (buttonWidth * 1.7), textHeight);
         add(courseStatistics);
+        courseStatistics.addActionListener(this);
         
         JButton returnButton = new JButton("Return");
 		returnButton.setBounds(courseStatistics.getX() + courseStatistics.getWidth() + hGap, hButtonY, (int) (buttonWidth * 1.7), textHeight);
@@ -158,7 +162,7 @@ public class CoursePanel extends JPanel implements ActionListener {
         JButton addCate = new JButton("Add Category");
         addCate.setBounds(vButtonX, vButtonY - vGap * 4, (int) (buttonWidth * 1.7), textHeight);
         add(addCate);
-        
+        addCate.addActionListener(this);
         
         JButton editCate = new JButton("Edit Category");
         editCate.setBounds(vButtonX, vButtonY - vGap * 3, (int) (buttonWidth * 1.7), textHeight);
@@ -168,6 +172,7 @@ public class CoursePanel extends JPanel implements ActionListener {
         JButton delCate = new JButton("Delete Category");
         delCate.setBounds(vButtonX, vButtonY - vGap * 2, (int) (buttonWidth * 1.7), textHeight);
         add(delCate);
+        delCate.addActionListener(this);
         
 	}
 	
@@ -239,12 +244,48 @@ public class CoursePanel extends JPanel implements ActionListener {
 			MainFrame.getInstance().setAdminPanel();
 		}
 		
-		if( event.getActionCommand().equals("Edit Category") ) {
-			MainFrame.getInstance().removeCurPanel();
-			MainFrame.getInstance().setCategoryPanel();
+		if( event.getActionCommand().equals("Add Category") ) {
+			
 		}
 		
-	}		
+		if( event.getActionCommand().equals("Edit Category") ) {
+			Request request = new Request(RequestHead.UPDATE_CATEGORY);
+			request.addParams(selectedCate);
+			FrontController.getInstance().dispatchRequest(request);
+		}
+		
+		if( event.getActionCommand().equals("Delete Category") ) {
+			
+		}
+		
+		if( event.getActionCommand().equals("Student Overview") ) {
+			
+		}
+		
+		if( event.getActionCommand().equals("Manage Student") ) {
+			
+		}
+		
+		if( event.getActionCommand().equals("Course Statistics") ) {
+			
+		}
+		
+		if( event.getActionCommand().equals("Edit Course") ) {
+			
+		}
+		
+	}
 	
+	/**
+	 * inner class
+	 * add category
+	 * */
+	class Form extends JFrame {
+		
+		public Form() {
+			
+		}
+		
+	}
 	
 }

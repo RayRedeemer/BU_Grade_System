@@ -280,7 +280,15 @@ public class AdminPanel extends JPanel implements ActionListener {
 			submit.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent event) {
-					
+					String courseName = nameField.getText();
+					String courseSemester = semesterField.getText();
+					String courseDesp = despArea.getText();
+					if( courseName == null || courseSemester == null || courseDesp == null ) {
+						
+					}
+					else {
+						
+					}
 				}
 			});
 						
@@ -295,8 +303,7 @@ public class AdminPanel extends JPanel implements ActionListener {
 						}
 					}					
 			);
-			
-			
+						
 			add(formPanel);
 		}
 		

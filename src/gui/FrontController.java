@@ -77,6 +77,20 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: editCategory
+	 * */
+	private boolean editCategory(Request request) {
+		System.out.println();
+		if( request.getParams().get(0) == null ) {
+			System.out.println("Please select a course.");
+			
+			return false;
+		}
+
+		return true;
+	}
+	
+	/**
 	 * Method: trackRequest
 	 * @author Ziqi Tan
 	 * @param Request
@@ -105,6 +119,11 @@ public class FrontController {
 				break;
 			case SELECT_COURSE:
 				if( selectCourse(request) ) {
+					dispatcher.dispatch(request);
+				}
+				break;
+			case UPDATE_CATEGORY:
+				if( editCategory(request) ) {
 					dispatcher.dispatch(request);
 				}
 				break;
