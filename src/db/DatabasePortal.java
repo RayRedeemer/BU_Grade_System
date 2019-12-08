@@ -491,9 +491,9 @@ public class DatabasePortal {
             System.out.println("Error during updateStudent for id " + s.getId());
             System.out.println(e.getMessage());
         }
+        return false;
     }
 
-    //
 
     public Submission addSubmission(Assignment a, Student s, double score, double bonus, boolean style) {
         try {
