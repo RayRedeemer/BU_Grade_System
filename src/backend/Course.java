@@ -71,4 +71,16 @@ public class Course extends AcademicObject {
         _roster.get(index).setWithdraw(true);
     }
 
+    /**
+     * Check if the sum of weights of all categories is 100%
+     * @return true if satisfies, false otherwise.
+     */
+    public Boolean isValid() {
+        double weightSum = 0.0;
+        for (AcademicObject ao : getAllDescendants()) {
+            Category cat = (Category) ao;
+            weightSum += cat.getWeight();
+        }
+        return weightSum == 1.0;
+    }
 }

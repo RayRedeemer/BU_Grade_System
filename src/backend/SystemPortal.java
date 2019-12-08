@@ -9,21 +9,27 @@ import java.util.List;
 /**
  * Class serves as the interface between GUI and backend. All APIs must be private
  */
-public class SysPortal implements Statisticsable {
+public class SystemPortal implements Statisticsable {
+
+    // tracks the level of objects
     private AcademicObject _currentObj;
 
-    // enum for different request types
-    private RequestHead _head;
-
-    public SysPortal(RequestHead head) {
-        _head = head;
+    public SystemPortal() {
+        
     }
 
     /**
-     * Method that the frontend calls to retrieve responses by passing requests with corresponding RequestHead
+     * Entry method for the grade system. GUI set up and other fields should be initialized here.
+     */
+    public void launch() {
+        // TODO: kick off GUI login Panel
+    }
+
+    /**
+     * Method that the frontend interacts with to retrieve responses by passing requests with corresponding RequestHead
      *
      * @param req Request obj sent from GUI. It has fields such as enum head to specify the operation
-     * @return res Response obj with head and status. Status will be true if succeeds, false otherwise.
+     * @return Response obj with head and status. Status will be true if succeeds, false otherwise.
      */
     public Response getResponse(Request req) {
         RequestHead head = req.getHead();
@@ -40,7 +46,6 @@ public class SysPortal implements Statisticsable {
                 return new Response(head, isValid);
             case LOGOUT:
                 return res;
-
             case GET_STUDENT_LIST:
                 for (Student student : getStudentListByCourse((Course) _currentObj)) {
                     res.addBody(student);
@@ -121,13 +126,20 @@ public class SysPortal implements Statisticsable {
             case UPDATE_SUBMISSION:
                 updateSubmission((Integer) params.get(0));
                 return res;
+
+            case CHECK_COURSE_VALID:
+                Boolean isCourseValid = isCourseValid((Integer) params.get(0));
+                return new Response(head, isCourseValid);
+            case CHECK_CATEGORY_VALID:
+                Boolean isCategoryValid = isCategoryValid((Integer) params.get(0));
+                return new Response(head, isCategoryValid);
         }
         return null;
     }
 
     /**
-     * Track the current level of AcademicObject. If user is checking on a Category, then _currentObj will be updated
-     * to that Category object.
+     * Track the current level of AcademicObject. If user is checking on a Category, then _currentObj will store
+     * that Category object.
      *
      * @param ids
      */
@@ -212,6 +224,7 @@ public class SysPortal implements Statisticsable {
 
     /**
      * delete a course
+     *
      * @param courseId
      * @return
      */
@@ -222,12 +235,35 @@ public class SysPortal implements Statisticsable {
 
     /**
      * update a course
+     *
      * @param courseId
      * @return
      */
     private Boolean updateCourse(int courseId) {
         Course course = DatabasePortal.getInstance().getCourseById(courseId);
         return DatabasePortal.getInstance().updateCourse(course);
+    }
+
+    /**
+     * Check if the sum of weights of all categories is 100%
+     *
+     * @param courseId course you want to check
+     * @return
+     */
+    private Boolean isCourseValid(int courseId) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        return course.isValid();
+    }
+
+    /**
+     * Check if the sum of weights of all submissions is 100%
+     *
+     * @param categoryId category you want to check
+     * @return
+     */
+    private Boolean isCategoryValid(int categoryId) {
+        Category category = DatabasePortal.getInstance().getCategoryById((Course) _currentObj, categoryId);
+        return category.isValid();
     }
 
     /**
@@ -254,6 +290,7 @@ public class SysPortal implements Statisticsable {
 
     /**
      * update a category
+     *
      * @param categoryId
      * @return
      */
@@ -275,21 +312,23 @@ public class SysPortal implements Statisticsable {
 
     /**
      * delete an assignment
+     *
      * @param assignmentId
      * @return
      */
     private Boolean deleteAssignment(int assignmentId) {
-        Assignment assignment = DatabasePortal.getInstance().getAssignmentById((Category)_currentObj, assignmentId);
+        Assignment assignment = DatabasePortal.getInstance().getAssignmentById((Category) _currentObj, assignmentId);
         return DatabasePortal.getInstance().deleteAssignment(assignment);
     }
 
     /**
      * update an assignment
+     *
      * @param assignmentId
      * @return
      */
     private Boolean updateAssignment(int assignmentId) {
-        Assignment assignment = DatabasePortal.getInstance().getAssignmentById((Category)_currentObj, assignmentId);
+        Assignment assignment = DatabasePortal.getInstance().getAssignmentById((Category) _currentObj, assignmentId);
         return DatabasePortal.getInstance().updateAssignment(assignment);
     }
 
@@ -309,6 +348,7 @@ public class SysPortal implements Statisticsable {
 
     /**
      * delete a submission
+     *
      * @param submissionId
      * @return
      */
@@ -319,6 +359,7 @@ public class SysPortal implements Statisticsable {
 
     /**
      * update a submission
+     *
      * @param submissionId
      * @return
      */
@@ -326,7 +367,6 @@ public class SysPortal implements Statisticsable {
         Submission submission = DatabasePortal.getInstance().getSubmissionById((Assignment) _currentObj, submissionId);
         return DatabasePortal.getInstance().updateSubmission(submission);
     }
-
 
 
     private ArrayList<Course> getCourseList() {

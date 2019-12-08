@@ -16,6 +16,8 @@ public enum RequestHead {
 	DROP_STUDENT,
 	WITHDRAW_STUDENT,
 
+	SELECT_COURSE,
+
 	ADD_COURSE,
 	ADD_CATEGORY,
 	ADD_ASSIGNMENT,
@@ -30,7 +32,7 @@ public enum RequestHead {
 	UPDATE_CATEGORY,
 	UPDATE_ASSIGNMENT,
 	UPDATE_SUBMISSION,
-	
-	SELECT_COURSE
 
+	CHECK_COURSE_VALID, // Check if the sum of weights of all categories is 100%
+	CHECK_CATEGORY_VALID  // Check if the sum of weights of all submissions is 100%
 }
