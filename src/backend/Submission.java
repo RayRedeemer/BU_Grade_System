@@ -24,6 +24,16 @@ public class Submission extends AcademicObject{
         _earnOrLose = style;
     }
 
+    //copy constructor
+    //TODO add date if time
+    public Submission(Submission submission){
+        super(submission);
+        _score = submission.getScore();
+        _bonus = submission.getBonus();
+        _student = submission.getStudent();
+        _earnOrLose = submission.getStyle();
+    }
+
     public void calculateGrade(double catweight, double assignweight, double maxscore) {
         double rawAssignment;
         if (_earnOrLose) {
@@ -52,6 +62,9 @@ public class Submission extends AcademicObject{
         _bonus = b;
     }
 
+    public Student getStudent() {
+        return _student;
+    }
     public LocalDateTime getSubmittedDate() {
         return _submittedDate;
     }

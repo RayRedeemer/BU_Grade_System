@@ -105,13 +105,13 @@ public class SystemPortal implements Statisticsable {
                 deleteCourse((Integer) params.get(0));
                 return res;
             case DELETE_CATEGORY:
-                deleteCategory((Integer) params.get(0));
+                deleteCategory((Integer) params.get(0), (Integer) params.get(1));
                 return res;
             case DELETE_ASSIGNMENT:
-                deleteAssignment((Integer) params.get(0));
+                deleteAssignment((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2));
                 return res;
             case DELETE_SUBMISSION:
-                deleteSubmission((Integer) params.get(0));
+                deleteSubmission((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2), (Integer) params.get(3));
                 return res;
 
             case UPDATE_COURSE:
@@ -211,6 +211,7 @@ public class SystemPortal implements Statisticsable {
 
     /**
      * add a new Course obj
+     * java
      *
      * @param instructorId
      * @param name
@@ -223,13 +224,16 @@ public class SystemPortal implements Statisticsable {
     }
 
     /**
-     * delete a course
+     * delete a course from bottom to top
      *
      * @param courseId
      * @return
      */
     private Boolean deleteCourse(int courseId) {
         Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        for (Category category : DatabasePortal.getInstance().getCategoriesByCourse(course)) {
+            deleteCategory(courseId, category.getId());
+        }
         return DatabasePortal.getInstance().deleteCourse(course);
     }
 
@@ -283,8 +287,12 @@ public class SystemPortal implements Statisticsable {
      * @param categoryId
      * @return
      */
-    private Boolean deleteCategory(int categoryId) {
-        Category category = DatabasePortal.getInstance().getCategoryById((Course) _currentObj, categoryId);
+    private Boolean deleteCategory(int courseId, int categoryId) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
+        for (Assignment assignment : DatabasePortal.getInstance().getAssignmentsByCategory(category)) {
+            deleteAssignment(courseId, categoryId, assignment.getId());
+        }
         return DatabasePortal.getInstance().deleteCategory(category);
     }
 
@@ -316,8 +324,13 @@ public class SystemPortal implements Statisticsable {
      * @param assignmentId
      * @return
      */
-    private Boolean deleteAssignment(int assignmentId) {
-        Assignment assignment = DatabasePortal.getInstance().getAssignmentById((Category) _currentObj, assignmentId);
+    private Boolean deleteAssignment(int courseId, int categoryId, int assignmentId) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
+        Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
+        for (Submission submission : DatabasePortal.getInstance().getSubmissionsByAssignment(assignment)) {
+            deleteSubmission(courseId, categoryId, assignmentId, submission.getId());
+        }
         return DatabasePortal.getInstance().deleteAssignment(assignment);
     }
 
@@ -352,8 +365,11 @@ public class SystemPortal implements Statisticsable {
      * @param submissionId
      * @return
      */
-    private Boolean deleteSubmission(int submissionId) {
-        Submission submission = DatabasePortal.getInstance().getSubmissionById((Assignment) _currentObj, submissionId);
+    private Boolean deleteSubmission(int courseId, int categoryId, int assignmentId, int submissionId) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
+        Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
+        Submission submission = DatabasePortal.getInstance().getSubmissionById(assignment, submissionId);
         return DatabasePortal.getInstance().deleteSubmission(submission);
     }
 

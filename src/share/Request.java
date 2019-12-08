@@ -31,10 +31,6 @@ public class Request {
         return params;
     }
 
-    public Object getFirstParam() {
-        return params.get(0);
-    }
-
     public List<Integer> getIds() {
         return ids;
     }

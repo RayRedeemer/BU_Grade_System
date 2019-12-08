@@ -16,6 +16,14 @@ public class Assignment extends AcademicObject {
         super(id, name, description, c);
     }
 
+    // copy constructor
+    public Assignment(Assignment assignment){
+        super(assignment);
+        _maxScore = assignment.getMaxScore();
+        _weight = assignment.getWeight();
+        _assignedDate = assignment.getAssignedDate();
+        _dueDate = assignment.getDueDate();
+    }
     /**
      * Compute Grades given the category weight
      *

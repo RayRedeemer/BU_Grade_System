@@ -1,6 +1,7 @@
 package backend;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Class represents a course. This class is currently at the top level of all derived classes.
@@ -18,9 +19,18 @@ public class Course extends AcademicObject {
     public Course(int id, String name, String _description, String semester) {
         super(id, name, _description, null);
         _semester = semester;
-        _roster = new ArrayList<Student>();
+        _roster = new ArrayList<>();
         setCurve(0);// curve should be initialized as 0
     }
+
+    //copy constructor
+    public Course(Course course) {
+        super(course);
+        _semester = course.getSemester();
+        _curve = course.getCurve();
+        _roster = new ArrayList<>();
+        _roster.addAll(course.getAllStudents());
+}
 
     /**
      * Compute grades for both students within this course and all Categories under this course, such as exams, hws, etc
