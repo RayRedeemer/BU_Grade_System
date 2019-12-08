@@ -136,10 +136,4 @@ public abstract class AcademicObject implements Commentable {
             return true;
         }
     }
-
-    /**
-     * Abstract method used for weight validation
-     * @return
-     */
-    public abstract Boolean isValid();
 }

@@ -15,7 +15,7 @@ public class SystemPortal implements Statisticsable {
     private AcademicObject _currentObj;
 
     public SystemPortal() {
-        
+
     }
 
     /**
