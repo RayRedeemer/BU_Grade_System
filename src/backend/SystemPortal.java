@@ -2,6 +2,7 @@ package backend;
 
 import share.*;
 import db.*;
+import gui.MainFrame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +14,22 @@ public class SystemPortal {
 
     // tracks the level of objects
     private AcademicObject _currentObj;
-
-    public SystemPortal() {
-
+    
+    // Singleton Pattern
+    private static SystemPortal systemPortal = new SystemPortal();
+    
+    private SystemPortal() {}
+    
+    public static SystemPortal getInstance() {
+    	return systemPortal;
     }
-
+    
     /**
      * Entry method for the grade system. GUI set up and other fields should be initialized here.
      */
     public void launch() {
         // TODO: kick off GUI login Panel
+    	MainFrame.getInstance().run();
     }
 
     /**
