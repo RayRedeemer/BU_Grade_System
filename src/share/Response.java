@@ -21,6 +21,9 @@ public class Response {
 	/**
 	 * getter()
 	 * */
+	public RequestHead getHead() {
+		return head;
+	}
 	public boolean getStatus() {
 		return status;
 	}
