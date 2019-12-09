@@ -42,12 +42,12 @@ public class SystemPortal {
         setCurrentObj(ids);
 
         switch (head) {
-
             case LOGIN:
                 Boolean isValid = login((String) params.get(0), (String) params.get(1));
                 return new Response(head, isValid);
             case LOGOUT:
                 return res;
+
             case GET_STUDENT_LIST:
                 for (Student student : getStudentListByCourse((Course) _currentObj)) {
                     res.addBody(student);
@@ -129,10 +129,17 @@ public class SystemPortal {
                 updateSubmission((Integer) params.get(0));
                 return res;
 
-            case CHECK_COURSE_VALID:
+            case GET_COURSE_STATISTICS:
+                // TODO
+            case GET_CATEGORY_STATISTICS:
+                // TODO
+            case GET_ASSIGNMENT_STATISTICS:
+                // TODO
+
+            case CHECK_COURSE_VALID: // check weights of all its categories sum up to 1.0
                 Boolean isCourseValid = isCourseValid((Integer) params.get(0));
                 return new Response(head, isCourseValid);
-            case CHECK_CATEGORY_VALID:
+            case CHECK_CATEGORY_VALID: // check weights of all its assignments sum up to 1.0
                 Boolean isCategoryValid = isCategoryValid((Integer) params.get(0));
                 return new Response(head, isCategoryValid);
         }
@@ -142,7 +149,7 @@ public class SystemPortal {
     /**
      * Track the current level of AcademicObject. If user is checking on a Category, then _currentObj will store
      * that Category object.
-     *
+     * Order of ids: CourseId, CategoryId, AssignmentId, SubmissionId
      * @param ids
      */
     private void setCurrentObj(List<Integer> ids) {
@@ -199,6 +206,11 @@ public class SystemPortal {
         return DatabasePortal.getInstance().withdrawStudent(student);
     }
 
+    /**
+     * update a student with new fields
+     * @param studentId
+     * @return
+     */
     private Boolean updateStudent(int studentId) {
         Student student = DatabasePortal.getInstance().getStudentById(studentId);
         return DatabasePortal.getInstance().updateStudent(student);
@@ -226,7 +238,7 @@ public class SystemPortal {
     }
 
     /**
-     * delete a course from bottom to top
+     * delete a course from a bottom-to-top manner
      *
      * @param courseId
      * @return
@@ -251,7 +263,7 @@ public class SystemPortal {
     }
 
     /**
-     * Check if the sum of weights of all categories is 100%
+     * Check if the sum of weights of all categories is 1.0
      *
      * @param courseId course you want to check
      * @return
@@ -262,7 +274,7 @@ public class SystemPortal {
     }
 
     /**
-     * Check if the sum of weights of all submissions is 100%
+     * Check if the sum of weights of all submissions is 1.0
      *
      * @param categoryId category you want to check
      * @return
@@ -314,7 +326,7 @@ public class SystemPortal {
      *
      * @param name
      * @param description
-     * @return null if fails, Assignment obj if succeeds.
+     * @return null if fails, otherwise returns the assignment obj
      */
     private Assignment addAssignment(String name, String description) {
         return DatabasePortal.getInstance().addAssignment((Category) _currentObj, name, description);
