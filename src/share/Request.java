@@ -41,6 +41,9 @@ public class Request {
     public void addParams(Object object) {
         params.add(object);
     }
+    public void addIds(int id) {
+    	ids.add(id);
+    }
 
     @Override
     public String toString() {
