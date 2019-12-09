@@ -27,6 +27,9 @@ public class Response {
 	public boolean getStatus() {
 		return status;
 	}
+	public List<Object> getBody() {
+		return body;
+	}
 	
 	/**
 	 * setter()
