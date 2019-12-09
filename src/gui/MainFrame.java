@@ -75,6 +75,9 @@ public class MainFrame extends JFrame {
 	public JPanel getCurPanel() {
 		return curPanel;
 	}
+	public AdminPanel getAdminPanel() {
+		return adminPanel;
+	}
 	
 	/**
 	 * setter()

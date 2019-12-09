@@ -1,35 +1,52 @@
 package gui;
 
+import backend.AcademicObject;
+import backend.Course;
 import share.Request;
 import share.RequestHead;
+import share.Response;
 
 /*
 Author: Ziqi Tan
 */
 public class Dispatcher {
 	
-	public void dispatch(Request request) {
-		if( request.getHead().equals(RequestHead.LOGIN) ) {
+	public void dispatch(Response response) {
+		if( response.getHead().equals(RequestHead.LOGIN) ) {
 			MainFrame.getInstance().removeCurPanel();
 			MainFrame.getInstance().setAdminPanel();			
 		}
 		
-		if( request.getHead().equals(RequestHead.LOGOUT) ) {
+		if( response.getHead().equals(RequestHead.LOGOUT) ) {
 			MainFrame.getInstance().removeCurPanel();
 			MainFrame.getInstance().setLoginPanel();
 		}
 		
-		if( request.getHead().equals(RequestHead.ADD_COURSE) ) {
+		if( response.getHead().equals(RequestHead.GET_COURSE_LIST) ) {
+			String[] columnNames = 
+				{ "Name", "Semester", "Enrollment Count", "Average Grade" };
+			String[][] data = { 
+		            { "CS 591", "Fall19", "66", "--"}, 
+		            { "CS 592", "Fall19", "30", "--" },
+		    }; 
+
+			for( int i = 0; i < response.getBody().size(); i++ ) {
+				data[i][0] = ((AcademicObject) response.getBody().get(i)).getName();
+			}
+			MainFrame.getInstance().getAdminPanel().updateCourseList(columnNames, data);
+		}
+		
+		if( response.getHead().equals(RequestHead.ADD_COURSE) ) {
 			System.out.println("Add course");
 		}
 		
-		if( request.getHead().equals(RequestHead.SELECT_COURSE) ) {
+		if( response.getHead().equals(RequestHead.SELECT_COURSE) ) {
 			MainFrame.getInstance().removeCurPanel();
 			int courseID = 123; // it should be int
 			MainFrame.getInstance().setCoursePanel(courseID);
 		}
 		
-		if( request.getHead().equals(RequestHead.UPDATE_CATEGORY) ) {
+		if( response.getHead().equals(RequestHead.UPDATE_CATEGORY) ) {
 			MainFrame.getInstance().removeCurPanel();
 			MainFrame.getInstance().setCategoryPanel();
 		}

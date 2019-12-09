@@ -39,13 +39,15 @@ public class AdminPanel extends JPanel implements ActionListener {
 		
 	private JFrame addCourseFrame;
 	private JTable courseListTable;
-	private String[] columnNames = 
-		{ "Name", "Semester", "Enrollment Count", "Average Grade" };
+	private JScrollPane scrollPane;
+	private String[] columnNames = { 
+			"Name", "Semester", "Enrollment Count", "Average Grade" 
+	};
 	private String[][] data = { 
-            { "CS 591", "Fall19", "66", "--"}, 
-            { "CS 592", "Fall19", "30", "--" },
-            { "CS 666", "Spring18", "150", "83" },
-            { "CS 591", "Summer17", "111", "87"}
+            { "--", "--", "--", "--"}, 
+            { "--", "--", "--", "--" },
+            { "--", "--", "--", "--" },
+            { "--", "--", "--", "--"}
     }; 
 	private String[][] tableData;
 	
@@ -55,6 +57,12 @@ public class AdminPanel extends JPanel implements ActionListener {
 	private int selectedColumn;
 	private String selectedCourse;
 	
+	private int frameWidth;
+	private int frameHeight; 
+	private int tableWidth;
+	
+	private JLabel titleLabel;
+	
 	/**
 	 * Constructor
 	 * */
@@ -62,8 +70,8 @@ public class AdminPanel extends JPanel implements ActionListener {
 
 		setLayout(null);
 		
-		int frameWidth = MainFrame.getInstance().getWidth();
-		int frameHeight = MainFrame.getInstance().getHeight();
+		frameWidth = MainFrame.getInstance().getWidth();
+		frameHeight = MainFrame.getInstance().getHeight();
 		
 		int hGap = 50;
 		int vGap = 50;
@@ -71,8 +79,7 @@ public class AdminPanel extends JPanel implements ActionListener {
 		int x = (int)(frameWidth*0.4);
 		int y = (int)(frameHeight*0.05);
 
-
-		JLabel titleLabel = new JLabel("Welcome");
+		titleLabel = new JLabel("Welcome");
 		titleLabel.setBounds(x, y, 200, 50);
 		titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 35));
 		add(titleLabel);
@@ -90,22 +97,20 @@ public class AdminPanel extends JPanel implements ActionListener {
 					}
 				}
 		);
-
+		
+	
 		// set up a table
 		createJTable();
 	
         // adding it to JScrollPane 
-		int tableWidth = (int) courseListTable.getPreferredSize().getWidth();
-        JScrollPane sp = new JScrollPane(courseListTable); 
-        sp.setBounds((int) (frameWidth * 0.25), titleLabel.getY() + titleLabel.getHeight(), 
-        		tableWidth, 
-        		(int)(frameHeight*0.5));
-        add(sp);
+		setScrollPane();
+        add(scrollPane);
         
         int buttonWidth = 130;
         int textHeight = 25;
-        int buttonX = sp.getX() + tableWidth + hGap;
-        int buttonY = sp.getY();
+        int buttonX = scrollPane.getX() + tableWidth + hGap;
+        int buttonY = scrollPane.getY();
+        System.out.println(tableWidth);
         JButton addCourseButton = new JButton("Add Course");
         addCourseButton.setBounds(buttonX, buttonY, buttonWidth, textHeight);
 		add(addCourseButton);
@@ -124,7 +129,11 @@ public class AdminPanel extends JPanel implements ActionListener {
 		deleteCourseButton.setBounds(buttonX, buttonY + vGap * 3, buttonWidth, textHeight);
 		add(deleteCourseButton);
 		
-		
+		JButton refresh = new JButton("Refresh");
+		refresh.setBounds(buttonX, buttonY + vGap * 4, buttonWidth, textHeight);
+		add(refresh);
+		refresh.addActionListener(this);
+	
 	}
 	
 	/**
@@ -185,14 +194,46 @@ public class AdminPanel extends JPanel implements ActionListener {
         	    
         	 }
         } );
+  
 	}
 	
-
+	/**
+	 * Method: setScrollPane
+	 * */
+	private void setScrollPane() {
+		tableWidth = (int) courseListTable.getPreferredSize().getWidth();
+        scrollPane = new JScrollPane(courseListTable); 
+        scrollPane.setBounds((int) (frameWidth * 0.25), titleLabel.getY() + titleLabel.getHeight(), 
+        		tableWidth, 
+        		(int)(frameHeight*0.5));
+	}
+	
+	/**
+	 * Method: getCourseList
+	 * */
+	private void getCourseList() {
+		Request request = new Request(RequestHead.GET_COURSE_LIST);
+		request.addIds(null);
+		request.addIds(null);
+		request.addIds(null);
+		request.addIds(null);
+		FrontController.getInstance().dispatchRequest(request);
+	}
+	
+	public void updateCourseList( String[] _columnNames, String[][] _data ) {
+		this.columnNames = _columnNames;
+		this.data = _data;
+		
+		remove(scrollPane);
+		createJTable();
+		setScrollPane();
+		add(scrollPane);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		
 		if( event.getActionCommand().equals("Add Course") ) {
-			Request request = new Request(RequestHead.ADD_COURSE);
 			if( addCourseFrame != null ) {
 				addCourseFrame.dispose();
 			}
@@ -211,6 +252,12 @@ public class AdminPanel extends JPanel implements ActionListener {
 		}
 		
 		if( event.getActionCommand().equals("Delete Course") ) {
+			
+		}
+		
+		if( event.getActionCommand().equals("Refresh") ) {
+			// update course list
+			getCourseList();
 			
 		}
 		
