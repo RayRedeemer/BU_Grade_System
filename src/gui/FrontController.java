@@ -2,7 +2,9 @@ package gui;
 
 import java.util.List;
 
+import backend.SystemPortal;
 import share.Request;
+import share.Response;
 
 /*
 Author: Ziqi Tan
@@ -10,6 +12,7 @@ Author: Ziqi Tan
 public class FrontController {
 	
 	private static FrontController frontController = new FrontController();
+	private SystemPortal systemPortal;
 	
 	public static FrontController getInstance() {
 		return frontController;
@@ -19,6 +22,7 @@ public class FrontController {
 	
 	private FrontController() {
 		dispatcher = new Dispatcher();
+		systemPortal = SystemPortal.getInstance();
 	}
 	
 	/**
@@ -26,13 +30,23 @@ public class FrontController {
 	 * Return Response
 	 * */
 	private boolean isAuthenticUser(Request request) {
-		// Send request to backend
+		// Send request to back end
+		
+		/*Response response = systemPortal.getResponse(request);
+		
+		if( response.getStatus() ) {
+			System.out.println("User is authenticated from backend successfully.");
+			return true;
+		}*/
+		
+		// Front end test
 		final String userName = "cpk";
 		final String password = "123";
 		
 		List<Object> params = request.getParams();
 		String param1 = (String) params.get(0);
 		String param2 = (String) params.get(1);
+				
 		if( param1.contentEquals(userName) && param2.contentEquals(password) ) {
 			System.out.println("User is authenticated successfully.");
 			return true;
@@ -62,6 +76,16 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: addCourse
+	 * */
+	private boolean addCourse(Request request) {
+		
+		
+		
+		return true;
+	}
+	
+	/**
 	 * Method: selectCourse
 	 * */
 	private boolean selectCourse(Request request) {
@@ -83,10 +107,8 @@ public class FrontController {
 		System.out.println();
 		if( request.getParams().get(0) == null ) {
 			System.out.println("Please select a course.");
-			
 			return false;
 		}
-
 		return true;
 	}
 	
@@ -98,7 +120,7 @@ public class FrontController {
 	 * 		Print request log.
 	 * */
 	private void trackRequest(Request request) {
-		System.out.println("Request log: " + request); 
+		System.out.println("Request log: " + request);
 	}
 	
 	public void dispatchRequest(Request request) {
@@ -116,6 +138,11 @@ public class FrontController {
 				}
 				break;
 			case GET_COURSE_LIST:
+				break;
+			case ADD_COURSE:
+				if( addCourse(request) ) {
+					dispatcher.dispatch(request);
+				}
 				break;
 			case SELECT_COURSE:
 				if( selectCourse(request) ) {

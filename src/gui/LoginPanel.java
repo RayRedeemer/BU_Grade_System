@@ -76,6 +76,10 @@ public class LoginPanel extends JPanel implements ActionListener {
 			Request request = new Request(RequestHead.LOGIN);
 			request.addParams(userNameField.getText());
 			request.addParams(passwordField.getText());
+			request.addIds(null);
+			request.addIds(null);
+			request.addIds(null);
+			request.addIds(null);
 			FrontController.getInstance().dispatchRequest(request);
 		}
 		

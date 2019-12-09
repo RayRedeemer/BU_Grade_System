@@ -284,9 +284,19 @@ public class AdminPanel extends JPanel implements ActionListener {
 					String courseSemester = semesterField.getText();
 					String courseDesp = despArea.getText();
 					if( courseName == null || courseSemester == null || courseDesp == null ) {
-						
+						System.out.println("Please fill the form.");
 					}
 					else {
+						// Request
+						Request request = new Request(RequestHead.ADD_COURSE);
+						request.addParams(courseName);
+						request.addParams(courseSemester);
+						request.addParams(courseDesp);
+						request.addIds(null);
+						request.addIds(null);
+						request.addIds(null);
+						request.addIds(null);
+						FrontController.getInstance().dispatchRequest(request);
 						
 					}
 				}

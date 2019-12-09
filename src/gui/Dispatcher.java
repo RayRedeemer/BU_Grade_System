@@ -19,6 +19,10 @@ public class Dispatcher {
 			MainFrame.getInstance().setLoginPanel();
 		}
 		
+		if( request.getHead().equals(RequestHead.ADD_COURSE) ) {
+			System.out.println("Add course");
+		}
+		
 		if( request.getHead().equals(RequestHead.SELECT_COURSE) ) {
 			MainFrame.getInstance().removeCurPanel();
 			int courseID = 123; // it should be int

@@ -41,7 +41,7 @@ public class Request {
     public void addParams(Object object) {
         params.add(object);
     }
-    public void addIds(int id) {
+    public void addIds(Integer id) {
     	ids.add(id);
     }
 

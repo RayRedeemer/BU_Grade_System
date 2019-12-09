@@ -160,6 +160,8 @@ public class SystemPortal {
      * @param ids
      */
     private void setCurrentObj(List<Integer> ids) {
+    	System.out.println("ids: " + ids.toString());
+    	/*
         Course course = DatabasePortal.getInstance().getCourseById(ids.get(0));
         Category category = DatabasePortal.getInstance().getCategoryById(course, ids.get(1));
         if (category == null) {
@@ -169,7 +171,43 @@ public class SystemPortal {
         if (assignment == null) {
             _currentObj = category;
         }
-        _currentObj = DatabasePortal.getInstance().getSubmissionById(assignment, ids.get(3));
+        _currentObj = DatabasePortal.getInstance().getSubmissionById(assignment, ids.get(3));*/
+    	
+    	// Modified by Ziqi Tan
+    	// Find the current level
+    	Course course = null;
+    	Category category = null;
+    	Assignment assignment = null;
+    	// Submission submission = null;
+    	
+    	if( ids.get(0) != null ) {
+    		course = DatabasePortal.getInstance().getCourseById(ids.get(0));
+    	}
+    	else {
+    		return ;
+    	}
+    	
+    	if( ids.get(1) != null ) {
+    		category = DatabasePortal.getInstance().getCategoryById(course, ids.get(1));
+    	}
+    	else {
+    		_currentObj = course;
+    		return ;
+    	}
+    	
+    	if( ids.get(2) != null ) {
+    		assignment = DatabasePortal.getInstance().getAssignmentById(category, ids.get(2));
+    	}
+    	else {
+    		_currentObj = category;
+    		return ;
+    	}
+    	
+    	if( ids.get(3) != null ) {
+    		_currentObj  = DatabasePortal.getInstance().getSubmissionById(assignment, ids.get(3));
+    	}
+
+    
     }
 
     /**
@@ -180,7 +218,10 @@ public class SystemPortal {
      * @return
      */
     private Boolean login(String name, String password) {
-        DatabasePortal.getInstance().getInstructor(name, password);
+        Instructor instructor = DatabasePortal.getInstance().getInstructor(name, password);		
+        if( instructor == null ) {
+        	return false;
+        }
         return true;
     }
 
