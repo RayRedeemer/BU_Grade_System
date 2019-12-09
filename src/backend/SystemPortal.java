@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Class serves as the interface between GUI and backend. All APIs must be private
  */
-public class SystemPortal implements Statisticsable {
+public class SystemPortal {
 
     // tracks the level of objects
     private AcademicObject _currentObj;
@@ -26,7 +26,9 @@ public class SystemPortal implements Statisticsable {
     }
 
     /**
-     * Method that the frontend interacts with to retrieve responses by passing requests with corresponding RequestHead
+     * Method that the frontend interacts with to retrieve responses by passing requests with corresponding RequestHead.
+     * Within Request object, there are multiple fields that we are interested in:
+     * ids:ArrayList that stores four ids in the following order: courseId, categoryId, assignmentId and submissionId.
      *
      * @param req Request obj sent from GUI. It has fields such as enum head to specify the operation
      * @return Response obj with head and status. Status will be true if succeeds, false otherwise.
@@ -384,10 +386,11 @@ public class SystemPortal implements Statisticsable {
         return DatabasePortal.getInstance().updateSubmission(submission);
     }
 
-    private double getSubmissionStatistics(int submissionId) {
-        Submission submission = DatabasePortal.getInstance().getSubmissionById((Assignment) _currentObj, submissionId);
-
-    }
+    //Todo: compute statistics for a submission
+//    private double getSubmissionStatistics(int submissionId) {
+//        Submission submission = DatabasePortal.getInstance().getSubmissionById((Assignment) _currentObj, submissionId);
+//
+//    }
 
 
     private ArrayList<Course> getCourseList() {
@@ -410,41 +413,4 @@ public class SystemPortal implements Statisticsable {
         return DatabasePortal.getInstance().getSubmissionsByAssignment(assignment);
     }
 
-
-    /**
-     * return average
-     *
-     * @return
-     */
-    public double getAvg() {
-        double avg =
-        return 0;
-    }
-
-    /**
-     * return median
-     *
-     * @return
-     */
-    public double getMedian() {
-        return 0;
-    }
-
-    /**
-     * return range lower bound
-     *
-     * @return
-     */
-    public double getRangeLowerBound() {
-        return 0;
-    }
-
-    /**
-     * return range upper bound
-     *
-     * @return
-     */
-    public double getRangeUpperBound() {
-        return 0;
-    }
 }

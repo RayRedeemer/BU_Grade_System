@@ -31,7 +31,6 @@ public class Assignment extends AcademicObject {
      */
     public void calculateGrades(double catweight){
         for (AcademicObject ao : getAllDescendants()) {
-            Submission sub = (Submission) ao;
             ((Submission) ao).calculateGrade(catweight, _weight, _maxScore);
         }
     }

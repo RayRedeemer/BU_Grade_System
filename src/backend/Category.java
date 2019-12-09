@@ -1,9 +1,12 @@
 package backend;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  * Class represents a category. It has a _weight field recording the percentage it takes
  */
-public class Category extends AcademicObject {
+public class Category extends AcademicObject{
 
     private double _weight; //form: percent as #.##...
 
