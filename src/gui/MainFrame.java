@@ -109,6 +109,7 @@ public class MainFrame extends JFrame {
 		if( coursePanel == null ) {
 			coursePanel = new CoursePanel(courseID, courseName, semester, description);
 		}
+		coursePanel.setCourse(courseID, courseName, semester, description);
 		add(coursePanel);
 		curPanel = coursePanel;
 		coursePanel.setEnabled(true);

@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -13,10 +14,12 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import share.Request;
@@ -29,6 +32,7 @@ Author: Ziqi Tan
 public class CoursePanel extends JPanel implements ActionListener {
 	
 	private int courseID;
+	private CourseForm courseForm;
 	
 	private String courseName = "CS 591 Object Oriented Design";
 	private String semester = "Fall19";
@@ -50,6 +54,10 @@ public class CoursePanel extends JPanel implements ActionListener {
 	private String selectedCate;
 	
 	private static final int headerHeight = 32;
+	
+	private JLabel titleLabel;
+	private JLabel semesterLabel;	
+	private JTextArea descriptionArea;
 	
 	/**
 	 * Constructor
@@ -73,7 +81,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 		
 		// getRequest from backend
 		
-		JLabel titleLabel = new JLabel(courseName);
+		titleLabel = new JLabel(courseName);
 		titleLabel.setBounds(x, y, 400, 50);
 		titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 30));
 		add(titleLabel);
@@ -104,7 +112,7 @@ public class CoursePanel extends JPanel implements ActionListener {
         add(editCourseButton);
         editCourseButton.addActionListener(this);
 
-        JLabel semesterLabel = new JLabel("Semester: " + semester);
+        semesterLabel = new JLabel("Semester: " + semester);
 		semesterLabel.setFont(font);
 		semesterLabel.setBounds(labelX, labelY + vGap, labelWidth, textHeight);
 		add(semesterLabel);
@@ -114,7 +122,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 		descriptionLabel.setBounds(labelX, labelY + vGap * 2, labelWidth, textHeight);
 		add(descriptionLabel);
 		
-		JTextArea descriptionArea = new JTextArea();
+		descriptionArea = new JTextArea();
 		descriptionArea.setLineWrap(true);
 		descriptionArea.setEditable(false);
 		descriptionArea.setText(description);
@@ -246,6 +254,13 @@ public class CoursePanel extends JPanel implements ActionListener {
 			MainFrame.getInstance().setAdminPanel();
 		}
 		
+		if( event.getActionCommand().equals("Edit Course") ) {
+			if( courseForm != null ) {
+				courseForm.dispose();
+			}
+			courseForm = new CourseForm(RequestHead.UPDATE_COURSE, courseName, semester, description);
+		}
+		
 		if( event.getActionCommand().equals("Add Category") ) {
 			
 		}
@@ -270,21 +285,25 @@ public class CoursePanel extends JPanel implements ActionListener {
 		
 		if( event.getActionCommand().equals("Course Statistics") ) {
 			
-		}
-		
-		if( event.getActionCommand().equals("Edit Course") ) {
-			
-		}
-		
+		}		
+	}
+	
+	public void setCourse(int _courseID, String _courseName, String _semester, String _description) {
+		this.courseID = _courseID;
+		this.courseName = _courseName;
+		this.semester = _semester;
+		this.description = _description;
+		titleLabel.setText(courseName);
+		semesterLabel.setText("Semester: " + semester);
+		descriptionArea.setText(description);
 	}
 	
 	/**
 	 * inner class
-	 * add category
 	 * */
-	class Form extends JFrame {
+	class CategoryForm extends JFrame {
 		
-		public Form() {
+		public CategoryForm() {
 			
 		}
 		

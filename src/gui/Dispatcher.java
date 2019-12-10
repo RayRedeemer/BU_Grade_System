@@ -42,11 +42,11 @@ public class Dispatcher {
 			MainFrame.getInstance().getAdminPanel().updateCourseList(columnNames, data);
 		}
 		
-		
 		if( response.getHead().equals(RequestHead.SELECT_COURSE) ) {
 			MainFrame.getInstance().removeCurPanel();
-			
-			MainFrame.getInstance().setCoursePanel(100, "CS 591", "F19", "sadf");
+			Course course = (Course) response.getBody().get(0);
+			System.out.println("dispatcher " + course.getId() + course.getName() );
+			MainFrame.getInstance().setCoursePanel(course.getId(), course.getName(), course.getSemester(), course.getDescription());
 		}
 		
 		if( response.getHead().equals(RequestHead.UPDATE_CATEGORY) ) {

@@ -2,6 +2,7 @@ package gui;
 
 import java.util.List;
 
+import backend.Course;
 import backend.SystemPortal;
 import share.Request;
 import share.Response;
@@ -80,7 +81,7 @@ public class FrontController {
 	 * */
 	private Response addCourse(Request request) {
 		Response response = systemPortal.getResponse(request);
-		System.out.println(response);		
+		System.out.println(response);	
 		return response;
 	}
 	
@@ -89,7 +90,8 @@ public class FrontController {
 	 * */
 	private Response selectCourse(Request request) {
 		Response response = systemPortal.getResponse(request);
-		System.out.println(response);		
+		System.out.println(response);	
+		System.out.println(((Course) (response.getBody().get(0))).getId());
 		return response;
 	}
 	

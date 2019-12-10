@@ -115,19 +115,14 @@ public class AdminPanel extends JPanel implements ActionListener {
 		selectCourseButton.setBounds(buttonX, buttonY + vGap * 2, buttonWidth, textHeight);
 		add(selectCourseButton);
 		selectCourseButton.addActionListener(this);
-		
-		JButton updateCourseButton = new JButton("Update Course");
-		updateCourseButton.setBounds(buttonX, buttonY + vGap * 3, buttonWidth, textHeight);
-		add(updateCourseButton);
-		updateCourseButton.addActionListener(this);
-		
+			
 		JButton deleteCourseButton = new JButton("Delete Course");
-		deleteCourseButton.setBounds(buttonX, buttonY + vGap * 4, buttonWidth, textHeight);
+		deleteCourseButton.setBounds(buttonX, buttonY + vGap * 3, buttonWidth, textHeight);
 		add(deleteCourseButton);
 		deleteCourseButton.addActionListener(this);
 		
 		JButton refresh = new JButton("Refresh");
-		refresh.setBounds(buttonX, buttonY + vGap * 5, buttonWidth, textHeight);
+		refresh.setBounds(buttonX, buttonY + vGap * 4, buttonWidth, textHeight);
 		add(refresh);
 		refresh.addActionListener(this);	
 	}
@@ -232,7 +227,7 @@ public class AdminPanel extends JPanel implements ActionListener {
 			if( addCourseFrame != null ) {
 				addCourseFrame.dispose();
 			}
-			addCourseFrame = new Form();
+			addCourseFrame = new CourseForm(RequestHead.ADD_COURSE, "", "", "");
 			
 		}
 		
@@ -252,10 +247,6 @@ public class AdminPanel extends JPanel implements ActionListener {
 				request.addIds(null);
 				FrontController.getInstance().dispatchRequest(request);
 			}
-		}
-		
-		if( event.getActionCommand().equals("Update Course") ) {
-			
 		}
 		
 		if( event.getActionCommand().equals("Delete Course") ) {
@@ -278,113 +269,5 @@ public class AdminPanel extends JPanel implements ActionListener {
 		}
 		
 	}
-	
-	/**
-	 * inner class
-	 * form to submit and add a course
-	 * */
-	class Form extends JFrame {
-		
-		public Form() {
-			System.out.println("A form is creating.");
-			setTitle("Add course");	
-						
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			int frameWidth = (int)(screenSize.getWidth() * 0.36);
-			int frameHeight = (int)(screenSize.getHeight() * 0.6);
-			setSize(frameWidth, frameHeight);
-			      		
-			int hGap = 20;
-			int vGap = 50;
-			
-			setLocationRelativeTo(null);   // this will center your frame
-			
-			setVisible(true);
-			
-			JPanel formPanel = new JPanel();
-			formPanel.setLayout(null);
-			
-			int labelX = (int)(frameWidth*0.2);
-			int labelY = (int)(frameHeight*0.2);
-			
-			int labelWidth = 100;
-			int labelHeight = 25;
-			JLabel nameLabel = new JLabel("Course name: ");
-			nameLabel.setBounds(labelX, labelY, labelWidth, labelHeight);
-			formPanel.add(nameLabel);
-			
-			JLabel semesterLabel = new JLabel("Semester: ");
-			semesterLabel.setBounds(labelX, labelY + vGap, labelWidth, labelHeight);
-			formPanel.add(semesterLabel);
-			
-			JLabel despLabel = new JLabel("Description: ");
-			despLabel.setBounds(labelX, labelY + vGap * 2, labelWidth, labelHeight);
-			formPanel.add(despLabel);
-			
-			int textFieldWidth = 130;
-			JTextField nameField = new JTextField(20);
-			nameField.setBounds(labelX + nameLabel.getWidth() + hGap, nameLabel.getY(), textFieldWidth, labelHeight);
-			formPanel.add(nameField);
-			
-			JTextField semesterField = new JTextField(20);
-			semesterField.setBounds(labelX + semesterLabel.getWidth() + hGap, semesterLabel.getY(), textFieldWidth, labelHeight);
-			formPanel.add(semesterField);
-			
-			JTextArea despArea = new JTextArea();
-			despArea.setLineWrap(true);
-			JScrollPane textAreaScrollPane = new JScrollPane(despArea);
-			textAreaScrollPane.setBounds(labelX + despLabel.getWidth() + hGap, despLabel.getY(), (int) (textFieldWidth * 2.3), 180);
-			formPanel.add(textAreaScrollPane);
-			
-			int buttonWidth = 80;
-			JButton submit = new JButton("Submit");
-			submit.setBounds(labelX, labelY + vGap * 3, buttonWidth, labelHeight);
-			formPanel.add(submit);
-			submit.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					String courseName = nameField.getText();
-					String courseSemester = semesterField.getText();
-					String courseDesp = despArea.getText();
-					if( courseName.length() == 0 || courseSemester.length() == 0 || courseDesp.length() == 0 ) {
-						System.out.println("Please fill the form.");
-						JOptionPane.showMessageDialog(null, "Please fill the form.");
-					}
-					else {
-						// Request
-						Request request = new Request(RequestHead.ADD_COURSE);
-						request.addParams(100); // instructor id
-						request.addParams(courseName);						
-						request.addParams(courseDesp);
-						request.addParams(courseSemester);
-						request.addIds(null);
-						request.addIds(null);
-						request.addIds(null);
-						request.addIds(null);
-						FrontController.getInstance().dispatchRequest(request);
-						JOptionPane.showMessageDialog(null, "Submit successfully.");
-						dispose();
-					}
-				}
-			});
-						
-			JButton cancel = new JButton("Cancel");
-			cancel.setBounds(labelX, labelY + vGap * 4, buttonWidth, labelHeight);
-			formPanel.add(cancel);
-			cancel.addActionListener(
-					new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent event) {
-							dispose();
-						}
-					}					
-			);
-						
-			add(formPanel);
-		}
-		
-		
-		
-	}
-	
+
 }
