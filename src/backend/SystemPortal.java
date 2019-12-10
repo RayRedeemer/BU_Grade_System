@@ -1,5 +1,6 @@
 package backend;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import share.*;
 import db.*;
 import gui.MainFrame;
@@ -141,13 +142,13 @@ public class SystemPortal {
                 updateCourse(ids.get(0), params);
                 return res;
             case UPDATE_CATEGORY:
-                updateCategory((Integer) params.get(0));
+                updateCategory(ids.get(1), params);
                 return res;
             case UPDATE_ASSIGNMENT:
-                updateAssignment((Integer) params.get(0));
+                updateAssignment(ids.get(2), params);
                 return res;
             case UPDATE_SUBMISSION:
-                updateSubmission((Integer) params.get(0));
+                updateSubmission(ids.get(3), params);
                 return res;
 
             case COPY_COURSE:
@@ -327,7 +328,7 @@ public class SystemPortal {
      * @param courseId
      * @return
      */
-    private Boolean updateCourse(int courseId, ArrayList<Object> params) {
+    private Boolean updateCourse(int courseId, List<Object> params) {
         Course course = DatabasePortal.getInstance().getCourseById(courseId);
         course.setName((String) params.get(0)); // name
         course.setDescription((String) params.get(1)); // desc
@@ -419,8 +420,12 @@ public class SystemPortal {
      * @param categoryId
      * @return
      */
-    private Boolean updateCategory(int categoryId) {
+    private Boolean updateCategory(int categoryId, List<Object> params) {
         Category category = DatabasePortal.getInstance().getCategoryById((Course) _currentObj, categoryId);
+        category.setName((String)params.get(0)); //name
+        category.setDescription((String)params.get(1)); // desc
+        category.setWeight((Double)params.get(2)); // weight
+        category.setComment((String)params.get(3)); // comment
         return DatabasePortal.getInstance().updateCategory(category);
     }
 
@@ -483,8 +488,13 @@ public class SystemPortal {
      * @param assignmentId
      * @return
      */
-    private Boolean updateAssignment(int assignmentId) {
+    private Boolean updateAssignment(int assignmentId, List<Object> params) {
         Assignment assignment = DatabasePortal.getInstance().getAssignmentById((Category) _currentObj, assignmentId);
+        assignment.setName((String)params.get(0)); // name
+        assignment.setDescription((String)params.get(1)); // desc
+        assignment.setWeight((Double)params.get(2)); // weight
+        assignment.setMaxScore((Double)params.get(3)); // maxScore
+        assignment.setComment((String)params.get(4)); // comment
         return DatabasePortal.getInstance().updateAssignment(assignment);
     }
 
@@ -555,8 +565,12 @@ public class SystemPortal {
      * @param submissionId
      * @return
      */
-    private Boolean updateSubmission(int submissionId) {
+    private Boolean updateSubmission(int submissionId, List<Object> params) {
         Submission submission = DatabasePortal.getInstance().getSubmissionById((Assignment) _currentObj, submissionId);
+        submission.setScore((Double)params.get(0)); // score
+        submission.setBonus((Double)params.get(1)); // bonus
+        submission.setStype((Boolean)params.get(2)); // style
+        submission.setComment((String)params.get(3)); // comment
         return DatabasePortal.getInstance().updateSubmission(submission);
     }
 

@@ -73,6 +73,9 @@ public class Submission extends AcademicObject{
         return _earnOrLose;
     }
 
+    public void setStype(boolean newStyle) {
+        _earnOrLose = newStyle;
+    }
     public void changeStyle() {
         _earnOrLose = !_earnOrLose;
     }
