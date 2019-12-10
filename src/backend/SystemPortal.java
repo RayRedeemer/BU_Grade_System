@@ -273,6 +273,7 @@ public class SystemPortal {
     private Boolean updateStudent(List<Object> params) {
         Integer studentId = (Integer)params.get(0);
         Student student = DatabasePortal.getInstance().getStudentById(studentId);
+
         student.setName((String) params.get(1)); // name
         student.setEmail((String) params.get(2)); // email
         student.setBuId((String) params.get(3)); // buId
@@ -304,7 +305,7 @@ public class SystemPortal {
     /**
      * add a new Course obj
      *
-     * @param instructorId
+     * @param instructorId for future use, we may add instructor fields.
      * @param name
      * @param description
      * @param semester
