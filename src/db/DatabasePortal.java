@@ -459,7 +459,7 @@ public class DatabasePortal {
             }
             ps.execute();
             ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) return new Student(name, rs.getInt(1), isGrad);
+            if (rs.next()) return new Student(name, rs.getInt(1), email, buid, isGrad);
         } catch (Exception e) {
             System.out.println("Error while adding student '" + name + "' to course " + c.getId());
             System.out.println(e.getMessage());
@@ -541,7 +541,7 @@ public class DatabasePortal {
             PreparedStatement ps = _conn.prepareStatement(sql);
             ps.setString(1, s.getName());
             ps.setString(2, s.getEmail());
-            ps.setString(3, s.getBuid());
+            ps.setString(3, s.getBuId());
             ps.setDouble(4, s.getGrade());
             ps.setDouble(5, s.getBonus());
             if (s.isGradStudent()) {
