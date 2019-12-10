@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class serves as the interface between GUI and backend. All APIs must be private
+ * Class serves as the interface between GUI and backend. All APIs must be private.
+ * It follows singleton design pattern.
  */
 public class SystemPortal {
 
