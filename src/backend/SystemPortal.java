@@ -30,7 +30,6 @@ public class SystemPortal {
      * Entry method for the grade system. GUI set up and other fields should be initialized here.
      */
     public void launch() {
-        // TODO: kick off GUI login Panel
         MainFrame.getInstance().run();
     }
 
@@ -102,6 +101,15 @@ public class SystemPortal {
             case SELECT_COURSE:
                 res.addBody(getCourse((Integer) params.get(0)));
                 return res;
+            case SELECT_CATEGORY:
+                res.addBody(getCategory((Integer) params.get(0), (Integer) params.get(1)));
+                return res;
+            case SELECT_ASSIGNMENT:
+                res.addBody(getAssignment((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2)));
+                return res;
+            case SELECT_SUBMISSION:
+                res.addBody(getSubmission((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2), (Integer) params.get(3)));
+                return res;
 
             case ADD_COURSE:
                 addCourse((int) params.get(0), (String) params.get(1), (String) params.get(2), (String) params.get(3));
@@ -143,14 +151,14 @@ public class SystemPortal {
                 return res;
 
             case COPY_COURSE:
-                copyCourse((Integer) params.get(0));
+//                copyCourse((Integer) params.get(0));
                 return res;
             case COPY_CATEGORY:
                 // TODO
             case COPY_ASSIGNMENT:
                 // TODO
             case COPY_SUBMISSION:
-                copySubmission((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2), (Integer) params.get(3));
+//                copySubmission((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2), (Integer) params.get(3));
                 return res;
 
             case GET_COURSE_STATISTICS:
@@ -278,12 +286,14 @@ public class SystemPortal {
 
     /**
      * return a course given its id
+     *
      * @param courseId
      * @return
      */
     private Course getCourse(int courseId) {
         return DatabasePortal.getInstance().getCourseById(courseId);
     }
+
     /**
      * add a new Course obj
      *
@@ -333,9 +343,10 @@ public class SystemPortal {
         return AcademicStatistics.of(course);
     }
 
-    private Boolean copyCourse(int courseId) {
-
-    }
+    // todo copy curse
+//    private Boolean copyCourse(int courseId) {
+//
+//    }
 
     /**
      * Check if the sum of weights of all categories is 1.0
@@ -357,6 +368,17 @@ public class SystemPortal {
     private Boolean isCategoryValid(int categoryId) {
         Category category = DatabasePortal.getInstance().getCategoryById((Course) _currentObj, categoryId);
         return category.isValid();
+    }
+
+    /**
+     * return a category given courseId and categoryId
+     * @param courseId
+     * @param categoryId
+     * @return
+     */
+    private Category getCategory(int courseId, int categoryId) {
+        Course course = getCourse(courseId);
+        return DatabasePortal.getInstance().getCategoryById(course, categoryId);
     }
 
     /**
@@ -407,6 +429,18 @@ public class SystemPortal {
         Course course = DatabasePortal.getInstance().getCourseById(courseId);
         Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
         return AcademicStatistics.of(category);
+    }
+
+    /**
+     * return an assignment given courseId, categoryId and assignmentId
+     * @param courseId
+     * @param categoryId
+     * @param assignmentId
+     * @return
+     */
+    private Assignment getAssignment(int courseId, int categoryId, int assignmentId) {
+        Category category =  getCategory(courseId, categoryId);
+        return DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
     }
 
     /**
@@ -461,6 +495,11 @@ public class SystemPortal {
         return AcademicStatistics.of(assignment);
     }
 
+    private Submission getSubmission(int courseId, int categoryId, int assignmentId, int submissionId) {
+        Assignment assignment = getAssignment(courseId, categoryId, assignmentId);
+        return DatabasePortal.getInstance().getSubmissionById(assignment, submissionId);
+    }
+
     /**
      * add a new Submission obj
      *
@@ -489,18 +528,19 @@ public class SystemPortal {
         return DatabasePortal.getInstance().deleteSubmission(submission);
     }
 
-    /**
-     * copy a submission
-     *
-     * @param submissionId
-     * @return
-     */
-    private Submission copySubmission(int courseId, int categoryId, int assignmentId, int submissionId) {
-        Course course = DatabasePortal.getInstance().getCourseById(courseId);
-        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
-        Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
-        Submission newSubmission = DatabasePortal.getInstance().getSubmissionById(assignment, submissionId);
-    }
+    // todo copy submission
+//    /**
+//     * copy a submission
+//     *
+//     * @param submissionId
+//     * @return
+//     */
+//    private Submission copySubmission(int courseId, int categoryId, int assignmentId, int submissionId) {
+//        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+//        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
+//        Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
+//        Submission newSubmission = DatabasePortal.getInstance().getSubmissionById(assignment, submissionId);
+//    }
 
     /**
      * update a submission
