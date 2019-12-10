@@ -3,6 +3,8 @@ package backend;
 import share.*;
 import db.*;
 import gui.MainFrame;
+
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class SystemPortal {
     private static SystemPortal systemPortal = new SystemPortal();
 
     private SystemPortal() {
+
     }
 
     public static SystemPortal getInstance() {
@@ -150,15 +153,13 @@ public class SystemPortal {
                 return res;
 
             case COPY_COURSE:
-//                copyCourse((Integer) params.get(0));
+                copyCourse(ids.get(0));
                 return res;
             case COPY_CATEGORY:
-                // TODO
-            case COPY_ASSIGNMENT:
-                // TODO
-            case COPY_SUBMISSION:
-//                copySubmission((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2), (Integer) params.get(3));
+                copyCategory(ids.get(0), ids.get(1));
                 return res;
+            case COPY_ASSIGNMENT:
+                copyAssignment(ids.get(1), ids.get(2), ids.get(3));
 
             case GET_COURSE_STATISTICS:
                 AcademicStatistics courseStatistics = getCourseStatistics((Integer) params.get(0));
@@ -347,6 +348,16 @@ public class SystemPortal {
     }
 
     /**
+     * copy a course
+     * @param courseId
+     * @return new course obj with the same fields but different courseId
+     */
+    private Course copyCourse(int courseId) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        return DatabasePortal.getInstance().copyCourse(course);
+    }
+
+    /**
      * get course statistics
      *
      * @param courseId
@@ -433,6 +444,18 @@ public class SystemPortal {
     }
 
     /**
+     * copy a category
+     * @param courseId
+     * @param categoryId
+     * @return category obj with the same fields as input but different categoryId
+     */
+    private Category copyCategory(int courseId, int categoryId) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
+        return DatabasePortal.getInstance().copyCategory(course, category);
+    }
+
+    /**
      * return statistics of a category
      *
      * @param courseId
@@ -499,6 +522,20 @@ public class SystemPortal {
         assignment.setMaxScore((Double)params.get(3)); // maxScore
         assignment.setComment((String)params.get(4)); // comment
         return DatabasePortal.getInstance().updateAssignment(assignment);
+    }
+
+    /**
+     * copy an assignment
+     * @param courseId
+     * @param categoryId
+     * @param assignmentId
+     * @return assignment object with the same fields as the input but with a different assignmentId
+     */
+    private Assignment copyAssignment(int courseId, int categoryId, int assignmentId) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
+        Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
+        return DatabasePortal.getInstance().copyAssignment(category, assignment);
     }
 
     /**
