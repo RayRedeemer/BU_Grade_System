@@ -116,13 +116,18 @@ public class AdminPanel extends JPanel implements ActionListener {
 		add(selectCourseButton);
 		selectCourseButton.addActionListener(this);
 		
+		JButton updateCourseButton = new JButton("Update Course");
+		updateCourseButton.setBounds(buttonX, buttonY + vGap * 3, buttonWidth, textHeight);
+		add(updateCourseButton);
+		updateCourseButton.addActionListener(this);
+		
 		JButton deleteCourseButton = new JButton("Delete Course");
-		deleteCourseButton.setBounds(buttonX, buttonY + vGap * 3, buttonWidth, textHeight);
+		deleteCourseButton.setBounds(buttonX, buttonY + vGap * 4, buttonWidth, textHeight);
 		add(deleteCourseButton);
 		deleteCourseButton.addActionListener(this);
 		
 		JButton refresh = new JButton("Refresh");
-		refresh.setBounds(buttonX, buttonY + vGap * 4, buttonWidth, textHeight);
+		refresh.setBounds(buttonX, buttonY + vGap * 5, buttonWidth, textHeight);
 		add(refresh);
 		refresh.addActionListener(this);	
 	}
@@ -249,14 +254,27 @@ public class AdminPanel extends JPanel implements ActionListener {
 			}
 		}
 		
-		if( event.getActionCommand().equals("Delete Course") ) {
+		if( event.getActionCommand().equals("Update Course") ) {
 			
+		}
+		
+		if( event.getActionCommand().equals("Delete Course") ) {
+			Request request = new Request(RequestHead.DELETE_COURSE);
+			if( selectedCourse == null ) {
+				JOptionPane.showMessageDialog(null, "Please Selected a course.");
+			}
+			else {
+				request.addIds(Integer.parseInt(selectedCourse));  // course id
+				request.addIds(null);
+				request.addIds(null);
+				request.addIds(null);
+				FrontController.getInstance().dispatchRequest(request);
+			}
 		}
 		
 		if( event.getActionCommand().equals("Refresh") ) {
 			// update course list
-			getCourseList();
-			
+			getCourseList();			
 		}
 		
 	}

@@ -53,8 +53,7 @@ public class FrontController {
 		}
 		
 		System.out.println("Username and password did not match.");
-		
-		
+				
 		return new Response(request.getHead(), false);
 	}
 	
@@ -72,10 +71,7 @@ public class FrontController {
 	 * */
 	private Response getCourseList(Request request) {
 		Response response = systemPortal.getResponse(request);
-		
-		if( response.getStatus() ) {
-			System.out.println(response.getBody().toString());	
-		}	
+		System.out.println(response);	
 		return response;
 	}
 	
@@ -84,9 +80,7 @@ public class FrontController {
 	 * */
 	private Response addCourse(Request request) {
 		Response response = systemPortal.getResponse(request);
-		if( response.getStatus() ) {
-			System.out.println(response);		
-		}
+		System.out.println(response);		
 		return response;
 	}
 	
@@ -94,9 +88,17 @@ public class FrontController {
 	 * Method: selectCourse
 	 * */
 	private Response selectCourse(Request request) {
-		System.out.println(request.getIds());
 		Response response = systemPortal.getResponse(request);
-		
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: deleteCourse
+	 * */
+	private Response deleteCourse(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
 		return response;
 	}
 	
@@ -153,6 +155,12 @@ public class FrontController {
 				break;
 			case SELECT_COURSE:
 				response = selectCourse(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case DELETE_COURSE:
+				response = deleteCourse(request);
 				if( response.getStatus() ) {
 					dispatcher.dispatch(response);
 				}

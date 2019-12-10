@@ -51,6 +51,9 @@ public class Request {
         for (int i = 0; i < params.size(); i++) {
             str += "param " + i + ": " + params.get(i) + System.getProperty("line.separator");
         }
+        for (int i = 0; i < ids.size(); i++) {
+            str += "id " + i + ": " + ids.get(i) + System.getProperty("line.separator");
+        }
         return str;
     }
 }
