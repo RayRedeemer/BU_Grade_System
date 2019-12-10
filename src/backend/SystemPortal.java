@@ -99,16 +99,16 @@ public class SystemPortal {
                 return res;
 
             case SELECT_COURSE:
-                res.addBody(getCourse((Integer) ids.get(0)));
+                res.addBody(getCourse(ids.get(0)));
                 return res;
             case SELECT_CATEGORY:
-                res.addBody(getCategory((Integer) ids.get(0), (Integer) ids.get(1)));
+                res.addBody(getCategory(ids.get(0), ids.get(1)));
                 return res;
             case SELECT_ASSIGNMENT:
-                res.addBody(getAssignment((Integer) ids.get(0), (Integer) ids.get(1), (Integer) ids.get(2)));
+                res.addBody(getAssignment(ids.get(0), ids.get(1), ids.get(2)));
                 return res;
             case SELECT_SUBMISSION:
-                res.addBody(getSubmission((Integer) ids.get(0), (Integer) ids.get(1), (Integer) ids.get(2), (Integer) ids.get(3)));
+                res.addBody(getSubmission(ids.get(0), ids.get(1), ids.get(2), ids.get(3)));
                 return res;
 
             case ADD_COURSE:
@@ -125,20 +125,20 @@ public class SystemPortal {
                 return res;
 
             case DELETE_COURSE:
-                deleteCourse((Integer) ids.get(0));
+                deleteCourse(ids.get(0));
                 return res;
             case DELETE_CATEGORY:
-                deleteCategory((Integer) ids.get(0), (Integer) ids.get(1));
+                deleteCategory(ids.get(0), ids.get(1));
                 return res;
             case DELETE_ASSIGNMENT:
-                deleteAssignment((Integer) ids.get(0), (Integer) ids.get(1), (Integer) ids.get(2));
+                deleteAssignment(ids.get(0), ids.get(1), ids.get(2));
                 return res;
             case DELETE_SUBMISSION:
-                deleteSubmission((Integer) ids.get(0), (Integer) ids.get(1), (Integer) ids.get(2), (Integer) ids.get(3));
+                deleteSubmission(ids.get(0), ids.get(1), ids.get(2), ids.get(3));
                 return res;
 
             case UPDATE_COURSE:
-                updateCourse((Integer) params.get(0));
+                updateCourse(ids.get(0), params);
                 return res;
             case UPDATE_CATEGORY:
                 updateCategory((Integer) params.get(0));
@@ -327,8 +327,13 @@ public class SystemPortal {
      * @param courseId
      * @return
      */
-    private Boolean updateCourse(int courseId) {
+    private Boolean updateCourse(int courseId, ArrayList<Object> params) {
         Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        course.setName((String) params.get(0)); // name
+        course.setDescription((String) params.get(1)); // desc
+        course.setSemester((String) params.get(2)); // semester
+        course.setCurve((Double) params.get(3)); // curve
+        course.setComment((String) params.get(4)); // comment
         return DatabasePortal.getInstance().updateCourse(course);
     }
 
@@ -372,6 +377,7 @@ public class SystemPortal {
 
     /**
      * return a category given courseId and categoryId
+     *
      * @param courseId
      * @param categoryId
      * @return
@@ -433,13 +439,14 @@ public class SystemPortal {
 
     /**
      * return an assignment given courseId, categoryId and assignmentId
+     *
      * @param courseId
      * @param categoryId
      * @param assignmentId
      * @return
      */
     private Assignment getAssignment(int courseId, int categoryId, int assignmentId) {
-        Category category =  getCategory(courseId, categoryId);
+        Category category = getCategory(courseId, categoryId);
         return DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
     }
 
