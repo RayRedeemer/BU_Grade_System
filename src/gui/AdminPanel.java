@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -31,13 +32,10 @@ public class AdminPanel extends JPanel implements ActionListener {
 	private JTable courseListTable;
 	private JScrollPane scrollPane;
 	private String[] columnNames = { 
-			"Name", "Semester", "Enrollment Count", "Average Grade" 
+			"ID", "Name", "Semester", "Average Grade" 
 	};
 	private String[][] data = { 
-            { "--", "--", "--", "--"}, 
-            { "--", "--", "--", "--" },
-            { "--", "--", "--", "--" },
-            { "--", "--", "--", "--"}
+            { null, null, null, null }
     }; 
 	
 	private static final int headerHeight = 32;
@@ -111,6 +109,7 @@ public class AdminPanel extends JPanel implements ActionListener {
 		JButton cloneCourseButton = new JButton("Clone Course");
 		cloneCourseButton.setBounds(buttonX, buttonY + vGap, buttonWidth, textHeight);
 		add(cloneCourseButton);
+		cloneCourseButton.addActionListener(this);
 		
 		JButton selectCourseButton = new JButton("Select Course");
 		selectCourseButton.setBounds(buttonX, buttonY + vGap * 2, buttonWidth, textHeight);
@@ -120,20 +119,14 @@ public class AdminPanel extends JPanel implements ActionListener {
 		JButton deleteCourseButton = new JButton("Delete Course");
 		deleteCourseButton.setBounds(buttonX, buttonY + vGap * 3, buttonWidth, textHeight);
 		add(deleteCourseButton);
+		deleteCourseButton.addActionListener(this);
 		
 		JButton refresh = new JButton("Refresh");
 		refresh.setBounds(buttonX, buttonY + vGap * 4, buttonWidth, textHeight);
 		add(refresh);
-		refresh.addActionListener(this);
-	
+		refresh.addActionListener(this);	
 	}
 	
-	/**
-	 * p
-	 * */
-	public void refresh() {
-		
-	}
 	/**
 	 * Method: createJTable
 	 * Function: Create a course list table.
@@ -244,8 +237,16 @@ public class AdminPanel extends JPanel implements ActionListener {
 				
 		if( event.getActionCommand().equals("Select Course") ) {
 			Request request = new Request(RequestHead.SELECT_COURSE);
-			request.addParams(selectedCourse);
-			FrontController.getInstance().dispatchRequest(request);
+			if( selectedCourse == null ) {
+				JOptionPane.showMessageDialog(null, "Please Selected a course.");
+			}
+			else {
+				request.addParams(selectedCourse);  // course id
+				request.addParams(null);
+				request.addParams(null);
+				request.addParams(null);
+				FrontController.getInstance().dispatchRequest(request);
+			}
 		}
 		
 		if( event.getActionCommand().equals("Delete Course") ) {
@@ -327,8 +328,9 @@ public class AdminPanel extends JPanel implements ActionListener {
 					String courseName = nameField.getText();
 					String courseSemester = semesterField.getText();
 					String courseDesp = despArea.getText();
-					if( courseName == null || courseSemester == null || courseDesp == null ) {
+					if( courseName.length() == 0 || courseSemester.length() == 0 || courseDesp.length() == 0 ) {
 						System.out.println("Please fill the form.");
+						JOptionPane.showMessageDialog(null, "Please fill the form.");
 					}
 					else {
 						// Request
@@ -341,7 +343,9 @@ public class AdminPanel extends JPanel implements ActionListener {
 						request.addIds(null);
 						request.addIds(null);
 						request.addIds(null);
-						FrontController.getInstance().dispatchRequest(request);						
+						FrontController.getInstance().dispatchRequest(request);
+						JOptionPane.showMessageDialog(null, "Submit successfully.");
+						dispose();
 					}
 				}
 			});

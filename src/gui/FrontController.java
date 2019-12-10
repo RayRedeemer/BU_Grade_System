@@ -85,7 +85,7 @@ public class FrontController {
 	private Response addCourse(Request request) {
 		Response response = systemPortal.getResponse(request);
 		if( response.getStatus() ) {
-			System.out.println(response);			
+			System.out.println(response);		
 		}
 		return response;
 	}
@@ -95,14 +95,9 @@ public class FrontController {
 	 * */
 	private Response selectCourse(Request request) {
 		System.out.println(request.getParams());
-
-		if( request.getParams().get(0) == null ) {
-			System.out.println("Please select a course.");
-			
-			return new Response(request.getHead(), true);
-		}
-
-		return new Response(request.getHead(), false);
+		Response response = systemPortal.getResponse(request);
+		
+		return new Response(request.getHead(), true);
 	}
 	
 	/**
