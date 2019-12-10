@@ -14,22 +14,23 @@ public class SystemPortal {
 
     // tracks the level of objects
     private AcademicObject _currentObj;
-    
+
     // Singleton Pattern
     private static SystemPortal systemPortal = new SystemPortal();
-    
-    private SystemPortal() {}
-    
-    public static SystemPortal getInstance() {
-    	return systemPortal;
+
+    private SystemPortal() {
     }
-    
+
+    public static SystemPortal getInstance() {
+        return systemPortal;
+    }
+
     /**
      * Entry method for the grade system. GUI set up and other fields should be initialized here.
      */
     public void launch() {
         // TODO: kick off GUI login Panel
-    	MainFrame.getInstance().run();
+        MainFrame.getInstance().run();
     }
 
     /**
@@ -136,12 +137,29 @@ public class SystemPortal {
                 updateSubmission((Integer) params.get(0));
                 return res;
 
+            case COPY_COURSE:
+                copyCourse((Integer) params.get(0));
+                return res;
+            case COPY_CATEGORY:
+                // TODO
+            case COPY_ASSIGNMENT:
+                // TODO
+            case COPY_SUBMISSION:
+                copySubmission((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2), (Integer) params.get(3));
+                return res;
+
             case GET_COURSE_STATISTICS:
-                // TODO
+                AcademicStatistics courseStatistics = getCourseStatistics((Integer) params.get(0));
+                res.addBody(courseStatistics);
+                return res;
             case GET_CATEGORY_STATISTICS:
-                // TODO
+                AcademicStatistics categoryStatistics = getCategoryStatistics((Integer) params.get(0), (Integer) params.get(1));
+                res.addBody(categoryStatistics);
+                return res;
             case GET_ASSIGNMENT_STATISTICS:
-                // TODO
+                AcademicStatistics assignmentStatistics = getAssignmentStatistics((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2));
+                res.addBody(assignmentStatistics);
+                return res;
 
             case CHECK_COURSE_VALID: // check weights of all its categories sum up to 1.0
                 Boolean isCourseValid = isCourseValid((Integer) params.get(0));
@@ -157,10 +175,11 @@ public class SystemPortal {
      * Track the current level of AcademicObject. If user is checking on a Category, then _currentObj will store
      * that Category object.
      * Order of ids: CourseId, CategoryId, AssignmentId, SubmissionId
+     *
      * @param ids
      */
     private void setCurrentObj(List<Integer> ids) {
-    	System.out.println("ids: " + ids.toString());
+        System.out.println("ids: " + ids.toString());
     	/*
         Course course = DatabasePortal.getInstance().getCourseById(ids.get(0));
         Category category = DatabasePortal.getInstance().getCategoryById(course, ids.get(1));
@@ -172,42 +191,37 @@ public class SystemPortal {
             _currentObj = category;
         }
         _currentObj = DatabasePortal.getInstance().getSubmissionById(assignment, ids.get(3));*/
-    	
-    	// Modified by Ziqi Tan
-    	// Find the current level
-    	Course course = null;
-    	Category category = null;
-    	Assignment assignment = null;
-    	// Submission submission = null;
-    	
-    	if( ids.get(0) != null ) {
-    		course = DatabasePortal.getInstance().getCourseById(ids.get(0));
-    	}
-    	else {
-    		return ;
-    	}
-    	
-    	if( ids.get(1) != null ) {
-    		category = DatabasePortal.getInstance().getCategoryById(course, ids.get(1));
-    	}
-    	else {
-    		_currentObj = course;
-    		return ;
-    	}
-    	
-    	if( ids.get(2) != null ) {
-    		assignment = DatabasePortal.getInstance().getAssignmentById(category, ids.get(2));
-    	}
-    	else {
-    		_currentObj = category;
-    		return ;
-    	}
-    	
-    	if( ids.get(3) != null ) {
-    		_currentObj  = DatabasePortal.getInstance().getSubmissionById(assignment, ids.get(3));
-    	}
 
-    
+        // Modified by Ziqi Tan
+        // Find the current level
+        Course course = null;
+        Category category = null;
+        Assignment assignment = null;
+        // Submission submission = null;
+
+        if (ids.get(0) != null) {
+            course = DatabasePortal.getInstance().getCourseById(ids.get(0));
+        } else {
+            return;
+        }
+
+        if (ids.get(1) != null) {
+            category = DatabasePortal.getInstance().getCategoryById(course, ids.get(1));
+        } else {
+            _currentObj = course;
+            return;
+        }
+
+        if (ids.get(2) != null) {
+            assignment = DatabasePortal.getInstance().getAssignmentById(category, ids.get(2));
+        } else {
+            _currentObj = category;
+            return;
+        }
+
+        if (ids.get(3) != null) {
+            _currentObj = DatabasePortal.getInstance().getSubmissionById(assignment, ids.get(3));
+        }
     }
 
     /**
@@ -218,9 +232,9 @@ public class SystemPortal {
      * @return
      */
     private Boolean login(String name, String password) {
-        Instructor instructor = DatabasePortal.getInstance().getInstructor(name, password);		
-        if( instructor == null ) {
-        	return false;
+        Instructor instructor = DatabasePortal.getInstance().getInstructor(name, password);
+        if (instructor == null) {
+            return false;
         }
         return true;
     }
@@ -256,6 +270,7 @@ public class SystemPortal {
 
     /**
      * update a student with new fields
+     *
      * @param studentId
      * @return
      */
@@ -308,6 +323,21 @@ public class SystemPortal {
     private Boolean updateCourse(int courseId) {
         Course course = DatabasePortal.getInstance().getCourseById(courseId);
         return DatabasePortal.getInstance().updateCourse(course);
+    }
+
+    /**
+     * get course statistics
+     *
+     * @param courseId
+     * @return
+     */
+    private AcademicStatistics getCourseStatistics(int courseId) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        return AcademicStatistics.of(course);
+    }
+
+    private Boolean copyCourse(int courseId) {
+
     }
 
     /**
@@ -370,6 +400,19 @@ public class SystemPortal {
     }
 
     /**
+     * return statistics of a category
+     *
+     * @param courseId
+     * @param categoryId
+     * @return
+     */
+    private AcademicStatistics getCategoryStatistics(int courseId, int categoryId) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
+        return AcademicStatistics.of(category);
+    }
+
+    /**
      * add a new Assignment obj
      *
      * @param name
@@ -408,6 +451,20 @@ public class SystemPortal {
     }
 
     /**
+     * return statistics of a category
+     *
+     * @param courseId
+     * @param categoryId
+     * @return
+     */
+    private AcademicStatistics getAssignmentStatistics(int courseId, int categoryId, int assignmentId) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
+        Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
+        return AcademicStatistics.of(assignment);
+    }
+
+    /**
      * add a new Submission obj
      *
      * @param studentId
@@ -436,6 +493,19 @@ public class SystemPortal {
     }
 
     /**
+     * copy a submission
+     *
+     * @param submissionId
+     * @return
+     */
+    private Submission copySubmission(int courseId, int categoryId, int assignmentId, int submissionId) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
+        Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
+        Submission newSubmission = DatabasePortal.getInstance().getSubmissionById(assignment, submissionId);
+    }
+
+    /**
      * update a submission
      *
      * @param submissionId
@@ -445,12 +515,6 @@ public class SystemPortal {
         Submission submission = DatabasePortal.getInstance().getSubmissionById((Assignment) _currentObj, submissionId);
         return DatabasePortal.getInstance().updateSubmission(submission);
     }
-
-    //Todo: compute statistics for a submission
-//    private double getSubmissionStatistics(int submissionId) {
-//        Submission submission = DatabasePortal.getInstance().getSubmissionById((Assignment) _currentObj, submissionId);
-//
-//    }
 
 
     private ArrayList<Course> getCourseList() {
