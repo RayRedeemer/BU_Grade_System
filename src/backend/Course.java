@@ -27,14 +27,13 @@ public class Course extends AcademicObject {
         setCurve(0);// curve should be initialized as 0
     }
 
-    //copy constructor
-    public Course(Course course) {
-        super(course);
-        _semester = course.getSemester();
-        _curve = course.getCurve();
-        _roster = new ArrayList<>();
-        _roster.addAll(course.getAllStudents());
-    }
+//    //copy constructor
+//    public Course(int id, Course course, ) {
+//        this(course.getId(), course.getName(), course.getDescription(), null);
+//        _semester = course.getSemester();
+//        _curve = course.getCurve();
+//        _roster = new ArrayList<>();
+//    }
 
     /**
      * Compute grades for both students within this course and all Categories under this course, such as exams, hws, etc

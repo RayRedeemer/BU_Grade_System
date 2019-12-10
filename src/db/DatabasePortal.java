@@ -197,6 +197,31 @@ public class DatabasePortal {
         return false;
     }
 
+    public Course copyCourse(Course c) {
+        Course cNew = addCourse(1, c.getName(), c.getDescription(), c.getSemester());
+        if(cNew == null) {
+            System.out.println("Error during copyCourse for course " + c.getId() + ", course not copied.");
+            return null;
+        }
+        cNew.setCurve(c.getCurve());
+        cNew.setComment(c.getComment());
+        if(!updateCourse(cNew)) {
+            System.out.println("Error during copyCourse, course " + cNew.getId() + " was not updated.");
+            return null;
+        }
+        for (Category cat : getCategoriesByCourse(c)) {
+            Category catNew = copyCategory(cNew, cat);
+            if (catNew == null || catNew.getParent().getId() != cNew.getId()){
+                System.out.println("Error during copyCourse, category " + cat.getId() + " was not copied for course " + cNew.getId());
+                return null;
+            }
+            cNew.addDescendant(catNew);
+        }
+        return cNew;
+    }
+
+    //
+
     public Category addCategory(Course c, String name, String description) {
         try {
             String sql = "INSERT INTO categories (course_id, name, description, weight, comment)\n" +
@@ -281,6 +306,29 @@ public class DatabasePortal {
             System.out.println(e.getMessage());
         }
         return false;
+    }
+
+    public Category copyCategory(Course c, Category cat) {
+        Category catNew = addCategory(c, cat.getName(), cat.getDescription());
+        if (catNew == null) {
+            System.out.println("Error during copyCategory, no new category was created.");
+            return null;
+        }
+        catNew.setWeight(cat.getWeight());
+        catNew.setComment(cat.getComment());
+        for (Assignment a: getAssignmentsByCategory(cat)) {
+            Assignment aNew = copyAssignment(catNew, a);
+            if (aNew == null || aNew.getParent().getId() != catNew.getId()){
+                System.out.println("Error during copyCategory, assignment " + a.getId() + " was not copied for category " + catNew.getId());
+                return null;
+            }
+            catNew.addDescendant(aNew);
+        }
+        if (!updateCategory(catNew)) {
+            System.out.println("Error during copyCategory, category " + catNew.getId() + " was not updated.");
+            return null;
+        }
+        return catNew;
     }
 
     //
@@ -377,18 +425,37 @@ public class DatabasePortal {
         return false;
     }
 
+    public Assignment copyAssignment(Category cat, Assignment a) {
+        Assignment aNew = addAssignment(cat, a.getName(), a.getDescription());
+        if (aNew == null){
+            System.out.println("Error in copyAssignment, no assignment was created.");
+            return null;
+        }
+        aNew.setMaxScore(a.getMaxScore());
+        aNew.setWeight(a.getWeight());
+        aNew.setComment((a.getComment()));
+        aNew.move(cat);
+        if (updateAssignment(aNew)) {
+            return aNew;
+        }
+        System.out.println("Error in copyAssignment, assignment " + aNew.getId() + ", clone of " + a.getId() + ", was not updated.");
+        return null;
+    }
+
     //
 
-    public Student addStudent(Course c, String name, boolean isGrad) {
+    public Student addStudent(Course c, String name, String email, String buid, boolean isGrad) {
         try {
-            String sql = "INSERT INTO students (course_id, name, score, bonus, adjustment, is_grad, withdrawn, comment)\n" +
-                    "VALUES (" + c.getId() + ", ?, 0.0, 0.0, 0.0, ?, 0, \"\");";
+            String sql = "INSERT INTO students (course_id, name, email, buid, score, bonus, adjustment, is_grad, withdrawn, comment)\n" +
+                    "VALUES (" + c.getId() + ", ?, ?, ?, 0.0, 0.0, 0.0, ?, 0, \"\");";
             PreparedStatement ps = _conn.prepareStatement(sql);
             ps.setString(1, name);
+            ps.setString(2, email);
+            ps.setString(3, buid);
             if(isGrad) {
-                ps.setInt(2, 1);
+                ps.setInt(4, 1);
             } else {
-                ps.setInt(2, 0);
+                ps.setInt(4, 0);
             }
             ps.execute();
             ResultSet rs = ps.getGeneratedKeys();
@@ -469,12 +536,14 @@ public class DatabasePortal {
 
     public boolean updateStudent(Student s) {
         try {
-            String sql = "UPDATE students SET name=?, score=?, bonus=?, adjustment=?, is_grad=?, withdrawn=?, comment=?\n" +
+            String sql = "UPDATE students SET name=?, email=?, buid=?, score=?, bonus=?, adjustment=?, is_grad=?, withdrawn=?, comment=?\n" +
                     "WHERE student_id=" + s.getId() + ";";
             PreparedStatement ps = _conn.prepareStatement(sql);
             ps.setString(1, s.getName());
-            ps.setDouble(2, s.getGrade());
-            ps.setDouble(3, s.getBonus());
+            ps.setString(2, s.getEmail());
+            ps.setString(3, s.getBuid());
+            ps.setDouble(4, s.getGrade());
+            ps.setDouble(5, s.getBonus());
             if (s.isGradStudent()) {
                 ps.setInt(4, 1);
             } else {

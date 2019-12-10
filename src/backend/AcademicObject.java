@@ -47,10 +47,10 @@ public abstract class AcademicObject implements Commentable {
 //        _descendants.addAll(descendants);
 //    }
 
-    // copy constructor
-    public AcademicObject(AcademicObject ao) {
-        this(ao.getId(), ao.getName(), ao.getDescription(), ao.getParent());
-    }
+//    // copy constructor
+//    public AcademicObject(AcademicObject ao) {
+//        this(ao.getId(), ao.getName(), ao.getDescription(), ao.getParent());
+//    }
 
 
     public int getId() {
