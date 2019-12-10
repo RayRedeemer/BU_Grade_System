@@ -125,16 +125,16 @@ public class SystemPortal {
                 return res;
 
             case DELETE_COURSE:
-                deleteCourse((Integer) params.get(0));
+                deleteCourse((Integer) ids.get(0));
                 return res;
             case DELETE_CATEGORY:
-                deleteCategory((Integer) params.get(0), (Integer) params.get(1));
+                deleteCategory((Integer) ids.get(0), (Integer) ids.get(1));
                 return res;
             case DELETE_ASSIGNMENT:
-                deleteAssignment((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2));
+                deleteAssignment((Integer) ids.get(0), (Integer) ids.get(1), (Integer) ids.get(2));
                 return res;
             case DELETE_SUBMISSION:
-                deleteSubmission((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2), (Integer) params.get(3));
+                deleteSubmission((Integer) ids.get(0), (Integer) ids.get(1), (Integer) ids.get(2), (Integer) ids.get(3));
                 return res;
 
             case UPDATE_COURSE:
