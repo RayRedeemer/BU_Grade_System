@@ -422,7 +422,6 @@ public class DatabasePortal {
 
     public boolean updateAssignment(Assignment a){
         try {
-            //TODO again, dates here if time
             String sql = "UPDATE assignments\n" +
                     "SET name=?,description=?,weight=?,maxscore=?,assigned_date=?,due_date=?,comment=?\n" +
                     "WHERE assignment_id=" + a.getId() + ";";
@@ -676,7 +675,6 @@ public class DatabasePortal {
 
     public boolean updateSubmission(Submission sub){
         try {
-            //TODO again, dates here if time
             String sql = "UPDATE submissions\n" +
                     "SET score=?, bonus=?, style=?, submitted_date=?, comment=?\n" +
                     "WHERE submission_id=" + sub.getId() + ";";

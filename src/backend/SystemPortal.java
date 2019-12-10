@@ -4,10 +4,12 @@ import share.*;
 import db.*;
 import gui.MainFrame;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
 
+
+//TODO update Assignment with date fields
 /**
  * Class serves as the interface between GUI and backend. All APIs must be private.
  * It follows singleton design pattern.
@@ -123,7 +125,7 @@ public class SystemPortal {
                 addAssignment((String) params.get(0), (String) params.get(1));
                 return res;
             case ADD_SUBMISSION:
-                addSubmission((Integer) params.get(0), (Double) params.get(1), (Double) params.get(2), (Boolean) params.get(3));
+                addSubmission((Integer) params.get(0), (Double) params.get(1), (Double) params.get(2), (LocalDateTime) params.get(3), (Boolean) params.get(4));
                 return res;
 
             case DELETE_COURSE:
@@ -571,12 +573,13 @@ public class SystemPortal {
      * @param studentId
      * @param score
      * @param bonus
+     * @param submitTime
      * @param style
      * @return null if fails, Assignment obj if succeeds.
      */
-    private Submission addSubmission(int studentId, double score, double bonus, Boolean style) {
+    private Submission addSubmission(int studentId, double score, double bonus, LocalDateTime submitTime, Boolean style) {
         Student student = DatabasePortal.getInstance().getStudentById(studentId);
-        return DatabasePortal.getInstance().addSubmission((Assignment) _currentObj, student, score, bonus, style);
+        return DatabasePortal.getInstance().addSubmission((Assignment) _currentObj, student, score, bonus, submitTime, style);
     }
 
     /**
@@ -603,8 +606,9 @@ public class SystemPortal {
         Submission submission = DatabasePortal.getInstance().getSubmissionById((Assignment) _currentObj, submissionId);
         submission.setScore((Double)params.get(0)); // score
         submission.setBonus((Double)params.get(1)); // bonus
-        submission.setStype((Boolean)params.get(2)); // style
-        submission.setComment((String)params.get(3)); // comment
+        submission.setSubmittedDate((LocalDateTime)params.get(2)); // submittedDate
+        submission.setStype((Boolean)params.get(3)); // style
+        submission.setComment((String)params.get(4)); // comment
         return DatabasePortal.getInstance().updateSubmission(submission);
     }
 

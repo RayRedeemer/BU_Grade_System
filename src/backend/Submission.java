@@ -65,9 +65,6 @@ public class Submission extends AcademicObject{
     public Student getStudent() {
         return _student;
     }
-    public LocalDateTime getSubmittedDate() {
-        return _submittedDate;
-    }
 
     public boolean getStyle() {
         return _earnOrLose;
@@ -76,7 +73,12 @@ public class Submission extends AcademicObject{
     public void setStype(boolean newStyle) {
         _earnOrLose = newStyle;
     }
-    public void changeStyle() {
-        _earnOrLose = !_earnOrLose;
+
+    public void setSubmittedDate(LocalDateTime date) {
+        _submittedDate = date;
+    }
+
+    public LocalDateTime getSubmittedDate() {
+        return _submittedDate;
     }
 }
