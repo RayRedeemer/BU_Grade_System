@@ -474,12 +474,12 @@ public class DatabasePortal {
             Statement stmt = _conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()) {
-                Student s = new Student(rs.getString(3), rs.getInt(1), rs.getInt(7) == 1);
-                s.setGrade(rs.getDouble(4));
-                s.setBonus(rs.getDouble(5));
-                s.setAdjustment(rs.getDouble(6));
-                s.setWithdraw(rs.getInt(8) == 1);
-                s.setComment(rs.getString(9));
+                Student s = new Student(rs.getString(3), rs.getInt(1), rs.getString(4), rs.getString(5), rs.getInt(9) == 1);
+                s.setGrade(rs.getDouble(6));
+                s.setBonus(rs.getDouble(7));
+                s.setAdjustment(rs.getDouble(8));
+                s.setWithdraw(rs.getInt(10) == 1);
+                s.setComment(rs.getString(11));
                 ret.add(s);
             }
         } catch (Exception e) {
@@ -495,12 +495,12 @@ public class DatabasePortal {
             Statement stmt = _conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             if (rs.next()) {
-                Student s = new Student(rs.getString(3), rs.getInt(1), rs.getInt(7) == 1);
-                s.setGrade(rs.getDouble(4));
-                s.setBonus(rs.getDouble(5));
-                s.setAdjustment(6);
-                s.setWithdraw(rs.getInt(8) == 1);
-                s.setComment(rs.getString(9));
+                Student s = new Student(rs.getString(3), rs.getInt(1), rs.getString(4), rs.getString(5), rs.getInt(9) == 1);
+                s.setGrade(rs.getDouble(6));
+                s.setBonus(rs.getDouble(7));
+                s.setAdjustment(rs.getDouble(8));
+                s.setWithdraw(rs.getInt(10) == 1);
+                s.setComment(rs.getString(11));
                 return s;
             }
         } catch (Exception e) {
