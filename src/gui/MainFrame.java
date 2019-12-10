@@ -108,11 +108,11 @@ public class MainFrame extends JFrame {
 		System.out.println("setAdminPanel");		
 	}
 	
-	public void setCoursePanel(int courseID, String courseName, String semester, String description) {
+	public void setCoursePanel(int courseID, String courseName, String semester, String description, double curve, String comment) {
 		if( coursePanel == null ) {
-			coursePanel = new CoursePanel(courseID, courseName, semester, description);
+			coursePanel = new CoursePanel(courseID, courseName, semester, description, curve, comment);
 		}
-		coursePanel.setCourse(courseID, courseName, semester, description);
+		coursePanel.setCourse(courseID, courseName, semester, description, curve, comment);
 		add(coursePanel);
 		curPanel = coursePanel;
 		coursePanel.setEnabled(true);

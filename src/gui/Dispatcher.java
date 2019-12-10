@@ -45,7 +45,7 @@ public class Dispatcher {
 		if( response.getHead().equals(RequestHead.SELECT_COURSE) ) {
 			MainFrame.getInstance().removeCurPanel();
 			Course course = (Course) response.getBody().get(0);
-			MainFrame.getInstance().setCoursePanel(course.getId(), course.getName(), course.getSemester(), course.getDescription());
+			MainFrame.getInstance().setCoursePanel(course.getId(), course.getName(), course.getSemester(), course.getDescription(), course.getCurve(), course.getComment());
 		}
 		
 		if( response.getHead().equals(RequestHead.UPDATE_CATEGORY) ) {

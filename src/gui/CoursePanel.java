@@ -33,10 +33,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 	
 	private int courseID;
 	private CourseForm courseForm;
-	
-	private String courseName;
-	private String semester;
-	private String description;
+
 	
 	private String[] columnNames = 
 		{ "Assignments", "Weight" };
@@ -57,16 +54,24 @@ public class CoursePanel extends JPanel implements ActionListener {
 	private JLabel semesterLabel;	
 	private JTextArea descriptionArea;
 	private JLabel curveLabel;
-	private JTextArea comment;
+	private JTextArea commentArea;
+		
+	private String courseName;
+	private String semester;
+	private String description;
+	private double curve;
+	private String comment;
 	
 	/**
 	 * Constructor
 	 * */
-	public CoursePanel( int _courseID, String _courseName, String _semester, String _description ) {
+	public CoursePanel( int _courseID, String _courseName, String _semester, String _description, double _curve, String _comment ) {
 		this.courseID = _courseID;
 		this.courseName = _courseName;
 		this.semester = _semester;
 		this.description = _description;
+		this.curve = _curve;
+		this.comment = _comment;
 
 		setLayout(null);
 		
@@ -100,7 +105,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 					}
 				}
 		);
-			       
+
         int labelWidth = 150;
         int labelX = titleLabel.getX();
         int labelY = titleLabel.getY() + titleLabel.getHeight();
@@ -117,9 +122,14 @@ public class CoursePanel extends JPanel implements ActionListener {
 		semesterLabel.setBounds(labelX, labelY + vGap, labelWidth, textHeight);
 		add(semesterLabel);
         
+		curveLabel = new JLabel("Curve: ");
+		curveLabel.setFont(font);
+		curveLabel.setBounds(labelX, labelY + vGap * 2, labelWidth, textHeight);
+		add(curveLabel);
+				
 		JLabel descriptionLabel = new JLabel("Description: ");
 		descriptionLabel.setFont(font);
-		descriptionLabel.setBounds(labelX, labelY + vGap * 2, labelWidth, textHeight);
+		descriptionLabel.setBounds(labelX, labelY + vGap * 3, labelWidth, textHeight);
 		add(descriptionLabel);
 		
 		descriptionArea = new JTextArea();
@@ -127,13 +137,27 @@ public class CoursePanel extends JPanel implements ActionListener {
 		descriptionArea.setEditable(false);
 		descriptionArea.setText(description);
 		descriptionArea.setFont(font);
-		JScrollPane textAreaScrollPane = new JScrollPane(descriptionArea);
-		textAreaScrollPane.setBounds(labelX, labelY + vGap * 3, (int)(frameWidth*0.5), 100);
-		add(textAreaScrollPane);
+		JScrollPane despAreaScrollPane = new JScrollPane(descriptionArea);
+		despAreaScrollPane.setBounds(labelX, labelY + vGap * 4, (int)(frameWidth*0.5), 100);
+		add(despAreaScrollPane);
+			
+		JLabel commentLabel = new JLabel("Comment:");
+		commentLabel.setFont(font);
+		commentLabel.setBounds(labelX, despAreaScrollPane.getY() + despAreaScrollPane.getHeight() + vGap/2, labelWidth, textHeight);
+		add(commentLabel);
+		
+		commentArea = new JTextArea();
+		commentArea.setLineWrap(true);
+		commentArea.setEditable(false);
+		commentArea.setText(comment);
+		commentArea.setFont(font);
+		JScrollPane commentAreaScrollPane = new JScrollPane(commentArea);
+		commentAreaScrollPane.setBounds(labelX, commentLabel.getY() + commentLabel.getHeight() + vGap/2, (int)(frameWidth*0.5), 100);
+		add(commentAreaScrollPane);
 		
 		JLabel assignmentTableLabel = new JLabel("Assignments");
 		assignmentTableLabel.setFont(font);
-		assignmentTableLabel.setBounds(labelX, textAreaScrollPane.getY() + textAreaScrollPane.getHeight() + vGap, labelWidth, textHeight);
+		assignmentTableLabel.setBounds(labelX, commentAreaScrollPane.getY() + commentAreaScrollPane.getHeight() + vGap, labelWidth, textHeight);
 		add(assignmentTableLabel);
 		
 		createAssignmentTable();
@@ -191,7 +215,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 	 * Function: create assignment table
 	 * */
 	private void createAssignmentTable() {
-		
+		// TODO: Assignment -> Category
 		int rowHeight = 20;
 		int columnWidth = 110;
 		int headerHeight = 32;
@@ -258,7 +282,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 			if( courseForm != null ) {
 				courseForm.dispose();
 			}
-			courseForm = new CourseForm(RequestHead.UPDATE_COURSE, courseID, courseName, semester, description);
+			courseForm = new CourseForm(RequestHead.UPDATE_COURSE, courseID, courseName, semester, description, curve, comment);
 		}
 		
 		if( event.getActionCommand().equals("Add Category") ) {
@@ -288,14 +312,18 @@ public class CoursePanel extends JPanel implements ActionListener {
 		}		
 	}
 	
-	public void setCourse(int _courseID, String _courseName, String _semester, String _description) {
+	public void setCourse(int _courseID, String _courseName, String _semester, String _description, double _curve, String _comment) {
 		this.courseID = _courseID;
 		this.courseName = _courseName;
 		this.semester = _semester;
 		this.description = _description;
+		this.curve = _curve;
+		this.comment = _comment;
 		titleLabel.setText(courseName);
 		semesterLabel.setText("Semester: " + semester);
 		descriptionArea.setText(description);
+		curveLabel.setText("Curve: " + Double.toString(curve));
+		commentArea.setText(comment);
 	}
 	
 }
