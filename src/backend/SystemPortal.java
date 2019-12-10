@@ -166,10 +166,10 @@ public class SystemPortal {
                 res.addBody(assignmentStatistics);
                 return res;
 
-            case CHECK_COURSE_VALID: // check weights of all its categories sum up to 1.0
+            case CHECK_COURSE_VALID: // check weights of all its categories. If they sum up to 1.0, return true.
                 Boolean isCourseValid = isCourseValid((Integer) params.get(0));
                 return new Response(head, isCourseValid);
-            case CHECK_CATEGORY_VALID: // check weights of all its assignments sum up to 1.0
+            case CHECK_CATEGORY_VALID: // check weights of all its assignments. If they sum up to 1.0, return true.
                 Boolean isCategoryValid = isCategoryValid((Integer) params.get(0));
                 return new Response(head, isCategoryValid);
         }
@@ -184,25 +184,10 @@ public class SystemPortal {
      * @param ids
      */
     private void setCurrentObj(List<Integer> ids) {
-        System.out.println("ids: " + ids.toString());
-    	/*
-        Course course = DatabasePortal.getInstance().getCourseById(ids.get(0));
-        Category category = DatabasePortal.getInstance().getCategoryById(course, ids.get(1));
-        if (category == null) {
-            _currentObj = course;
-        }
-        Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, ids.get(2));
-        if (assignment == null) {
-            _currentObj = category;
-        }
-        _currentObj = DatabasePortal.getInstance().getSubmissionById(assignment, ids.get(3));*/
-
-        // Modified by Ziqi Tan
         // Find the current level
         Course course = null;
         Category category = null;
         Assignment assignment = null;
-        // Submission submission = null;
 
         if (ids.get(0) != null) {
             course = DatabasePortal.getInstance().getCourseById(ids.get(0));
