@@ -4,6 +4,7 @@ import share.*;
 import db.*;
 import gui.MainFrame;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +97,10 @@ public class SystemPortal {
                 return res;
             case UPDATE_STUDENT:
                 updateStudent((Integer) params.get(0));
+                return res;
+
+            case SELECT_COURSE:
+                res.addBody(getCourse((Integer) params.get(0)));
                 return res;
 
             case ADD_COURSE:
@@ -287,8 +292,15 @@ public class SystemPortal {
     }
 
     /**
+     * return a course given its id
+     * @param courseId
+     * @return
+     */
+    private Course getCourse(int courseId) {
+        return DatabasePortal.getInstance().getCourseById(courseId);
+    }
+    /**
      * add a new Course obj
-     * java
      *
      * @param instructorId
      * @param name
