@@ -74,7 +74,7 @@ public class FrontController {
 		Response response = systemPortal.getResponse(request);
 		
 		if( response.getStatus() ) {
-			System.out.println(response);			
+			System.out.println(response.getBody().toString());	
 		}	
 		return response;
 	}

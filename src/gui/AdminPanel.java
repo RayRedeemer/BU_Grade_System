@@ -1,33 +1,23 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
-
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
 
 import share.Request;
 import share.RequestHead;
@@ -49,7 +39,6 @@ public class AdminPanel extends JPanel implements ActionListener {
             { "--", "--", "--", "--" },
             { "--", "--", "--", "--"}
     }; 
-	private String[][] tableData;
 	
 	private static final int headerHeight = 32;
 	
@@ -60,7 +49,9 @@ public class AdminPanel extends JPanel implements ActionListener {
 	private int frameWidth;
 	private int frameHeight; 
 	private int tableWidth;
-	
+	private int hGap;
+	private int vGap;
+		
 	private JLabel titleLabel;
 	
 	/**
@@ -73,8 +64,8 @@ public class AdminPanel extends JPanel implements ActionListener {
 		frameWidth = MainFrame.getInstance().getWidth();
 		frameHeight = MainFrame.getInstance().getHeight();
 		
-		int hGap = 50;
-		int vGap = 50;
+		hGap = 50;
+		vGap = 50;
 		
 		int x = (int)(frameWidth*0.4);
 		int y = (int)(frameHeight*0.05);
@@ -98,7 +89,8 @@ public class AdminPanel extends JPanel implements ActionListener {
 				}
 		);
 		
-	
+		// getCourseList();
+		
 		// set up a table
 		createJTable();
 	
@@ -136,6 +128,12 @@ public class AdminPanel extends JPanel implements ActionListener {
 	
 	}
 	
+	/**
+	 * p
+	 * */
+	public void refresh() {
+		
+	}
 	/**
 	 * Method: createJTable
 	 * Function: Create a course list table.
@@ -222,8 +220,7 @@ public class AdminPanel extends JPanel implements ActionListener {
 	
 	public void updateCourseList( String[] _columnNames, String[][] _data ) {
 		this.columnNames = _columnNames;
-		this.data = _data;
-		
+		this.data = _data;		
 		remove(scrollPane);
 		createJTable();
 		setScrollPane();
@@ -336,15 +333,15 @@ public class AdminPanel extends JPanel implements ActionListener {
 					else {
 						// Request
 						Request request = new Request(RequestHead.ADD_COURSE);
-						request.addParams(courseName);
-						request.addParams(courseSemester);
+						request.addParams(100); // instructor id
+						request.addParams(courseName);						
 						request.addParams(courseDesp);
+						request.addParams(courseSemester);
 						request.addIds(null);
 						request.addIds(null);
 						request.addIds(null);
 						request.addIds(null);
-						FrontController.getInstance().dispatchRequest(request);
-						
+						FrontController.getInstance().dispatchRequest(request);						
 					}
 				}
 			});
