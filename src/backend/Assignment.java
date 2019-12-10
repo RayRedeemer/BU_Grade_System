@@ -14,6 +14,8 @@ public class Assignment extends AcademicObject {
 
     public Assignment(int id, String name, String description, Category c){
         super(id, name, description, c);
+        _assignedDate = null;
+        _dueDate = null;
     }
 
     // copy constructor

@@ -2,6 +2,7 @@ package db;
 
 import backend.*;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class DatabasePortal {
@@ -249,6 +250,7 @@ public class DatabasePortal {
                 Category cat = new Category(rs.getInt(1), rs.getString(3), rs.getString(4), c);
                 cat.setWeight(rs.getDouble(5));
                 cat.setComment(rs.getString(6));
+
                 ret.add(cat);
             }
         } catch (Exception e) {
@@ -357,10 +359,23 @@ public class DatabasePortal {
             Statement stmt = _conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()) {
+                LocalDateTime ad;
+                try {
+                    ad = LocalDateTime.parse(rs.getString(7));
+                } catch (Exception e) {
+                    ad = null;
+                }
+                LocalDateTime dd;
+                try {
+                    dd = LocalDateTime.parse(rs.getString(8));
+                } catch (Exception e) {
+                    dd = null;
+                }
                 Assignment a = new Assignment(rs.getInt(1), rs.getString(3), rs.getString(4), cat);
                 a.setWeight(rs.getDouble(5));
                 a.setMaxScore(rs.getDouble(6));
-                //TODO add dates here if time
+                a.setAssignedDate(ad);
+                a.setAssignedDate(dd);
                 a.setComment(rs.getString(9));
                 ret.add(a);
             }
@@ -378,10 +393,23 @@ public class DatabasePortal {
             Statement stmt = _conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             if (rs.next()) {
+                LocalDateTime ad;
+                try {
+                    ad = LocalDateTime.parse(rs.getString(7));
+                } catch (Exception e) {
+                    ad = null;
+                }
+                LocalDateTime dd;
+                try {
+                    dd = LocalDateTime.parse(rs.getString(8));
+                } catch (Exception e) {
+                    dd = null;
+                }
                 Assignment a = new Assignment(rs.getInt(1), rs.getString(3), rs.getString(4), cat);
                 a.setWeight(rs.getDouble(5));
                 a.setMaxScore(rs.getDouble(6));
-                //TODO add dates here if time
+                a.setAssignedDate(ad);
+                a.setAssignedDate(dd);
                 a.setComment(rs.getString(9));
                 return a;
             }
@@ -396,7 +424,7 @@ public class DatabasePortal {
         try {
             //TODO again, dates here if time
             String sql = "UPDATE assignments\n" +
-                    "SET name=?,description=?,weight=?,maxscore=?,comment=?\n" +
+                    "SET name=?,description=?,weight=?,maxscore=?,assigned_date=?,due_date=?,comment=?\n" +
                     "WHERE assignment_id=" + a.getId() + ";";
             PreparedStatement ps = _conn.prepareStatement(sql);
             ps.setString(1, a.getName());
@@ -404,6 +432,8 @@ public class DatabasePortal {
             ps.setDouble(3, a.getWeight());
             ps.setDouble(4, a.getMaxScore());
             ps.setString(5, a.getComment());
+            ps.setString(6, a.getAssignedDate().toString());
+            ps.setString(7, a.getDueDate().toString());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Error while updating assignment: " + a.getId());
@@ -433,6 +463,8 @@ public class DatabasePortal {
         }
         aNew.setMaxScore(a.getMaxScore());
         aNew.setWeight(a.getWeight());
+        aNew.setAssignedDate(a.getAssignedDate());
+        aNew.setDueDate(a.getDueDate());
         aNew.setComment((a.getComment()));
         aNew.move(cat);
         if (updateAssignment(aNew)) {
@@ -563,22 +595,30 @@ public class DatabasePortal {
         return false;
     }
 
+    //
 
-    public Submission addSubmission(Assignment a, Student s, double score, double bonus, boolean style) {
+    public Submission addSubmission(Assignment a, Student s, double score, double bonus, LocalDateTime submitted, boolean style) {
         try {
             String sql = "INSERT INTO submissions (student_id, assignment_id, score, bonus, submitted_date, style, comment)\n" +
-                    "VALUES (" + s.getId() + ", " + a.getId() + ", ?, ?, \"\", ?, \"\");";
+                    "VALUES (" + s.getId() + ", " + a.getId() + ", ?, ?, ?, ?, \"\");";
             PreparedStatement ps = _conn.prepareStatement(sql);
             ps.setDouble(1, score);
             ps.setDouble(2, bonus);
+            String date;
+            try {
+                date = submitted.toString();
+            } catch (Exception e) {
+                date = "";
+            }
+            ps.setString(3, date);
             if (style) {
-                ps.setInt(3, 1);
+                ps.setInt(4, 1);
             } else {
-                ps.setInt(3, 0);
+                ps.setInt(4, 0);
             }
             ps.execute();
             ResultSet rs = ps.getGeneratedKeys();
-            if(rs.next()) return new Submission(rs.getInt(1), score, bonus, s, a, style);
+            if(rs.next()) return new Submission(rs.getInt(1), score, bonus, submitted, s, a, style);
         } catch (Exception e) {
             System.out.println("Error during addSubmission with params: " + a.getId() + ":" + s.getId() + ":" + score + ":" + bonus + ":" + style);
             System.out.println(e.getMessage());
@@ -593,9 +633,14 @@ public class DatabasePortal {
             Statement stmt = _conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()) {
-                Submission sub = new Submission(rs.getInt(1), rs.getDouble(4), rs.getDouble(5), getStudentById(rs.getInt(2)), a, rs.getInt(7) == 1);
+                LocalDateTime date;
+                try {
+                    date = LocalDateTime.parse(rs.getString(6));
+                } catch (Exception e) {
+                    date = null;
+                }
+                Submission sub = new Submission(rs.getInt(1), rs.getDouble(4), rs.getDouble(5), date, getStudentById(rs.getInt(2)), a, rs.getInt(7) == 1);
                 sub.setComment(rs.getString(8));
-                //TODO add dates here if time
                 ret.add(sub);
             }
         } catch (Exception e) {
@@ -612,9 +657,14 @@ public class DatabasePortal {
             Statement stmt = _conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             if (rs.next()) {
-                Submission sub = new Submission(rs.getInt(1), rs.getDouble(4), rs.getDouble(5), getStudentById(rs.getInt(2)), a, rs.getInt(7) == 1);
+                LocalDateTime date;
+                try {
+                    date = LocalDateTime.parse(rs.getString(6));
+                } catch (Exception e) {
+                    date = null;
+                }
+                Submission sub = new Submission(rs.getInt(1), rs.getDouble(4), rs.getDouble(5), date, getStudentById(rs.getInt(2)), a, rs.getInt(7) == 1);
                 sub.setComment(rs.getString(8));
-                //TODO add dates here if time
                 return sub;
             }
         } catch (Exception e) {
@@ -628,7 +678,7 @@ public class DatabasePortal {
         try {
             //TODO again, dates here if time
             String sql = "UPDATE submissions\n" +
-                    "SET score=?, bonus=?, style=?, comment=?\n" +
+                    "SET score=?, bonus=?, style=?, submitted_date=?, comment=?\n" +
                     "WHERE submission_id=" + sub.getId() + ";";
             PreparedStatement ps = _conn.prepareStatement(sql);
             ps.setDouble(1, sub.getScore());
@@ -638,7 +688,14 @@ public class DatabasePortal {
             } else {
                 ps.setInt(3,0);
             }
-            ps.setString(4, sub.getComment());
+            String date;
+            try {
+                date = sub.getSubmittedDate().toString();
+            } catch (Exception e) {
+                date = "";
+            }
+            ps.setString(4, date);
+            ps.setString(5, sub.getComment());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Error while updating submission: " + sub.getId());
