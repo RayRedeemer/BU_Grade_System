@@ -1,6 +1,6 @@
 package backend;
 
-import javafx.application.Preloader;
+//import javafx.application.Preloader;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.Collections;
  *
  * Hierarchy of our design: Course, Category, Assignment and Submission, top to bottom.
  */
-public class Course extends AcademicObject implements Statisticsable {
+public class Course extends AcademicObject {
 
     private String _semester; //form: (F|S)##
     private double _curve;
@@ -98,60 +98,4 @@ public class Course extends AcademicObject implements Statisticsable {
         return weightSum == 1.0;
     }
 
-    /**
-     * return average
-     * @return
-     */
-    public double getAvg() {
-        double sum = 0;
-        double count = 0;
-        for (Student student: getAllStudents()) {
-            sum += student.getGrade();
-            count++;
-        }
-        return sum / count;
-    }
-
-    /**
-     * return median
-     * @return
-     */
-    public double getMedian() {
-        ArrayList<Double> studentScoreList = new ArrayList<>();
-        for (Student student: getAllStudents()) {
-            studentScoreList.add(student.getGrade());
-        }
-        Collections.sort(studentScoreList);
-        int size = studentScoreList.size();
-        if (size % 2 == 0)
-            return (studentScoreList.get(size/2) + studentScoreList.get(size/2 - 1)) /2;
-        else
-            return studentScoreList.get(size/2);
-    }
-
-    /**
-     * return range lower bound
-     * @return
-     */
-    public double getRangeLowerBound() {
-        ArrayList<Double> studentScoreList = new ArrayList<>();
-        for (Student student: getAllStudents()) {
-            studentScoreList.add(student.getGrade());
-        }
-        Collections.sort(studentScoreList);
-        return studentScoreList.get(0);
-    }
-
-    /**
-     * return range upper bound
-     * @return
-     */
-    public double getRangeUpperBound() {
-        ArrayList<Double> studentScoreList = new ArrayList<>();
-        for (Student student: getAllStudents()) {
-            studentScoreList.add(student.getGrade());
-        }
-        Collections.sort(studentScoreList);
-        return studentScoreList.get(studentScoreList.size() - 1);
-    }
 }

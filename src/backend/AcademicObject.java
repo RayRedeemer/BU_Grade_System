@@ -154,6 +154,11 @@ public abstract class AcademicObject implements Commentable {
         _descendants.add(ao);
     }
 
+    public void addAllDescendants(ArrayList<AcademicObject> arr) {
+        if (!this.hasDescendants()) _descendants = new ArrayList<AcademicObject>();
+        _descendants.addAll(arr);
+    }
+
     private boolean isIndexValid(int index) {
         if (index < 0 || index >= _descendants.size()) {
             return false;

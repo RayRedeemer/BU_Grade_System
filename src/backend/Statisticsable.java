@@ -8,7 +8,7 @@ public interface Statisticsable {
      * return average
      * @return
      */
-    public double getAvg();
+    public double getMean();
 
     /**
      * return median
@@ -20,11 +20,13 @@ public interface Statisticsable {
      * return range lower bound
      * @return
      */
-    public double getRangeLowerBound();
+    public double getMinimum();
 
     /**
      * return range upper bound
      * @return
      */
-    public double getRangeUpperBound();
+    public double getMaximum();
+
+    public double getRange();
 }
