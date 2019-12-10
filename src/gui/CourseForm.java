@@ -26,13 +26,16 @@ Author: Ziqi Tan
  * */
 public class CourseForm extends JFrame {
 	
+	private int courseID;
 	private JTextField nameField;
 	private JTextField semesterField;
 	private JTextArea despArea;
 	
-	public CourseForm( RequestHead head, String _courseName, String _semester, String _description ) {
+	
+	public CourseForm( RequestHead head, int _courseID, String _courseName, String _semester, String _description ) {
 		System.out.println("A form is creating.");
 		setTitle("Course form");	
+		this.courseID = _courseID;
 					
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int frameWidth = (int)(screenSize.getWidth() * 0.36);
@@ -68,15 +71,18 @@ public class CourseForm extends JFrame {
 		
 		int textFieldWidth = 130;
 		nameField = new JTextField(20);
+		nameField.setText(_courseName);
 		nameField.setBounds(labelX + nameLabel.getWidth() + hGap, nameLabel.getY(), textFieldWidth, labelHeight);
 		formPanel.add(nameField);	
 		
 		semesterField = new JTextField(20);
+		semesterField.setText(_semester);
 		semesterField.setBounds(labelX + semesterLabel.getWidth() + hGap, semesterLabel.getY(), textFieldWidth, labelHeight);
 		formPanel.add(semesterField);
 		
 		despArea = new JTextArea();
 		despArea.setLineWrap(true);
+		despArea.setText(_description);
 		JScrollPane textAreaScrollPane = new JScrollPane(despArea);
 		textAreaScrollPane.setBounds(labelX + despLabel.getWidth() + hGap, despLabel.getY(), (int) (textFieldWidth * 2.3), 180);
 		formPanel.add(textAreaScrollPane);
@@ -106,15 +112,24 @@ public class CourseForm extends JFrame {
 					Request request;
 					if( head.equals(RequestHead.ADD_COURSE) ) {
 						request = new Request(RequestHead.ADD_COURSE);
+						request.addIds(null);
+						request.addParams(1); // instructor id
+						request.addParams(courseName);						
+						request.addParams(courseDesp);
+						request.addParams(courseSemester);
+						request.addParams(0.0);  // curve
+						request.addParams("Comments");  // comment
 					}
 					else {
 						request = new Request(RequestHead.UPDATE_COURSE);
+						request.addIds(courseID);
+						request.addParams(courseName);						
+						request.addParams(courseDesp);
+						request.addParams(courseSemester);
+						request.addParams(0.0);  // curve
+						request.addParams("Comments");  // comment
 					}
-					request.addParams(100); // instructor id
-					request.addParams(courseName);						
-					request.addParams(courseDesp);
-					request.addParams(courseSemester);
-					request.addIds(null);
+					
 					request.addIds(null);
 					request.addIds(null);
 					request.addIds(null);

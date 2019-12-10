@@ -45,7 +45,6 @@ public class Dispatcher {
 		if( response.getHead().equals(RequestHead.SELECT_COURSE) ) {
 			MainFrame.getInstance().removeCurPanel();
 			Course course = (Course) response.getBody().get(0);
-			System.out.println("dispatcher " + course.getId() + course.getName() );
 			MainFrame.getInstance().setCoursePanel(course.getId(), course.getName(), course.getSemester(), course.getDescription());
 		}
 		

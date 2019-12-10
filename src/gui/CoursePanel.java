@@ -34,11 +34,9 @@ public class CoursePanel extends JPanel implements ActionListener {
 	private int courseID;
 	private CourseForm courseForm;
 	
-	private String courseName = "CS 591 Object Oriented Design";
-	private String semester = "Fall19";
-	private String description = "Various issues in computer science that vary semester to semester." + System.getProperty("line.separator")
-				+ "Please contact the CAS Computer Science Department for detailed descriptions." + System.getProperty("line.separator")
-				+ "Though courses are variable credit, registration for less than four credits requires instructor approval.";;
+	private String courseName;
+	private String semester;
+	private String description;
 	
 	private String[] columnNames = 
 		{ "Assignments", "Weight" };
@@ -58,6 +56,8 @@ public class CoursePanel extends JPanel implements ActionListener {
 	private JLabel titleLabel;
 	private JLabel semesterLabel;	
 	private JTextArea descriptionArea;
+	private JLabel curveLabel;
+	private JTextArea comment;
 	
 	/**
 	 * Constructor
@@ -82,7 +82,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 		// getRequest from backend
 		
 		titleLabel = new JLabel(courseName);
-		titleLabel.setBounds(x, y, 400, 50);
+		titleLabel.setBounds(x, y, 130, 50);
 		titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 30));
 		add(titleLabel);
 		
@@ -258,7 +258,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 			if( courseForm != null ) {
 				courseForm.dispose();
 			}
-			courseForm = new CourseForm(RequestHead.UPDATE_COURSE, courseName, semester, description);
+			courseForm = new CourseForm(RequestHead.UPDATE_COURSE, courseID, courseName, semester, description);
 		}
 		
 		if( event.getActionCommand().equals("Add Category") ) {
@@ -296,17 +296,6 @@ public class CoursePanel extends JPanel implements ActionListener {
 		titleLabel.setText(courseName);
 		semesterLabel.setText("Semester: " + semester);
 		descriptionArea.setText(description);
-	}
-	
-	/**
-	 * inner class
-	 * */
-	class CategoryForm extends JFrame {
-		
-		public CategoryForm() {
-			
-		}
-		
 	}
 	
 }

@@ -227,8 +227,7 @@ public class AdminPanel extends JPanel implements ActionListener {
 			if( addCourseFrame != null ) {
 				addCourseFrame.dispose();
 			}
-			addCourseFrame = new CourseForm(RequestHead.ADD_COURSE, "", "", "");
-			
+			addCourseFrame = new CourseForm(RequestHead.ADD_COURSE, 0, "", "", "");
 		}
 		
 		if( event.getActionCommand().equals("Clone Course") ) {

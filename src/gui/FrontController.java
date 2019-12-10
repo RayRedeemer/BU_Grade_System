@@ -5,6 +5,7 @@ import java.util.List;
 import backend.Course;
 import backend.SystemPortal;
 import share.Request;
+import share.RequestHead;
 import share.Response;
 
 /*
@@ -91,7 +92,15 @@ public class FrontController {
 	private Response selectCourse(Request request) {
 		Response response = systemPortal.getResponse(request);
 		System.out.println(response);	
-		System.out.println(((Course) (response.getBody().get(0))).getId());
+		return response;
+	}
+	
+	/**
+	 * Method: updateCourse
+	 * */
+	private Response updateCourse(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);	
 		return response;
 	}
 	
@@ -157,6 +166,18 @@ public class FrontController {
 				break;
 			case SELECT_COURSE:
 				response = selectCourse(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case UPDATE_COURSE:
+				response = updateCourse(request);
+				Request request2 = new Request(RequestHead.SELECT_COURSE);
+				request2.addIds(request.getIds().get(0));
+				request2.addIds(null);
+				request2.addIds(null);
+				request2.addIds(null);
+				response = selectCourse(request2);
 				if( response.getStatus() ) {
 					dispatcher.dispatch(response);
 				}
