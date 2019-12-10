@@ -99,16 +99,16 @@ public class SystemPortal {
                 return res;
 
             case SELECT_COURSE:
-                res.addBody(getCourse((Integer) params.get(0)));
+                res.addBody(getCourse((Integer) ids.get(0)));
                 return res;
             case SELECT_CATEGORY:
-                res.addBody(getCategory((Integer) params.get(0), (Integer) params.get(1)));
+                res.addBody(getCategory((Integer) ids.get(0), (Integer) ids.get(1)));
                 return res;
             case SELECT_ASSIGNMENT:
-                res.addBody(getAssignment((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2)));
+                res.addBody(getAssignment((Integer) ids.get(0), (Integer) ids.get(1), (Integer) ids.get(2)));
                 return res;
             case SELECT_SUBMISSION:
-                res.addBody(getSubmission((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2), (Integer) params.get(3)));
+                res.addBody(getSubmission((Integer) ids.get(0), (Integer) ids.get(1), (Integer) ids.get(2), (Integer) ids.get(3)));
                 return res;
 
             case ADD_COURSE:
