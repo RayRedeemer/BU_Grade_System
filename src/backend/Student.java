@@ -10,16 +10,20 @@ public class Student extends Person implements Commentable {
 
     private double _grade;
     private String _comment;
+    private String _email;
+    private String _buId;
     private boolean _withdrawn;
     private boolean _grad;
     private double _bonus;
     private double _adjustment;
 
-    public Student(String name, int id, boolean grad) {
+    public Student(String name, int id, String email, String buId, boolean grad) {
         super(name, id);
         _grade = 0.0;
         _comment = "";
         _withdrawn = false;
+        _email = email;
+        _buId = buId;
         _grad = grad;
         _bonus = 0.0;
         _adjustment = 0.0;
@@ -39,6 +43,30 @@ public class Student extends Person implements Commentable {
 
     public void setComment(String comment) {
         _comment = comment;
+    }
+
+    public String getEmail() {
+        return _email;
+    }
+
+    public void setEmail(String email) {
+        _email = email;
+    }
+
+    public String getBuId() {
+        return _buId;
+    }
+
+    public void setBuId(String buId) {
+        _buId = buId;
+    }
+
+    public void setGrad(Boolean isGrad) {
+        _grad = isGrad;
+    }
+
+    public Boolean isGrad() {
+        return _grad;
     }
 
     public boolean getWithdrawn() {

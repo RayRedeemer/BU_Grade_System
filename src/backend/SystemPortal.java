@@ -1,11 +1,8 @@
 package backend;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import share.*;
 import db.*;
 import gui.MainFrame;
-
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +84,7 @@ public class SystemPortal {
                 addInstructor((String) params.get(0), (String) params.get(1));
                 return res;
             case ADD_STUDENT:
-                addStudent((String) params.get(0), (Boolean) params.get(1));
+                addStudent((String) params.get(0),(String) params.get(1), (String) params.get(2), (Boolean) params.get(3));
                 return res;
             case DROP_STUDENT:
                 dropStudent((Integer) params.get(0));
@@ -96,7 +93,7 @@ public class SystemPortal {
                 withdrawStudent((Integer) params.get(0));
                 return res;
             case UPDATE_STUDENT:
-                updateStudent((Integer) params.get(0));
+                updateStudent(params);
                 return res;
 
             case SELECT_COURSE:
@@ -241,8 +238,8 @@ public class SystemPortal {
     /**
      * add a new student
      */
-    private Student addStudent(String name, Boolean isGrad) {
-        return DatabasePortal.getInstance().addStudent((Course) _currentObj, name, isGrad);
+    private Student addStudent(String name, String email, String buId, Boolean isGrad) {
+        return DatabasePortal.getInstance().addStudent((Course) _currentObj, name, email, buId, isGrad);
     }
 
     /**
@@ -270,11 +267,20 @@ public class SystemPortal {
     /**
      * update a student with new fields
      *
-     * @param studentId
+     * @param params
      * @return
      */
-    private Boolean updateStudent(int studentId) {
+    private Boolean updateStudent(List<Object> params) {
+        Integer studentId = (Integer)params.get(0);
         Student student = DatabasePortal.getInstance().getStudentById(studentId);
+        student.setName((String) params.get(1)); // name
+        student.setEmail((String) params.get(2)); // email
+        student.setBuId((String) params.get(3)); // buId
+        student.setGrade((Double) params.get(4)); // grade
+        student.setAdjustment((Double) params.get(5)); // adjustment
+        student.setGrad((Boolean) params.get(6)); // isGrad
+        student.setGrad((Boolean) params.get(7)); // withdrawn
+        student.setComment((String) params.get(8)); // comment
         return DatabasePortal.getInstance().updateStudent(student);
     }
 
@@ -348,11 +354,6 @@ public class SystemPortal {
         Course course = DatabasePortal.getInstance().getCourseById(courseId);
         return AcademicStatistics.of(course);
     }
-
-    // todo copy curse
-//    private Boolean copyCourse(int courseId) {
-//
-//    }
 
     /**
      * Check if the sum of weights of all categories is 1.0
@@ -544,20 +545,6 @@ public class SystemPortal {
         Submission submission = DatabasePortal.getInstance().getSubmissionById(assignment, submissionId);
         return DatabasePortal.getInstance().deleteSubmission(submission);
     }
-
-    // todo copy submission
-//    /**
-//     * copy a submission
-//     *
-//     * @param submissionId
-//     * @return
-//     */
-//    private Submission copySubmission(int courseId, int categoryId, int assignmentId, int submissionId) {
-//        Course course = DatabasePortal.getInstance().getCourseById(courseId);
-//        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
-//        Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
-//        Submission newSubmission = DatabasePortal.getInstance().getSubmissionById(assignment, submissionId);
-//    }
 
     /**
      * update a submission
