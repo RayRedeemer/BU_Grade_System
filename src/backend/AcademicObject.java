@@ -42,14 +42,14 @@ public abstract class AcademicObject implements Commentable {
 //    }
 
     // constructor with descendants
-    public AcademicObject(int id, String name, String description, AcademicObject parent, ArrayList<AcademicObject> descendants) {
-        this(id, name, description, parent);
-        _descendants.addAll(descendants);
-    }
+//    public AcademicObject(int id, String name, String description, AcademicObject parent, ArrayList<AcademicObject> descendants) {
+//        this(id, name, description, parent);
+//        _descendants.addAll(descendants);
+//    }
 
     // copy constructor
     public AcademicObject(AcademicObject ao) {
-        this(ao.getId(), ao.getName(), ao.getDescription(), ao.getParent(), ao.getAllDescendants());
+        this(ao.getId(), ao.getName(), ao.getDescription(), ao.getParent());
     }
 
 
@@ -166,4 +166,6 @@ public abstract class AcademicObject implements Commentable {
             return true;
         }
     }
+
+
 }

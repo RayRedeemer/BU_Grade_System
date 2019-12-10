@@ -24,15 +24,15 @@ public class Submission extends AcademicObject{
         _earnOrLose = style;
     }
 
-    //copy constructor
+    //copy constructor (shouldn't be needed, no reason to copy submissions)
     //TODO add date if time
-    public Submission(Submission submission){
-        super(submission);
-        _score = submission.getScore();
-        _bonus = submission.getBonus();
-        _student = submission.getStudent();
-        _earnOrLose = submission.getStyle();
-    }
+//    public Submission(Submission submission){
+//        super(submission);
+//        _score = submission.getScore();
+//        _bonus = submission.getBonus();
+//        _student = submission.getStudent();
+//        _earnOrLose = submission.getStyle();
+//    }
 
     public void calculateGrade(double catweight, double assignweight, double maxscore) {
         double rawAssignment;

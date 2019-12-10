@@ -12,6 +12,7 @@ public class Category extends AcademicObject{
 
     public Category(int id, String name, String description, Course c) {
         super(id, name, description, c);
+        c.addDescendant(this);
     }
 
     // copy constructor

@@ -34,7 +34,7 @@ public class Course extends AcademicObject {
         _curve = course.getCurve();
         _roster = new ArrayList<>();
         _roster.addAll(course.getAllStudents());
-}
+    }
 
     /**
      * Compute grades for both students within this course and all Categories under this course, such as exams, hws, etc
