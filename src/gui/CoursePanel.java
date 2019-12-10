@@ -54,8 +54,11 @@ public class CoursePanel extends JPanel implements ActionListener {
 	/**
 	 * Constructor
 	 * */
-	public CoursePanel( int _courseID ) {
+	public CoursePanel( int _courseID, String _courseName, String _semester, String _description ) {
 		this.courseID = _courseID;
+		this.courseName = _courseName;
+		this.semester = _semester;
+		this.description = _description;
 
 		setLayout(null);
 		
@@ -124,7 +127,6 @@ public class CoursePanel extends JPanel implements ActionListener {
 		assignmentTableLabel.setFont(font);
 		assignmentTableLabel.setBounds(labelX, textAreaScrollPane.getY() + textAreaScrollPane.getHeight() + vGap, labelWidth, textHeight);
 		add(assignmentTableLabel);
-		
 		
 		createAssignmentTable();
 		int tableWidth = (int) assignmentTable.getPreferredSize().getWidth();

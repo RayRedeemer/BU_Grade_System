@@ -241,10 +241,10 @@ public class AdminPanel extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Please Selected a course.");
 			}
 			else {
-				request.addParams(selectedCourse);  // course id
-				request.addParams(null);
-				request.addParams(null);
-				request.addParams(null);
+				request.addIds(Integer.parseInt(selectedCourse));  // course id
+				request.addIds(null);
+				request.addIds(null);
+				request.addIds(null);
 				FrontController.getInstance().dispatchRequest(request);
 			}
 		}

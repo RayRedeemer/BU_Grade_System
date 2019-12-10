@@ -105,9 +105,9 @@ public class MainFrame extends JFrame {
 		System.out.println("setAdminPanel");		
 	}
 	
-	public void setCoursePanel(int courseID) {
+	public void setCoursePanel(int courseID, String courseName, String semester, String description) {
 		if( coursePanel == null ) {
-			coursePanel = new CoursePanel(courseID);
+			coursePanel = new CoursePanel(courseID, courseName, semester, description);
 		}
 		add(coursePanel);
 		curPanel = coursePanel;

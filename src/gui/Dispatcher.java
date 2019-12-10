@@ -45,8 +45,8 @@ public class Dispatcher {
 		
 		if( response.getHead().equals(RequestHead.SELECT_COURSE) ) {
 			MainFrame.getInstance().removeCurPanel();
-			int courseID = 123; // it should be int
-			MainFrame.getInstance().setCoursePanel(courseID);
+			
+			MainFrame.getInstance().setCoursePanel(100, "CS 591", "F19", "sadf");
 		}
 		
 		if( response.getHead().equals(RequestHead.UPDATE_CATEGORY) ) {

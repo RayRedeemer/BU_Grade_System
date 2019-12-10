@@ -94,10 +94,10 @@ public class FrontController {
 	 * Method: selectCourse
 	 * */
 	private Response selectCourse(Request request) {
-		System.out.println(request.getParams());
+		System.out.println(request.getIds());
 		Response response = systemPortal.getResponse(request);
 		
-		return new Response(request.getHead(), true);
+		return response;
 	}
 	
 	/**
