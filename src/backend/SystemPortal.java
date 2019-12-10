@@ -514,6 +514,14 @@ public class SystemPortal {
         return AcademicStatistics.of(assignment);
     }
 
+    /**
+     * return a submission object
+     * @param courseId
+     * @param categoryId
+     * @param assignmentId
+     * @param submissionId
+     * @return
+     */
     private Submission getSubmission(int courseId, int categoryId, int assignmentId, int submissionId) {
         Assignment assignment = getAssignment(courseId, categoryId, assignmentId);
         return DatabasePortal.getInstance().getSubmissionById(assignment, submissionId);
@@ -563,22 +571,46 @@ public class SystemPortal {
     }
 
 
+    /**
+     * return all courses as an ArrayList
+     * @return
+     */
     private ArrayList<Course> getCourseList() {
         return DatabasePortal.getInstance().getAllCourses();
     }
 
+    /**
+     * get all students within a course
+     * @param course
+     * @return
+     */
     private ArrayList<Student> getStudentListByCourse(Course course) {
         return DatabasePortal.getInstance().getStudentsByCourse(course);
     }
 
+    /**
+     * get all categories in a course
+     * @param course
+     * @return
+     */
     private ArrayList<Category> getCategoryList(Course course) {
         return DatabasePortal.getInstance().getCategoriesByCourse(course);
     }
 
+    /**
+     * get all assignments in a category
+     * @param category
+     * @return
+     */
     private ArrayList<Assignment> getAssignmentList(Category category) {
         return DatabasePortal.getInstance().getAssignmentsByCategory(category);
     }
 
+    /**
+     * get all submissions in an assignment
+     * @param assignment
+     * @return
+     */
     private ArrayList<Submission> getSubmissionList(Assignment assignment) {
         return DatabasePortal.getInstance().getSubmissionsByAssignment(assignment);
     }
