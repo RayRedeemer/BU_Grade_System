@@ -160,8 +160,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 		cateTableLabel.setFont(font);
 		cateTableLabel.setBounds(labelX, commentAreaScrollPane.getY() + commentAreaScrollPane.getHeight() + vGap, labelWidth, textHeight);
 		add(cateTableLabel);
-		
-		
+				
 		createCateTable();
 		setScrollPane();
         add(tableScrollPane);
@@ -213,7 +212,6 @@ public class CoursePanel extends JPanel implements ActionListener {
 	 * Function: create assignment table
 	 * */
 	private void createCateTable() {
-		// TODO: Assignment -> Category
 		int rowHeight = 20;
 		int columnWidth = 110;
 		int headerHeight = 32;
@@ -322,12 +320,14 @@ public class CoursePanel extends JPanel implements ActionListener {
 		}
 		
 		if( event.getActionCommand().equals("Manage Student") ) {
-			
+			MainFrame.getInstance().removeCurPanel();
+			MainFrame.getInstance().setStuManagePanel();
 		}
 		
 		if( event.getActionCommand().equals("Course Statistics") ) {
-			
-		}		
+			MainFrame.getInstance().removeCurPanel();
+			MainFrame.getInstance().setStatPanel();
+		}
 	}
 	
 	/**

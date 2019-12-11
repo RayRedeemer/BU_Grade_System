@@ -230,7 +230,6 @@ public class FrontController {
 			case GET_STUDENT_LIST:
 				// TODO:
 				break;
-				
 			default:
 				System.out.println("Error.");
 		}

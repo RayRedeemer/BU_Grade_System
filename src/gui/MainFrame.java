@@ -31,6 +31,8 @@ public class MainFrame extends JFrame {
 	private StatPanel statPanel;
 	private CategoryPanel categoryPanel;
 	private OverviewPanel overviewPanel;
+	private StuManagePanel stuManagePanel;
+
 	
 	private int frameWidth;
 	private int frameHeight;
@@ -133,7 +135,6 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void setStatPanel() {
-
 		if( statPanel == null ) {
 			statPanel = new StatPanel();
 		}
@@ -145,7 +146,6 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void setCategoryPanel() {
-
 		if( categoryPanel == null ) {
 			categoryPanel = new CategoryPanel();
 		}
@@ -157,7 +157,6 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void setOverviewPanel() {
-
 		if( overviewPanel == null ) {
 			overviewPanel = new OverviewPanel();
 		}
@@ -166,6 +165,17 @@ public class MainFrame extends JFrame {
 		overviewPanel.setEnabled(true);
 		overviewPanel.setVisible(true);
 		System.out.println("setOverviewPanel");		
+	}
+	
+	public void setStuManagePanel() {
+		if( stuManagePanel == null ) {
+			stuManagePanel = new StuManagePanel();
+		}
+		add(stuManagePanel);
+		curPanel = stuManagePanel;
+		stuManagePanel.setEnabled(true);
+		stuManagePanel.setVisible(true);
+		System.out.println("setStuManagePanel");
 	}
 	
 	/**

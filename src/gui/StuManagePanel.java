@@ -4,6 +4,9 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
+import share.Request;
+import share.RequestHead;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,6 +41,13 @@ public class StuManagePanel extends JPanel implements ActionListener {
 		btnLogout.setBounds(696, 53, 101, 47);
 		btnLogout.setFont(btnFont);
 		add(btnLogout);
+		btnLogout.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				Request request = new Request(RequestHead.LOGOUT);
+				FrontController.getInstance().dispatchRequest(request);
+			}
+		});
 		
 		btnAdd = new JButton("Add Student");
 		btnAdd.setBounds(87, 631, 180, 56);
@@ -53,6 +63,13 @@ public class StuManagePanel extends JPanel implements ActionListener {
 		btnReturn.setBounds(706, 631, 130, 56);
 		btnReturn.setFont(btnFont);
 		add(btnReturn);
+		btnReturn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {				
+				MainFrame.getInstance().removeCurPanel();
+				MainFrame.getInstance().setCoursePanel();
+			}
+		});
 
 	}
 
