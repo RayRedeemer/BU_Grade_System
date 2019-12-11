@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -29,6 +30,9 @@ public class OverviewPanel extends JPanel implements ActionListener {
 	private JButton btnLogout, btnCurve, btnSave, btnDelete, btnReturn;
 	private JEditorPane epComment;
 	
+	private List<Integer> assignmentIds;
+	private List<Integer> stuIds;
+	
 	private String[] columnNames = {
 		"Student", "A1 Weight", "A2 Weight", "A3 Weight"
 	};
@@ -40,6 +44,8 @@ public class OverviewPanel extends JPanel implements ActionListener {
 	
 	private int selectedRow;
 	private int selectedColumn;
+	private int selectedStuId;
+	private int selectedAssignmentId;
 	private JScrollPane scrollPane;
 
 	private int frameWidth;
@@ -168,6 +174,12 @@ public class OverviewPanel extends JPanel implements ActionListener {
         			selectedRow = stuViewTable.rowAtPoint(event.getPoint());
             	    selectedColumn = stuViewTable.columnAtPoint(event.getPoint());
             	    System.out.println("Click: " + "Row: " + selectedRow + " Column: " + selectedColumn);
+            	    /*selectedAssignmentId = assignmentIds.get(selectedColumn-1);
+            	    System.out.println("Selected assignment: " + selectedAssignmentId);
+            	    selectedStuId = stuIds.get(selectedRow-1);
+            	    System.out.println("Selected stu: " + selectedStuId);*/
+            	    
+            	    // TODO: update comment
         		}
         		catch( Exception error ) {
         			System.out.println(error);
@@ -186,10 +198,17 @@ public class OverviewPanel extends JPanel implements ActionListener {
         		tableWidth, 
         		(int)(frameHeight*0.5));
 	}
+	
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		// TODO Auto-generated method stub
+		if( event.getActionCommand().equals("Curve") ) {
+			
+		}
 		
+		if( event.getActionCommand().equals("Save") ) {
+			// TODO: save comment
+		}
 	}
 
 }
