@@ -25,21 +25,6 @@ public class Category extends AcademicObject{
         }
     }
 
-    /**
-     * Check if the sum of weights of all Assignments is 100%
-     *
-     * @return true if satisfies, false otherwise.
-     */
-    public Boolean isValid() {
-        double weightSum = 0.0;
-        for (AcademicObject ao : getAllDescendants()) {
-            Assignment assignment = (Assignment) ao;
-            weightSum += assignment.getWeight();
-        }
-        return weightSum == 1.0;
-    }
-
-
     public double getWeight() {
         return _weight;
     }

@@ -173,13 +173,6 @@ public class SystemPortal {
                 AcademicStatistics assignmentStatistics = getAssignmentStatistics((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2));
                 res.addBody(assignmentStatistics);
                 return res;
-
-            case CHECK_COURSE_VALID: // check weights of all its categories. If they sum up to 1.0, return true.
-                Boolean isCourseValid = isCourseValid((Integer) params.get(0));
-                return new Response(head, isCourseValid);
-            case CHECK_CATEGORY_VALID: // check weights of all its assignments. If they sum up to 1.0, return true.
-                Boolean isCategoryValid = isCategoryValid((Integer) params.get(0));
-                return new Response(head, isCategoryValid);
         }
         return null;
     }
@@ -369,28 +362,6 @@ public class SystemPortal {
     }
 
     /**
-     * Check if the sum of weights of all categories is 1.0
-     *
-     * @param courseId course you want to check
-     * @return
-     */
-    private Boolean isCourseValid(int courseId) {
-        Course course = DatabasePortal.getInstance().getCourseById(courseId);
-        return course.isValid();
-    }
-
-    /**
-     * Check if the sum of weights of all submissions is 1.0
-     *
-     * @param categoryId category you want to check
-     * @return
-     */
-    private Boolean isCategoryValid(int categoryId) {
-        Category category = DatabasePortal.getInstance().getCategoryById((Course) _currentObj, categoryId);
-        return category.isValid();
-    }
-
-    /**
      * return a category given courseId and categoryId
      *
      * @param courseId
@@ -440,6 +411,7 @@ public class SystemPortal {
         category.setDescription((String)params.get(1)); // desc
         category.setWeight((Double)params.get(2)); // weight
         category.setComment((String)params.get(3)); // comment
+
         return DatabasePortal.getInstance().updateCategory(category);
     }
 

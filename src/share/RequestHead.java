@@ -44,7 +44,4 @@ public enum RequestHead {
 	GET_COURSE_STATISTICS,
 	GET_CATEGORY_STATISTICS,
 	GET_ASSIGNMENT_STATISTICS,
-
-	CHECK_COURSE_VALID, // Check if the sum of weights of all categories is 100%
-	CHECK_CATEGORY_VALID  // Check if the sum of weights of all submissions is 100%
 }
