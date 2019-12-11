@@ -101,6 +101,7 @@ public class MainFrame extends JFrame {
 		if( adminPanel == null ) {
 			adminPanel = new AdminPanel();
 		}
+		adminPanel.getCourseList();
 		add(adminPanel);
 		curPanel = adminPanel;
 		adminPanel.setEnabled(true);

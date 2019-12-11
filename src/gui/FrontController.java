@@ -114,6 +114,15 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: getCateList
+	 * */
+	private Response getCateList(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;		
+	}
+	
+	/**
 	 * Method: editCategory
 	 * */
 	private Response editCategory(Request request) {
@@ -184,6 +193,12 @@ public class FrontController {
 				break;
 			case DELETE_COURSE:
 				response = deleteCourse(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case GET_CATEGORY_LIST:
+				response = getCateList(request);
 				if( response.getStatus() ) {
 					dispatcher.dispatch(response);
 				}

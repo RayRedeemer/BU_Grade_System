@@ -1,6 +1,9 @@
 package gui;
 
+import java.text.DecimalFormat;
+
 import backend.AcademicObject;
+import backend.Category;
 import backend.Course;
 import share.Request;
 import share.RequestHead;
@@ -24,8 +27,6 @@ public class Dispatcher {
 		
 		if( response.getHead().equals(RequestHead.GET_COURSE_LIST) ) {
 			int numOfCourses = response.getBody().size();
-			String[] columnNames = 
-				{ "ID", "Name", "Semester", "Average Grade" };
 			String[][] data = new String[numOfCourses][4]; 
 			try {				
 				for( int i = 0; i < numOfCourses; i++ ) {
@@ -39,13 +40,32 @@ public class Dispatcher {
 				error.printStackTrace();
 			}
 			
-			MainFrame.getInstance().getAdminPanel().updateCourseList(columnNames, data);
+			MainFrame.getInstance().getAdminPanel().updateCourseList(data);
+		}
+		
+		if( response.getHead().equals(RequestHead.ADD_COURSE) ) {
+			MainFrame.getInstance().getAdminPanel().getCourseList();
 		}
 		
 		if( response.getHead().equals(RequestHead.SELECT_COURSE) ) {
 			MainFrame.getInstance().removeCurPanel();
 			Course course = (Course) response.getBody().get(0);
 			MainFrame.getInstance().setCoursePanel(course.getId(), course.getName(), course.getSemester(), course.getDescription(), course.getCurve(), course.getComment());
+		}
+		
+		if( response.getHead().equals(RequestHead.DELETE_COURSE) ) {
+			MainFrame.getInstance().getAdminPanel().getCourseList();
+		}
+		
+		if( response.getHead().equals(RequestHead.GET_CATEGORY_LIST) ) {
+			int numOfCates =  response.getBody().size();
+			String[][] data = new String[numOfCates][3];
+			DecimalFormat decimalFormat = new DecimalFormat("0.00%");
+			for( int i = 0; i < numOfCates; i++ ) {
+				data[i][0] = Integer.toString(((AcademicObject) response.getBody().get(i)).getId());
+				data[i][1] = ((AcademicObject) response.getBody().get(i)).getName();		
+				data[i][2] = decimalFormat.format(((Category) response.getBody().get(i)).getWeight()).toString();
+			}
 		}
 		
 		if( response.getHead().equals(RequestHead.UPDATE_CATEGORY) ) {
