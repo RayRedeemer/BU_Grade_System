@@ -14,7 +14,6 @@ public class Submission extends AcademicObject{
     private boolean _earnOrLose; //whether grade is points earned (positive/true), or points missed (negative/false).
     //needed a flag for _earnOrLose to differentiate 0 being a 0 or a 100 depending on style.
 
-    //TODO add date if time
     public Submission(int id, double score, double bonus, LocalDateTime submitted, Student s, Assignment a, boolean style) {
         super(id, s.getName() + "_" + a.getName(), "", a);
         _score = score;
