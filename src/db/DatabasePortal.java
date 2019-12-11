@@ -2,6 +2,7 @@ package db;
 
 import backend.*;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class DatabasePortal {
@@ -197,6 +198,31 @@ public class DatabasePortal {
         return false;
     }
 
+    public Course copyCourse(Course c) {
+        Course cNew = addCourse(1, c.getName(), c.getDescription(), c.getSemester());
+        if(cNew == null) {
+            System.out.println("Error during copyCourse for course " + c.getId() + ", course not copied.");
+            return null;
+        }
+        cNew.setCurve(c.getCurve());
+        cNew.setComment(c.getComment());
+        if(!updateCourse(cNew)) {
+            System.out.println("Error during copyCourse, course " + cNew.getId() + " was not updated.");
+            return null;
+        }
+        for (Category cat : getCategoriesByCourse(c)) {
+            Category catNew = copyCategory(cNew, cat);
+            if (catNew == null || catNew.getParent().getId() != cNew.getId()){
+                System.out.println("Error during copyCourse, category " + cat.getId() + " was not copied for course " + cNew.getId());
+                return null;
+            }
+            cNew.addDescendant(catNew);
+        }
+        return cNew;
+    }
+
+    //
+
     public Category addCategory(Course c, String name, String description) {
         try {
             String sql = "INSERT INTO categories (course_id, name, description, weight, comment)\n" +
@@ -224,6 +250,7 @@ public class DatabasePortal {
                 Category cat = new Category(rs.getInt(1), rs.getString(3), rs.getString(4), c);
                 cat.setWeight(rs.getDouble(5));
                 cat.setComment(rs.getString(6));
+
                 ret.add(cat);
             }
         } catch (Exception e) {
@@ -234,6 +261,7 @@ public class DatabasePortal {
     }
 
     public Category getCategoryById(Course c, int id) {
+        if (c == null) return null;
         try {
             String sql = "SELECT * FROM categories WHERE category_id=" + id + ";";
             Statement stmt = _conn.createStatement();
@@ -282,6 +310,29 @@ public class DatabasePortal {
         return false;
     }
 
+    public Category copyCategory(Course c, Category cat) {
+        Category catNew = addCategory(c, cat.getName(), cat.getDescription());
+        if (catNew == null) {
+            System.out.println("Error during copyCategory, no new category was created.");
+            return null;
+        }
+        catNew.setWeight(cat.getWeight());
+        catNew.setComment(cat.getComment());
+        for (Assignment a: getAssignmentsByCategory(cat)) {
+            Assignment aNew = copyAssignment(catNew, a);
+            if (aNew == null || aNew.getParent().getId() != catNew.getId()){
+                System.out.println("Error during copyCategory, assignment " + a.getId() + " was not copied for category " + catNew.getId());
+                return null;
+            }
+            catNew.addDescendant(aNew);
+        }
+        if (!updateCategory(catNew)) {
+            System.out.println("Error during copyCategory, category " + catNew.getId() + " was not updated.");
+            return null;
+        }
+        return catNew;
+    }
+
     //
 
     public Assignment addAssignment(Category cat, String name, String description) {
@@ -308,10 +359,23 @@ public class DatabasePortal {
             Statement stmt = _conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()) {
+                LocalDateTime ad;
+                try {
+                    ad = LocalDateTime.parse(rs.getString(7));
+                } catch (Exception e) {
+                    ad = null;
+                }
+                LocalDateTime dd;
+                try {
+                    dd = LocalDateTime.parse(rs.getString(8));
+                } catch (Exception e) {
+                    dd = null;
+                }
                 Assignment a = new Assignment(rs.getInt(1), rs.getString(3), rs.getString(4), cat);
                 a.setWeight(rs.getDouble(5));
                 a.setMaxScore(rs.getDouble(6));
-                //TODO add dates here if time
+                a.setAssignedDate(ad);
+                a.setAssignedDate(dd);
                 a.setComment(rs.getString(9));
                 ret.add(a);
             }
@@ -323,15 +387,29 @@ public class DatabasePortal {
     }
 
     public Assignment getAssignmentById(Category cat, int id) {
+        if (cat == null) return null;
         try {
             String sql = "SELECT * FROM assignments WHERE assignment_id=" + id + ";";
             Statement stmt = _conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             if (rs.next()) {
+                LocalDateTime ad;
+                try {
+                    ad = LocalDateTime.parse(rs.getString(7));
+                } catch (Exception e) {
+                    ad = null;
+                }
+                LocalDateTime dd;
+                try {
+                    dd = LocalDateTime.parse(rs.getString(8));
+                } catch (Exception e) {
+                    dd = null;
+                }
                 Assignment a = new Assignment(rs.getInt(1), rs.getString(3), rs.getString(4), cat);
                 a.setWeight(rs.getDouble(5));
                 a.setMaxScore(rs.getDouble(6));
-                //TODO add dates here if time
+                a.setAssignedDate(ad);
+                a.setAssignedDate(dd);
                 a.setComment(rs.getString(9));
                 return a;
             }
@@ -344,9 +422,8 @@ public class DatabasePortal {
 
     public boolean updateAssignment(Assignment a){
         try {
-            //TODO again, dates here if time
             String sql = "UPDATE assignments\n" +
-                    "SET name=?,description=?,weight=?,maxscore=?,comment=?\n" +
+                    "SET name=?,description=?,weight=?,maxscore=?,assigned_date=?,due_date=?,comment=?\n" +
                     "WHERE assignment_id=" + a.getId() + ";";
             PreparedStatement ps = _conn.prepareStatement(sql);
             ps.setString(1, a.getName());
@@ -354,6 +431,8 @@ public class DatabasePortal {
             ps.setDouble(3, a.getWeight());
             ps.setDouble(4, a.getMaxScore());
             ps.setString(5, a.getComment());
+            ps.setString(6, a.getAssignedDate().toString());
+            ps.setString(7, a.getDueDate().toString());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Error while updating assignment: " + a.getId());
@@ -375,22 +454,43 @@ public class DatabasePortal {
         return false;
     }
 
+    public Assignment copyAssignment(Category cat, Assignment a) {
+        Assignment aNew = addAssignment(cat, a.getName(), a.getDescription());
+        if (aNew == null){
+            System.out.println("Error in copyAssignment, no assignment was created.");
+            return null;
+        }
+        aNew.setMaxScore(a.getMaxScore());
+        aNew.setWeight(a.getWeight());
+        aNew.setAssignedDate(a.getAssignedDate());
+        aNew.setDueDate(a.getDueDate());
+        aNew.setComment((a.getComment()));
+        aNew.move(cat);
+        if (updateAssignment(aNew)) {
+            return aNew;
+        }
+        System.out.println("Error in copyAssignment, assignment " + aNew.getId() + ", clone of " + a.getId() + ", was not updated.");
+        return null;
+    }
+
     //
 
-    public Student addStudent(Course c, String name, boolean isGrad) {
+    public Student addStudent(Course c, String name, String email, String buid, boolean isGrad) {
         try {
-            String sql = "INSERT INTO students (course_id, name, score, bonus, adjustment, is_grad, withdrawn, comment)\n" +
-                    "VALUES (" + c.getId() + ", ?, 0.0, 0.0, 0.0, ?, 0, \"\");";
+            String sql = "INSERT INTO students (course_id, name, email, buid, score, bonus, adjustment, is_grad, withdrawn, comment)\n" +
+                    "VALUES (" + c.getId() + ", ?, ?, ?, 0.0, 0.0, 0.0, ?, 0, \"\");";
             PreparedStatement ps = _conn.prepareStatement(sql);
             ps.setString(1, name);
+            ps.setString(2, email);
+            ps.setString(3, buid);
             if(isGrad) {
-                ps.setInt(2, 1);
+                ps.setInt(4, 1);
             } else {
-                ps.setInt(2, 0);
+                ps.setInt(4, 0);
             }
             ps.execute();
             ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) return new Student(name, rs.getInt(1), isGrad);
+            if (rs.next()) return new Student(name, rs.getInt(1), email, buid, isGrad);
         } catch (Exception e) {
             System.out.println("Error while adding student '" + name + "' to course " + c.getId());
             System.out.println(e.getMessage());
@@ -405,12 +505,12 @@ public class DatabasePortal {
             Statement stmt = _conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()) {
-                Student s = new Student(rs.getString(3), rs.getInt(1), rs.getInt(7) == 1);
-                s.setGrade(rs.getDouble(4));
-                s.setBonus(rs.getDouble(5));
-                s.setAdjustment(rs.getDouble(6));
-                s.setWithdraw(rs.getInt(8) == 1);
-                s.setComment(rs.getString(9));
+                Student s = new Student(rs.getString(3), rs.getInt(1), rs.getString(4), rs.getString(5), rs.getInt(9) == 1);
+                s.setGrade(rs.getDouble(6));
+                s.setBonus(rs.getDouble(7));
+                s.setAdjustment(rs.getDouble(8));
+                s.setWithdraw(rs.getInt(10) == 1);
+                s.setComment(rs.getString(11));
                 ret.add(s);
             }
         } catch (Exception e) {
@@ -426,12 +526,12 @@ public class DatabasePortal {
             Statement stmt = _conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             if (rs.next()) {
-                Student s = new Student(rs.getString(3), rs.getInt(1), rs.getInt(7) == 1);
-                s.setGrade(rs.getDouble(4));
-                s.setBonus(rs.getDouble(5));
-                s.setAdjustment(6);
-                s.setWithdraw(rs.getInt(8) == 1);
-                s.setComment(rs.getString(9));
+                Student s = new Student(rs.getString(3), rs.getInt(1), rs.getString(4), rs.getString(5), rs.getInt(9) == 1);
+                s.setGrade(rs.getDouble(6));
+                s.setBonus(rs.getDouble(7));
+                s.setAdjustment(rs.getDouble(8));
+                s.setWithdraw(rs.getInt(10) == 1);
+                s.setComment(rs.getString(11));
                 return s;
             }
         } catch (Exception e) {
@@ -465,23 +565,59 @@ public class DatabasePortal {
         return false;
     }
 
+    public boolean updateStudent(Student s) {
+        try {
+            String sql = "UPDATE students SET name=?, email=?, buid=?, score=?, bonus=?, adjustment=?, is_grad=?, withdrawn=?, comment=?\n" +
+                    "WHERE student_id=" + s.getId() + ";";
+            PreparedStatement ps = _conn.prepareStatement(sql);
+            ps.setString(1, s.getName());
+            ps.setString(2, s.getEmail());
+            ps.setString(3, s.getBuId());
+            ps.setDouble(4, s.getGrade());
+            ps.setDouble(5, s.getBonus());
+            if (s.isGradStudent()) {
+                ps.setInt(4, 1);
+            } else {
+                ps.setInt(4, 0);
+            }
+            if (s.getWithdrawn()) {
+                ps.setInt(5, 1);
+            } else {
+                ps.setInt(5,0);
+            }
+            ps.setString(6, s.getComment());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Error during updateStudent for id " + s.getId());
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
     //
 
-    public Submission addSubmission(Assignment a, Student s, double score, double bonus, boolean style) {
+    public Submission addSubmission(Assignment a, Student s, double score, double bonus, LocalDateTime submitted, boolean style) {
         try {
             String sql = "INSERT INTO submissions (student_id, assignment_id, score, bonus, submitted_date, style, comment)\n" +
-                    "VALUES (" + s.getId() + ", " + a.getId() + ", ?, ?, \"\", ?, \"\");";
+                    "VALUES (" + s.getId() + ", " + a.getId() + ", ?, ?, ?, ?, \"\");";
             PreparedStatement ps = _conn.prepareStatement(sql);
             ps.setDouble(1, score);
             ps.setDouble(2, bonus);
+            String date;
+            try {
+                date = submitted.toString();
+            } catch (Exception e) {
+                date = "";
+            }
+            ps.setString(3, date);
             if (style) {
-                ps.setInt(3, 1);
+                ps.setInt(4, 1);
             } else {
-                ps.setInt(3, 0);
+                ps.setInt(4, 0);
             }
             ps.execute();
             ResultSet rs = ps.getGeneratedKeys();
-            if(rs.next()) return new Submission(rs.getInt(1), score, bonus, s, a, style);
+            if(rs.next()) return new Submission(rs.getInt(1), score, bonus, submitted, s, a, style);
         } catch (Exception e) {
             System.out.println("Error during addSubmission with params: " + a.getId() + ":" + s.getId() + ":" + score + ":" + bonus + ":" + style);
             System.out.println(e.getMessage());
@@ -496,9 +632,14 @@ public class DatabasePortal {
             Statement stmt = _conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()) {
-                Submission sub = new Submission(rs.getInt(1), rs.getDouble(4), rs.getDouble(5), getStudentById(rs.getInt(2)), a, rs.getInt(7) == 1);
+                LocalDateTime date;
+                try {
+                    date = LocalDateTime.parse(rs.getString(6));
+                } catch (Exception e) {
+                    date = null;
+                }
+                Submission sub = new Submission(rs.getInt(1), rs.getDouble(4), rs.getDouble(5), date, getStudentById(rs.getInt(2)), a, rs.getInt(7) == 1);
                 sub.setComment(rs.getString(8));
-                //TODO add dates here if time
                 ret.add(sub);
             }
         } catch (Exception e) {
@@ -509,14 +650,20 @@ public class DatabasePortal {
     }
 
     public Submission getSubmissionById(Assignment a, int id) {
+        if (a == null) return null;
         try {
             String sql = "SELECT * FROM submissions WHERE submission_id=" + id + ";";
             Statement stmt = _conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             if (rs.next()) {
-                Submission sub = new Submission(rs.getInt(1), rs.getDouble(4), rs.getDouble(5), getStudentById(rs.getInt(2)), a, rs.getInt(7) == 1);
+                LocalDateTime date;
+                try {
+                    date = LocalDateTime.parse(rs.getString(6));
+                } catch (Exception e) {
+                    date = null;
+                }
+                Submission sub = new Submission(rs.getInt(1), rs.getDouble(4), rs.getDouble(5), date, getStudentById(rs.getInt(2)), a, rs.getInt(7) == 1);
                 sub.setComment(rs.getString(8));
-                //TODO add dates here if time
                 return sub;
             }
         } catch (Exception e) {
@@ -528,9 +675,8 @@ public class DatabasePortal {
 
     public boolean updateSubmission(Submission sub){
         try {
-            //TODO again, dates here if time
             String sql = "UPDATE submissions\n" +
-                    "SET score=?, bonus=?, style=?, comment=?\n" +
+                    "SET score=?, bonus=?, style=?, submitted_date=?, comment=?\n" +
                     "WHERE submission_id=" + sub.getId() + ";";
             PreparedStatement ps = _conn.prepareStatement(sql);
             ps.setDouble(1, sub.getScore());
@@ -540,7 +686,14 @@ public class DatabasePortal {
             } else {
                 ps.setInt(3,0);
             }
-            ps.setString(4, sub.getComment());
+            String date;
+            try {
+                date = sub.getSubmittedDate().toString();
+            } catch (Exception e) {
+                date = "";
+            }
+            ps.setString(4, date);
+            ps.setString(5, sub.getComment());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Error while updating submission: " + sub.getId());

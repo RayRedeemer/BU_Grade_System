@@ -32,6 +32,8 @@ public class DatabaseInitializer {
                 "student_id INTEGER PRIMARY KEY NOT NULL,\n" +
                 "course_id INTEGER REFERENCES courses(course_id),\n" +
                 "name TEXT,\n" +
+                "email TEXT,\n" +
+                "buid TEXT,\n" +
                 "score DECIMAL(3,2),\n" +
                 "bonus DECIMAL(3,2),\n" +
                 "adjustment DECIMAL(3,2),\n" +

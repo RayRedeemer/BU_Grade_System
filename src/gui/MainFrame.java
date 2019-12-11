@@ -75,6 +75,12 @@ public class MainFrame extends JFrame {
 	public JPanel getCurPanel() {
 		return curPanel;
 	}
+	public AdminPanel getAdminPanel() {
+		return adminPanel;
+	}
+	public CoursePanel getCoursePanel() {
+		return coursePanel;
+	}
 	
 	/**
 	 * setter()
@@ -102,10 +108,11 @@ public class MainFrame extends JFrame {
 		System.out.println("setAdminPanel");		
 	}
 	
-	public void setCoursePanel(int courseID) {
+	public void setCoursePanel(int courseID, String courseName, String semester, String description, double curve, String comment) {
 		if( coursePanel == null ) {
-			coursePanel = new CoursePanel(courseID);
+			coursePanel = new CoursePanel(courseID, courseName, semester, description, curve, comment);
 		}
+		coursePanel.setCourse(courseID, courseName, semester, description, curve, comment);
 		add(coursePanel);
 		curPanel = coursePanel;
 		coursePanel.setEnabled(true);

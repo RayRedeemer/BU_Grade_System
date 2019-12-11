@@ -3,6 +3,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -14,7 +16,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JComboBox;
 
-public class StatPanel extends JPanel {
+public class StatPanel extends JPanel implements ActionListener {
 	
 	private JButton btnAll;
 	private JButton btnUndergrad;
@@ -103,5 +105,11 @@ public class StatPanel extends JPanel {
 		lbRange.setBounds(137, 573, lblWidth, lblHeight);
 		lbRange.setFont(lblFont);
 		add(lbRange);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

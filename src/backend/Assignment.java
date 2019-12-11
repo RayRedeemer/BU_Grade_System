@@ -14,8 +14,18 @@ public class Assignment extends AcademicObject {
 
     public Assignment(int id, String name, String description, Category c){
         super(id, name, description, c);
+        _assignedDate = null;
+        _dueDate = null;
     }
 
+    // copy constructor
+//    public Assignment(Assignment assignment){
+//        super(assignment);
+//        _maxScore = assignment.getMaxScore();
+//        _weight = assignment.getWeight();
+//        _assignedDate = assignment.getAssignedDate();
+//        _dueDate = assignment.getDueDate();
+//    }
     /**
      * Compute Grades given the category weight
      *
@@ -23,7 +33,6 @@ public class Assignment extends AcademicObject {
      */
     public void calculateGrades(double catweight){
         for (AcademicObject ao : getAllDescendants()) {
-            Submission sub = (Submission) ao;
             ((Submission) ao).calculateGrade(catweight, _weight, _maxScore);
         }
     }

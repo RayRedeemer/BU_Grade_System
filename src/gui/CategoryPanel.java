@@ -3,15 +3,21 @@ package gui;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
+
+import share.Request;
+import share.RequestHead;
+
 import javax.swing.JEditorPane;
 
-public class CategoryPanel extends JPanel {
+public class CategoryPanel extends JPanel implements ActionListener {
 	private JLabel lblTitle, lblWeight, lblDescription, lblComment;
 	private JButton btnLogout, btnSave, btnStatistics, btnReturn, btnAdd;
 	private JEditorPane epComment;
@@ -46,6 +52,15 @@ public class CategoryPanel extends JPanel {
 		btnLogout.setBounds(1048, 56, 113, 47);
 		btnLogout.setFont(btnFont);
 		add(btnLogout);
+		btnLogout.addActionListener(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent event) {
+						Request request = new Request(RequestHead.LOGOUT);
+						FrontController.getInstance().dispatchRequest(request);
+					}
+				}
+		);
 		
 		btnSave = new JButton("Save");
 		btnSave.setBounds(1030, 350, 131, 58);
@@ -61,6 +76,7 @@ public class CategoryPanel extends JPanel {
 		btnReturn.setBounds(1048, 683, 113, 47);
 		btnReturn.setFont(btnFont);
 		add(btnReturn);
+		btnReturn.addActionListener(this);
 		
 		lblComment = new JLabel("Comment:");
 		lblComment.setBounds(43, 572, 117, 27);
@@ -80,5 +96,16 @@ public class CategoryPanel extends JPanel {
 		table.setBounds(43, 239, 770, 295);
 		add(table);
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		// TODO Auto-generated method stub
+		if( event.getActionCommand().equals("Return") ) {
+			// Return to Admin Panel
+			MainFrame.getInstance().removeCurPanel();
+			MainFrame.getInstance().setCategoryPanel();
+		}
+		
 	}
 }
