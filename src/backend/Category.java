@@ -15,12 +15,6 @@ public class Category extends AcademicObject{
         c.addDescendant(this);
     }
 
-    // copy constructor
-//    public Category(Category category) {
-//        super(category);
-//        _weight = category.getWeight();
-//    }
-
     /**
      * Compute grades of the current Category. It passes _weight to all assignments it records.
      */
