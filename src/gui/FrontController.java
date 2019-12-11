@@ -2,7 +2,11 @@ package gui;
 
 import java.util.List;
 
+import backend.Course;
+import backend.SystemPortal;
 import share.Request;
+import share.RequestHead;
+import share.Response;
 
 /*
 Author: Ziqi Tan
@@ -10,6 +14,7 @@ Author: Ziqi Tan
 public class FrontController {
 	
 	private static FrontController frontController = new FrontController();
+	private SystemPortal systemPortal;
 	
 	public static FrontController getInstance() {
 		return frontController;
@@ -19,59 +24,105 @@ public class FrontController {
 	
 	private FrontController() {
 		dispatcher = new Dispatcher();
+		systemPortal = SystemPortal.getInstance();
 	}
 	
 	/**
 	 * Method: isAthenticUser
 	 * Return Response
 	 * */
-	private boolean isAuthenticUser(Request request) {
-		// Send request to backend
+	private Response isAuthenticUser(Request request) {
+		// Send request to back end
+		
+		/*Response response = systemPortal.getResponse(request);
+		
+		if( response.getStatus() ) {
+			System.out.println("User is authenticated from backend successfully.");
+			return true;
+		}*/
+		
+		// Front end test
 		final String userName = "cpk";
 		final String password = "123";
 		
 		List<Object> params = request.getParams();
 		String param1 = (String) params.get(0);
 		String param2 = (String) params.get(1);
+				
 		if( param1.contentEquals(userName) && param2.contentEquals(password) ) {
 			System.out.println("User is authenticated successfully.");
-			return true;
+			return new Response(request.getHead(), true);
 		}
 		
 		System.out.println("Username and password did not match.");
-		
-		
-		return false;
+				
+		return new Response(request.getHead(), false);
 	}
 	
 	/**
 	 * Method: logout
 	 * */
-	private boolean logout(Request request) {
+	private Response logout(Request request) {
 		// Send request to backend
 		
-		return true;
+		return new Response(request.getHead(), true);
 	}
 	
 	/**
 	 * Method: getCourseList
 	 * */
-	private boolean getCourseList(Request request) {
-		
-		return true;
+	private Response getCourseList(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);	
+		return response;
+	}
+	
+	/**
+	 * Method: addCourse
+	 * */
+	private Response addCourse(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);	
+		return response;
 	}
 	
 	/**
 	 * Method: selectCourse
 	 * */
-	private boolean selectCourse(Request request) {
-		System.out.println(request.getParams());
+	private Response selectCourse(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);	
+		return response;
+	}
+	
+	/**
+	 * Method: updateCourse
+	 * */
+	private Response updateCourse(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);	
+		return response;
+	}
+	
+	/**
+	 * Method: deleteCourse
+	 * */
+	private Response deleteCourse(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: editCategory
+	 * */
+	private Response editCategory(Request request) {
+		System.out.println();
 		if( request.getParams().get(0) == null ) {
 			System.out.println("Please select a course.");
-			
-			return false;
+			return new Response(request.getHead(), false);
 		}
-		return true;
+		return new Response(request.getHead(), true);
 	}
 	
 	/**
@@ -82,28 +133,65 @@ public class FrontController {
 	 * 		Print request log.
 	 * */
 	private void trackRequest(Request request) {
-		System.out.println("Request log: " + request); 
+		System.out.println("Request log: " + request);
 	}
 	
 	public void dispatchRequest(Request request) {
 		trackRequest(request);
-		
+		Response response = null;
 		switch(request.getHead()) {
 			case LOGIN:
-				if( isAuthenticUser(request) ) {
-					dispatcher.dispatch(request);
+				 response = isAuthenticUser(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
 				}
 				break;
 			case LOGOUT:
-				if( logout(request) ) {
-					dispatcher.dispatch(request);
+				response = logout(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
 				}
 				break;
 			case GET_COURSE_LIST:
+				response = getCourseList(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case ADD_COURSE:
+				response = addCourse(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
 				break;
 			case SELECT_COURSE:
-				if( selectCourse(request) ) {
-					dispatcher.dispatch(request);
+				response = selectCourse(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case UPDATE_COURSE:
+				response = updateCourse(request);
+				Request request2 = new Request(RequestHead.SELECT_COURSE);
+				request2.addIds(request.getIds().get(0));
+				request2.addIds(null);
+				request2.addIds(null);
+				request2.addIds(null);
+				response = selectCourse(request2);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case DELETE_COURSE:
+				response = deleteCourse(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case UPDATE_CATEGORY:
+				response = editCategory(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
 				}
 				break;
 			default:

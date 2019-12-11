@@ -1,6 +1,10 @@
 package backend;
 
+//import javafx.application.Preloader;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Class represents a course. This class is currently at the top level of all derived classes.
@@ -14,13 +18,22 @@ public class Course extends AcademicObject {
     private double _curve;
     private ArrayList<Student> _roster;
 
+
     //course is top level, so null parent
     public Course(int id, String name, String _description, String semester) {
         super(id, name, _description, null);
         _semester = semester;
-        _roster = new ArrayList<Student>();
+        _roster = new ArrayList<>();
         setCurve(0);// curve should be initialized as 0
     }
+
+//    //copy constructor
+//    public Course(int id, Course course, ) {
+//        this(course.getId(), course.getName(), course.getDescription(), null);
+//        _semester = course.getSemester();
+//        _curve = course.getCurve();
+//        _roster = new ArrayList<>();
+//    }
 
     /**
      * Compute grades for both students within this course and all Categories under this course, such as exams, hws, etc
@@ -69,6 +82,19 @@ public class Course extends AcademicObject {
 
     public void withdrawStudent(int index) {
         _roster.get(index).setWithdraw(true);
+    }
+
+    /**
+     * Check if the sum of weights of all categories is 100%
+     * @return true if satisfies, false otherwise.
+     */
+    public Boolean isValid() {
+        double weightSum = 0.0;
+        for (AcademicObject ao : getAllDescendants()) {
+            Category cat = (Category) ao;
+            weightSum += cat.getWeight();
+        }
+        return weightSum == 1.0;
     }
 
 }

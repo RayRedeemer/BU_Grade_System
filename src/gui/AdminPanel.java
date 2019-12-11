@@ -1,28 +1,24 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
-
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.TitledBorder;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
 
 import share.Request;
 import share.RequestHead;
@@ -32,22 +28,29 @@ Author: Ziqi Tan
 */
 public class AdminPanel extends JPanel implements ActionListener {
 		
+	private JFrame addCourseFrame;
 	private JTable courseListTable;
-	private String[] columnNames = 
-		{ "Name", "Year", "Semester", "Enrollment Count", "Average Grade" };
+	private JScrollPane scrollPane;
+	private String[] columnNames = { 
+			"ID", "Name", "Semester", "Average Grade" 
+	};
 	private String[][] data = { 
-            { "CS 591", "19", "Fall", "66", "--"}, 
-            { "CS 592", "19", "Fall", "30", "--" },
-            { "CS 666", "18", "Spring", "150", "83" },
-            { "CS 591", "17", "Summer", "111", "87"}
+            { null, null, null, null }
     }; 
-	private String[][] tableData;
 	
 	private static final int headerHeight = 32;
 	
 	private int selectedRow;
 	private int selectedColumn;
 	private String selectedCourse;
+	
+	private int frameWidth;
+	private int frameHeight; 
+	private int tableWidth;
+	private int hGap;
+	private int vGap;
+		
+	private JLabel titleLabel;
 	
 	/**
 	 * Constructor
@@ -56,22 +59,23 @@ public class AdminPanel extends JPanel implements ActionListener {
 
 		setLayout(null);
 		
-		int frameWidth = MainFrame.getInstance().getWidth();
-		int frameHeight = MainFrame.getInstance().getHeight();
+		frameWidth = MainFrame.getInstance().getWidth();
+		frameHeight = MainFrame.getInstance().getHeight();
 		
-		int hGap = 50;
-		int vGap = 50;
+		hGap = 50;
+		vGap = 50;
 		
 		int x = (int)(frameWidth*0.4);
 		int y = (int)(frameHeight*0.05);
 
-		JLabel titleLabel = new JLabel("Welcome");
+		titleLabel = new JLabel("Welcome");
 		titleLabel.setBounds(x, y, 200, 50);
 		titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 35));
 		add(titleLabel);
 		
 		JButton logoutButton = new JButton("Logout");
 		logoutButton.setBounds(titleLabel.getX() + titleLabel.getWidth() + hGap, titleLabel.getY() + 13, 80, 25);
+
 		add(logoutButton);
 		logoutButton.addActionListener(
 				new ActionListener() {
@@ -82,40 +86,45 @@ public class AdminPanel extends JPanel implements ActionListener {
 					}
 				}
 		);
-	
+		
+		// getCourseList();
+		
 		// set up a table
 		createJTable();
 	
         // adding it to JScrollPane 
-		int tableWidth = (int) courseListTable.getPreferredSize().getWidth();
-        JScrollPane sp = new JScrollPane(courseListTable); 
-        sp.setBounds((int) (frameWidth * 0.25), titleLabel.getY() + titleLabel.getHeight(), 
-        		tableWidth, 
-        		(int)(frameHeight*0.5));
-        add(sp);
+		setScrollPane();
+        add(scrollPane);
         
         int buttonWidth = 130;
         int textHeight = 25;
-        int buttonX = sp.getX() + tableWidth + hGap;
-        int buttonY = sp.getY();
+        int buttonX = scrollPane.getX() + tableWidth + hGap;
+        int buttonY = scrollPane.getY();
+        System.out.println(tableWidth);
         JButton addCourseButton = new JButton("Add Course");
         addCourseButton.setBounds(buttonX, buttonY, buttonWidth, textHeight);
 		add(addCourseButton);
+		addCourseButton.addActionListener(this);
 		
 		JButton cloneCourseButton = new JButton("Clone Course");
 		cloneCourseButton.setBounds(buttonX, buttonY + vGap, buttonWidth, textHeight);
 		add(cloneCourseButton);
+		cloneCourseButton.addActionListener(this);
 		
 		JButton selectCourseButton = new JButton("Select Course");
 		selectCourseButton.setBounds(buttonX, buttonY + vGap * 2, buttonWidth, textHeight);
 		add(selectCourseButton);
 		selectCourseButton.addActionListener(this);
-		
+			
 		JButton deleteCourseButton = new JButton("Delete Course");
 		deleteCourseButton.setBounds(buttonX, buttonY + vGap * 3, buttonWidth, textHeight);
 		add(deleteCourseButton);
+		deleteCourseButton.addActionListener(this);
 		
-		
+		JButton refresh = new JButton("Refresh");
+		refresh.setBounds(buttonX, buttonY + vGap * 4, buttonWidth, textHeight);
+		add(refresh);
+		refresh.addActionListener(this);	
 	}
 	
 	/**
@@ -176,17 +185,88 @@ public class AdminPanel extends JPanel implements ActionListener {
         	    
         	 }
         } );
+  
 	}
 	
-
+	/**
+	 * Method: setScrollPane
+	 * */
+	private void setScrollPane() {
+		tableWidth = (int) courseListTable.getPreferredSize().getWidth();
+        scrollPane = new JScrollPane(courseListTable); 
+        scrollPane.setBounds((int) (frameWidth * 0.25), titleLabel.getY() + titleLabel.getHeight(), 
+        		tableWidth, 
+        		(int)(frameHeight*0.5));
+	}
+	
+	/**
+	 * Method: getCourseList
+	 * */
+	private void getCourseList() {
+		Request request = new Request(RequestHead.GET_COURSE_LIST);
+		request.addIds(null);
+		request.addIds(null);
+		request.addIds(null);
+		request.addIds(null);
+		FrontController.getInstance().dispatchRequest(request);
+	}
+	
+	public void updateCourseList( String[] _columnNames, String[][] _data ) {
+		this.columnNames = _columnNames;
+		this.data = _data;		
+		remove(scrollPane);
+		createJTable();
+		setScrollPane();
+		add(scrollPane);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		// TODO Auto-generated method stub
+		
+		if( event.getActionCommand().equals("Add Course") ) {
+			if( addCourseFrame != null ) {
+				addCourseFrame.dispose();
+			}
+			addCourseFrame = new CourseForm(RequestHead.ADD_COURSE, 0, "", "", "", 0.0, "");
+		}
+		
+		if( event.getActionCommand().equals("Clone Course") ) {
+			
+		}
+				
 		if( event.getActionCommand().equals("Select Course") ) {
 			Request request = new Request(RequestHead.SELECT_COURSE);
-			request.addParams(selectedCourse);
-			FrontController.getInstance().dispatchRequest(request);
+			if( selectedCourse == null ) {
+				JOptionPane.showMessageDialog(null, "Please Selected a course.");
+			}
+			else {
+				request.addIds(Integer.parseInt(selectedCourse));  // course id
+				request.addIds(null);
+				request.addIds(null);
+				request.addIds(null);
+				FrontController.getInstance().dispatchRequest(request);
+			}
 		}
+		
+		if( event.getActionCommand().equals("Delete Course") ) {
+			Request request = new Request(RequestHead.DELETE_COURSE);
+			if( selectedCourse == null ) {
+				JOptionPane.showMessageDialog(null, "Please Selected a course.");
+			}
+			else {
+				request.addIds(Integer.parseInt(selectedCourse));  // course id
+				request.addIds(null);
+				request.addIds(null);
+				request.addIds(null);
+				FrontController.getInstance().dispatchRequest(request);
+			}
+		}
+		
+		if( event.getActionCommand().equals("Refresh") ) {
+			// update course list
+			getCourseList();			
+		}
+		
 	}
-	
+
 }

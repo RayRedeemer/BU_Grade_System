@@ -33,13 +33,25 @@ public abstract class AcademicObject implements Commentable {
         _description = description;
         _comment = "";
         _parent = parent;
+        _descendants = new ArrayList<>();
     }
 
-    public AcademicObject(int id, String name, String description) {
-        this(id, name, description, null);
-    }
+    // constructor with null parent reference
+//    public AcademicObject(int id, String name, String description) {
+//        this(id, name, description, null);
+//    }
 
-    //TODO copy constructor
+    // constructor with descendants
+//    public AcademicObject(int id, String name, String description, AcademicObject parent, ArrayList<AcademicObject> descendants) {
+//        this(id, name, description, parent);
+//        _descendants.addAll(descendants);
+//    }
+
+//    // copy constructor
+//    public AcademicObject(AcademicObject ao) {
+//        this(ao.getId(), ao.getName(), ao.getDescription(), ao.getParent());
+//    }
+
 
     public int getId() {
         return _id;
@@ -101,17 +113,30 @@ public abstract class AcademicObject implements Commentable {
     }
 
     /**
-     * Remove a descendant given its index
+     * Remove a descendant
      *
-     * @param index
+     * @param ao
      */
-    public void removeDescendant(int index) {
-        if (isIndexValid(index) && this.hasDescendants())
-            _descendants.remove(index);
+    public void deleteDescendant(AcademicObject ao) {
+//        if (this.hasDescendants()) {
+//            ao.deleteAllDescendants();
+//        }
+        _descendants.remove(ao);
     }
 
+//    /**
+//     * remove all descendants
+//     */
+//    public void deleteAllDescendants() {
+//        if (this.hasDescendants()) {
+//            for (AcademicObject descendant : getAllDescendants()) {
+//                deleteDescendant(descendant);
+//            }
+//        }
+//    }
+
     /**
-     * Check if the current object has decendants
+     * Check if the current object has descendants
      *
      * @return boolean.
      */
@@ -129,6 +154,11 @@ public abstract class AcademicObject implements Commentable {
         _descendants.add(ao);
     }
 
+    public void addAllDescendants(ArrayList<AcademicObject> arr) {
+        if (!this.hasDescendants()) _descendants = new ArrayList<AcademicObject>();
+        _descendants.addAll(arr);
+    }
+
     private boolean isIndexValid(int index) {
         if (index < 0 || index >= _descendants.size()) {
             return false;
@@ -136,5 +166,6 @@ public abstract class AcademicObject implements Commentable {
             return true;
         }
     }
+
 
 }

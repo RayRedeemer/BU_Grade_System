@@ -3,13 +3,15 @@ package gui;
 import javax.swing.JPanel;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 
-public class OverviewPanel extends JPanel {
+public class OverviewPanel extends JPanel implements ActionListener {
 	private JTable table;
 	private JLabel lblTitle, lblComment;
 	private JButton btnLogout, btnCurve, btnSave, btnDelete, btnReturn;
@@ -68,6 +70,12 @@ public class OverviewPanel extends JPanel {
 		btnReturn.setFont(btnFont);
 		add(btnReturn);
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
