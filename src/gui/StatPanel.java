@@ -11,6 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+
+import share.Request;
+import share.RequestHead;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
@@ -23,6 +27,8 @@ public class StatPanel extends JPanel implements ActionListener {
 	private JButton btnGrad;
 	private JButton btnEmpty;
 	private JButton btnAllAssignments;
+	private JButton btnReturn;
+	private JButton btnLogout;
 	
 	private JLabel lbMean;
 	private JLabel lbMedian;
@@ -40,6 +46,18 @@ public class StatPanel extends JPanel implements ActionListener {
 		Font btnFont = new Font("Microsoft YaHei UI", Font.PLAIN, 20);
 		Font lblFont = new Font("Times New Roman", Font.PLAIN, 25);
 		setLayout(null);
+		
+		btnLogout = new JButton("Logout");
+		btnLogout.setBounds(696, 53, 101, 47);
+		btnLogout.setFont(btnFont);
+		add(btnLogout);
+		btnLogout.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				Request request = new Request(RequestHead.LOGOUT);
+				FrontController.getInstance().dispatchRequest(request);
+			}
+		});
 		
 		btnAll = new JButton("All");
 		btnAll.setBounds(49, 60, 280, 80);
@@ -105,6 +123,18 @@ public class StatPanel extends JPanel implements ActionListener {
 		lbRange.setBounds(137, 573, lblWidth, lblHeight);
 		lbRange.setFont(lblFont);
 		add(lbRange);
+		
+		btnReturn = new JButton("Return");
+		btnReturn.setBounds(706, 631, 130, 56);
+		btnReturn.setFont(btnFont);
+		add(btnReturn);
+		btnReturn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {				
+				MainFrame.getInstance().removeCurPanel();
+				MainFrame.getInstance().setCoursePanel();
+			}
+		});
 	}
 
 	@Override

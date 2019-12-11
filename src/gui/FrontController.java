@@ -114,6 +114,24 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: getCateList
+	 * */
+	private Response getCateList(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;		
+	}
+	
+	/**
+	 * Method: addCate
+	 * */
+	private Response addCate(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;		
+	}
+	
+	/**
 	 * Method: editCategory
 	 * */
 	private Response editCategory(Request request) {
@@ -188,11 +206,29 @@ public class FrontController {
 					dispatcher.dispatch(response);
 				}
 				break;
+			case GET_CATEGORY_LIST:
+				response = getCateList(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case ADD_CATEGORY:
+				response = addCate(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
 			case UPDATE_CATEGORY:
 				response = editCategory(request);
 				if( response.getStatus() ) {
 					dispatcher.dispatch(response);
 				}
+				break;
+			case DELETE_CATEGORY:
+				// TODO:
+				break;
+			case GET_STUDENT_LIST:
+				// TODO:
 				break;
 			default:
 				System.out.println("Error.");

@@ -221,7 +221,6 @@ public class DatabasePortal {
         return cNew;
     }
 
-    //
 
     public Category addCategory(Course c, String name, String description) {
         try {

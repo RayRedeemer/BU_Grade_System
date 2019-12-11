@@ -28,5 +28,39 @@ public interface Statisticsable {
      */
     public double getMaximum();
 
+    /**
+     * return range
+     * @return
+     */
     public double getRange();
+
+    /**
+     * set mean
+     * @param m
+     */
+    public void setMean(double m);
+
+    /**
+     * set median
+     * @param m
+     */
+    public void setMedian(double m);
+
+    /**
+     * set minimum
+     * @param m
+     */
+    public void setMinimum(double m);
+
+    /**
+     * set maximum
+     * @param m
+     */
+    public void setMaximum(double m);
+
+    /**
+     * set range
+     * @param r
+     */
+    public void setRange(double r);
 }

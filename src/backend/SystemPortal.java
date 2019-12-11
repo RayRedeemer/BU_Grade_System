@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
 
-
-//TODO update Assignment with date fields
 /**
  * Class serves as the interface between GUI and backend. All APIs must be private.
  * It follows singleton design pattern.
@@ -521,8 +519,10 @@ public class SystemPortal {
         assignment.setName((String)params.get(0)); // name
         assignment.setDescription((String)params.get(1)); // desc
         assignment.setWeight((Double)params.get(2)); // weight
-        assignment.setMaxScore((Double)params.get(3)); // maxScore
-        assignment.setComment((String)params.get(4)); // comment
+        assignment.setAssignedDate((LocalDateTime) params.get(3)); // assignedDate
+        assignment.setDueDate((LocalDateTime) params.get(4)); // dueDate
+        assignment.setMaxScore((Double)params.get(5)); // maxScore
+        assignment.setComment((String)params.get(6)); // comment
         return DatabasePortal.getInstance().updateAssignment(assignment);
     }
 

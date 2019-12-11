@@ -104,7 +104,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
 		if( event.getActionCommand().equals("Return") ) {
 			// Return to Admin Panel
 			MainFrame.getInstance().removeCurPanel();
-			MainFrame.getInstance().setCategoryPanel();
+			MainFrame.getInstance().setCoursePanel();
 		}
 		
 	}

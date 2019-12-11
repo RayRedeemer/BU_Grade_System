@@ -31,6 +31,8 @@ public class MainFrame extends JFrame {
 	private StatPanel statPanel;
 	private CategoryPanel categoryPanel;
 	private OverviewPanel overviewPanel;
+	private StuManagePanel stuManagePanel;
+
 	
 	private int frameWidth;
 	private int frameHeight;
@@ -101,6 +103,7 @@ public class MainFrame extends JFrame {
 		if( adminPanel == null ) {
 			adminPanel = new AdminPanel();
 		}
+		adminPanel.getCourseList();
 		add(adminPanel);
 		curPanel = adminPanel;
 		adminPanel.setEnabled(true);
@@ -108,11 +111,22 @@ public class MainFrame extends JFrame {
 		System.out.println("setAdminPanel");		
 	}
 	
+	// Overload
+	public void setCoursePanel() {
+		add(coursePanel);
+		curPanel = coursePanel;
+		coursePanel.setEnabled(true);
+		coursePanel.setVisible(true);
+		System.out.println("setCoursePanel");
+	}
+	
+	// Overload
 	public void setCoursePanel(int courseID, String courseName, String semester, String description, double curve, String comment) {
 		if( coursePanel == null ) {
 			coursePanel = new CoursePanel(courseID, courseName, semester, description, curve, comment);
 		}
 		coursePanel.setCourse(courseID, courseName, semester, description, curve, comment);
+		coursePanel.getCateList();
 		add(coursePanel);
 		curPanel = coursePanel;
 		coursePanel.setEnabled(true);
@@ -121,7 +135,6 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void setStatPanel() {
-
 		if( statPanel == null ) {
 			statPanel = new StatPanel();
 		}
@@ -133,7 +146,6 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void setCategoryPanel() {
-
 		if( categoryPanel == null ) {
 			categoryPanel = new CategoryPanel();
 		}
@@ -145,7 +157,6 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void setOverviewPanel() {
-
 		if( overviewPanel == null ) {
 			overviewPanel = new OverviewPanel();
 		}
@@ -154,6 +165,17 @@ public class MainFrame extends JFrame {
 		overviewPanel.setEnabled(true);
 		overviewPanel.setVisible(true);
 		System.out.println("setOverviewPanel");		
+	}
+	
+	public void setStuManagePanel() {
+		if( stuManagePanel == null ) {
+			stuManagePanel = new StuManagePanel();
+		}
+		add(stuManagePanel);
+		curPanel = stuManagePanel;
+		stuManagePanel.setEnabled(true);
+		stuManagePanel.setVisible(true);
+		System.out.println("setStuManagePanel");
 	}
 	
 	/**

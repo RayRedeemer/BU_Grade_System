@@ -87,7 +87,6 @@ public class AdminPanel extends JPanel implements ActionListener {
 				}
 		);
 		
-		// getCourseList();
 		
 		// set up a table
 		createJTable();
@@ -119,12 +118,7 @@ public class AdminPanel extends JPanel implements ActionListener {
 		JButton deleteCourseButton = new JButton("Delete Course");
 		deleteCourseButton.setBounds(buttonX, buttonY + vGap * 3, buttonWidth, textHeight);
 		add(deleteCourseButton);
-		deleteCourseButton.addActionListener(this);
-		
-		JButton refresh = new JButton("Refresh");
-		refresh.setBounds(buttonX, buttonY + vGap * 4, buttonWidth, textHeight);
-		add(refresh);
-		refresh.addActionListener(this);	
+		deleteCourseButton.addActionListener(this);	
 	}
 	
 	/**
@@ -201,8 +195,11 @@ public class AdminPanel extends JPanel implements ActionListener {
 	
 	/**
 	 * Method: getCourseList
+	 * Function:
+	 * 		1. Sent request to backend.
+	 * 		2. Dispatcher will call updateCourseList(data) to update the table.
 	 * */
-	private void getCourseList() {
+	public void getCourseList() {
 		Request request = new Request(RequestHead.GET_COURSE_LIST);
 		request.addIds(null);
 		request.addIds(null);
@@ -210,9 +207,12 @@ public class AdminPanel extends JPanel implements ActionListener {
 		request.addIds(null);
 		FrontController.getInstance().dispatchRequest(request);
 	}
-	
-	public void updateCourseList( String[] _columnNames, String[][] _data ) {
-		this.columnNames = _columnNames;
+	/**
+	 * Method: updateCourseList
+	 * @param the data in the table
+	 * Function: Dispatcher will call this function.
+	 * */
+	public void updateCourseList( String[][] _data ) {
 		this.data = _data;		
 		remove(scrollPane);
 		createJTable();
@@ -260,11 +260,6 @@ public class AdminPanel extends JPanel implements ActionListener {
 				request.addIds(null);
 				FrontController.getInstance().dispatchRequest(request);
 			}
-		}
-		
-		if( event.getActionCommand().equals("Refresh") ) {
-			// update course list
-			getCourseList();			
 		}
 		
 	}
