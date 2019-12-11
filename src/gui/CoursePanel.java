@@ -33,7 +33,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 	
 	private int courseID;
 	private CourseForm courseForm;
-
+	private CategoryForm cateForm;
 	
 	private String[] columnNames = 
 		{ "ID", "Categories", "Weight" };
@@ -44,24 +44,28 @@ public class CoursePanel extends JPanel implements ActionListener {
 	};
 	
 	private JTable cateTable;
+	private JScrollPane tableScrollPane;
 	private int selectedRow;
 	private int selectedColumn;
 	private String selectedCate;
 	
 	private static final int headerHeight = 32;
+	private static final int hGap = 25;
+	private static final int vGap = 35;
 	
 	private JLabel titleLabel;
 	private JLabel semesterLabel;	
 	private JTextArea descriptionArea;
 	private JLabel curveLabel;
 	private JTextArea commentArea;
+	private JLabel cateTableLabel;
 		
 	private String courseName;
 	private String semester;
 	private String description;
 	private double curve;
 	private String comment;
-	
+		
 	/**
 	 * Constructor
 	 * */
@@ -77,10 +81,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 		
 		int frameWidth = MainFrame.getInstance().getWidth();
 		int frameHeight = MainFrame.getInstance().getHeight();
-		
-		int hGap = 25;
-		int vGap = 35;
-		
+			
 		int x = (int)(frameWidth*0.2);
 		int y = (int)(frameHeight*0.05);
 		
@@ -155,17 +156,14 @@ public class CoursePanel extends JPanel implements ActionListener {
 		commentAreaScrollPane.setBounds(labelX, commentLabel.getY() + commentLabel.getHeight() + vGap/2, (int)(frameWidth*0.5), 100);
 		add(commentAreaScrollPane);
 		
-		JLabel assignmentTableLabel = new JLabel("Categories");
-		assignmentTableLabel.setFont(font);
-		assignmentTableLabel.setBounds(labelX, commentAreaScrollPane.getY() + commentAreaScrollPane.getHeight() + vGap, labelWidth, textHeight);
-		add(assignmentTableLabel);
+		cateTableLabel = new JLabel("Categories");
+		cateTableLabel.setFont(font);
+		cateTableLabel.setBounds(labelX, commentAreaScrollPane.getY() + commentAreaScrollPane.getHeight() + vGap, labelWidth, textHeight);
+		add(cateTableLabel);
+		
 		
 		createCateTable();
-		int tableWidth = (int) cateTable.getPreferredSize().getWidth();
-		JScrollPane tableScrollPane = new JScrollPane(cateTable);
-		tableScrollPane.setBounds(labelX, assignmentTableLabel.getY() + vGap, 
-        		tableWidth, 
-        		(int) (cateTable.getPreferredSize().getHeight() + headerHeight + 3));
+		setScrollPane();
         add(tableScrollPane);
         
         int hButtonX = tableScrollPane.getX();
@@ -269,6 +267,17 @@ public class CoursePanel extends JPanel implements ActionListener {
         	 }
         } );
 	}
+	
+	/**
+	 * Method: setScrollPane
+	 * */
+	private void setScrollPane() {
+		int tableWidth = (int) cateTable.getPreferredSize().getWidth();
+		tableScrollPane = new JScrollPane(cateTable);
+		tableScrollPane.setBounds(cateTableLabel.getX(), cateTableLabel.getY() + vGap, 
+        		tableWidth, 
+        		(int) (cateTable.getPreferredSize().getHeight() + headerHeight + 3));
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
@@ -286,7 +295,15 @@ public class CoursePanel extends JPanel implements ActionListener {
 		}
 		
 		if( event.getActionCommand().equals("Add Category") ) {
-			
+			/*Request request = new Request(RequestHead.ADD_CATEGORY);
+			request.addIds(courseID);
+			request.addIds(null);
+			request.addIds(null);
+			request.addIds(null);*/
+			if( cateForm != null ) {
+				cateForm.dispose();
+			}
+			cateForm = new CategoryForm(courseID);
 		}
 		
 		if( event.getActionCommand().equals("Edit Category") ) {
@@ -300,7 +317,8 @@ public class CoursePanel extends JPanel implements ActionListener {
 		}
 		
 		if( event.getActionCommand().equals("Student Overview") ) {
-			
+			MainFrame.getInstance().removeCurPanel();
+			MainFrame.getInstance().setOverviewPanel();
 		}
 		
 		if( event.getActionCommand().equals("Manage Student") ) {
@@ -330,7 +348,31 @@ public class CoursePanel extends JPanel implements ActionListener {
 	}
 	
 	/**
-	 * Method: 
+	 * Method: getCateList
+	 * Function: 
+	 * 		1. send request to back end.
+	 * 		2. dispatcher will call updateCateList.
 	 * */
+	public void getCateList() {
+		Request request = new Request(RequestHead.GET_CATEGORY_LIST);
+		request.addIds(courseID);
+		request.addIds(null);
+		request.addIds(null);
+		request.addIds(null);
+		FrontController.getInstance().dispatchRequest(request);		
+	}
+	
+	/**
+	 * Method: updateCateList
+	 * Function:
+	 * 		Dispatcher will call this function
+	 * */
+	public void updateCateList(String[][] _data) {
+		this.data = _data;
+		remove(tableScrollPane);
+		createCateTable();
+		setScrollPane();
+		add(tableScrollPane);
+	}
 	
 }

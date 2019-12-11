@@ -109,11 +109,22 @@ public class MainFrame extends JFrame {
 		System.out.println("setAdminPanel");		
 	}
 	
+	// Overload
+	public void setCoursePanel() {
+		add(coursePanel);
+		curPanel = coursePanel;
+		coursePanel.setEnabled(true);
+		coursePanel.setVisible(true);
+		System.out.println("setCoursePanel");
+	}
+	
+	// Overload
 	public void setCoursePanel(int courseID, String courseName, String semester, String description, double curve, String comment) {
 		if( coursePanel == null ) {
 			coursePanel = new CoursePanel(courseID, courseName, semester, description, curve, comment);
 		}
 		coursePanel.setCourse(courseID, courseName, semester, description, curve, comment);
+		coursePanel.getCateList();
 		add(coursePanel);
 		curPanel = coursePanel;
 		coursePanel.setEnabled(true);

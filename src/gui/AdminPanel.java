@@ -195,6 +195,9 @@ public class AdminPanel extends JPanel implements ActionListener {
 	
 	/**
 	 * Method: getCourseList
+	 * Function:
+	 * 		1. Sent request to backend.
+	 * 		2. Dispatcher will call updateCourseList(data) to update the table.
 	 * */
 	public void getCourseList() {
 		Request request = new Request(RequestHead.GET_COURSE_LIST);
@@ -204,7 +207,11 @@ public class AdminPanel extends JPanel implements ActionListener {
 		request.addIds(null);
 		FrontController.getInstance().dispatchRequest(request);
 	}
-	
+	/**
+	 * Method: updateCourseList
+	 * @param the data in the table
+	 * Function: Dispatcher will call this function.
+	 * */
 	public void updateCourseList( String[][] _data ) {
 		this.data = _data;		
 		remove(scrollPane);

@@ -8,6 +8,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+
+import share.Request;
+import share.RequestHead;
+
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 
@@ -40,7 +44,14 @@ public class OverviewPanel extends JPanel implements ActionListener {
 		btnLogout.setBounds(1042, 43, 113, 50);
 		btnLogout.setFont(btnFont);
 		add(btnLogout);
-		
+		btnLogout.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				Request request = new Request(RequestHead.LOGOUT);
+				FrontController.getInstance().dispatchRequest(request);
+			}
+		});
+				
 		lblComment = new JLabel("Comment:");
 		lblComment.setBounds(58, 541, 87, 18);
 		lblComment.setFont(labelFont);
@@ -54,26 +65,36 @@ public class OverviewPanel extends JPanel implements ActionListener {
 		btnCurve.setBounds(778, 575, 100, 50);
 		btnCurve.setFont(btnFont);
 		add(btnCurve);
+		btnCurve.addActionListener(this);
 		
 		btnSave = new JButton("Save");
 		btnSave.setBounds(1055, 579, 100, 50);
 		btnSave.setFont(btnFont);
 		add(btnSave);
+		btnSave.addActionListener(this);
 		
 		btnDelete = new JButton("Delete");
 		btnDelete.setBounds(778, 651, 100, 50);
 		btnDelete.setFont(btnFont);
 		add(btnDelete);
+		btnDelete.addActionListener(this);
 		
 		btnReturn = new JButton("Return");
 		btnReturn.setBounds(1055, 652, 100, 50);
 		btnReturn.setFont(btnFont);
 		add(btnReturn);
+		btnReturn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {				
+				MainFrame.getInstance().removeCurPanel();
+				MainFrame.getInstance().setCoursePanel();
+			}
+		});
 
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent event) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -51,6 +51,7 @@ public class Dispatcher {
 			MainFrame.getInstance().removeCurPanel();
 			Course course = (Course) response.getBody().get(0);
 			MainFrame.getInstance().setCoursePanel(course.getId(), course.getName(), course.getSemester(), course.getDescription(), course.getCurve(), course.getComment());
+		
 		}
 		
 		if( response.getHead().equals(RequestHead.DELETE_COURSE) ) {
@@ -66,6 +67,18 @@ public class Dispatcher {
 				data[i][1] = ((AcademicObject) response.getBody().get(i)).getName();		
 				data[i][2] = decimalFormat.format(((Category) response.getBody().get(i)).getWeight()).toString();
 			}
+			
+			/*String[][] data = { 
+		            { "", "Homeworks", "30%" }, 
+		            { "", "Projects", "35%" },
+		            { "", "Exams", "35%" }
+			};*/
+						
+			MainFrame.getInstance().getCoursePanel().updateCateList(data);
+		}
+		
+		if( response.getHead().equals(RequestHead.ADD_CATEGORY) ) {
+			
 		}
 		
 		if( response.getHead().equals(RequestHead.UPDATE_CATEGORY) ) {
