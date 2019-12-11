@@ -5,10 +5,12 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-public class StudentManagerPanel extends JPanel {
+public class StuManagePanel extends JPanel implements ActionListener {
 	private JTable table;
 	private JLabel lblTitle;
 	private JButton btnLogout, btnAdd, btnDelete, btnReturn;
@@ -16,7 +18,7 @@ public class StudentManagerPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public StudentManagerPanel() {
+	public StuManagePanel() {
 		setLayout(null);
 		
 		Font titleFont = new Font("Times New Roman", Font.BOLD, 25);
@@ -52,5 +54,11 @@ public class StudentManagerPanel extends JPanel {
 		btnReturn.setFont(btnFont);
 		add(btnReturn);
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
