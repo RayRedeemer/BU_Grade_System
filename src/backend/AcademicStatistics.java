@@ -138,26 +138,28 @@ public class AcademicStatistics implements Statisticsable{
         return as;
     }
 
-    private void setMean(double m) {
+    // setters
+    public void setMean(double m) {
         _mean = m;
     }
 
-    private void setMedian(double m) {
+    public void setMedian(double m) {
         _median = m;
     }
 
-    private void setMinimum(double m) {
+    public void setMinimum(double m) {
         _minimum = m;
     }
 
-    private void setMaximum(double m) {
+    public void setMaximum(double m) {
         _maximum = m;
     }
 
-    private void setRange(double r) {
+    public void setRange(double r) {
         _range = r;
     }
 
+    // getters
     public double getMean() {
         return _mean;
     }
