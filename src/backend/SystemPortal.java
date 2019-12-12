@@ -20,10 +20,6 @@ public class SystemPortal {
     // Singleton Pattern
     private static SystemPortal systemPortal = new SystemPortal();
 
-    private SystemPortal() {
-
-    }
-
     public static SystemPortal getInstance() {
         return systemPortal;
     }
