@@ -179,7 +179,6 @@ public class AdminPanel extends JPanel implements ActionListener {
         	    
         	 }
         } );
-  
 	}
 	
 	/**

@@ -293,11 +293,6 @@ public class CoursePanel extends JPanel implements ActionListener {
 		}
 		
 		if( event.getActionCommand().equals("Add Category") ) {
-			/*Request request = new Request(RequestHead.ADD_CATEGORY);
-			request.addIds(courseID);
-			request.addIds(null);
-			request.addIds(null);
-			request.addIds(null);*/
 			if( cateForm != null ) {
 				cateForm.dispose();
 			}
