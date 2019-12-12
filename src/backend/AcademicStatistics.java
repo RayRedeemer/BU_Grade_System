@@ -20,7 +20,7 @@ public class AcademicStatistics implements Statisticsable{
         _range = 0;
     }
 
-    public static AcademicStatistics of(Course c) {
+    public static AcademicStatistics of(Course c, boolean is_grad) {
         AcademicStatistics as = new AcademicStatistics();
         c.calculateGrades();
         int count = 0;
@@ -29,12 +29,14 @@ public class AcademicStatistics implements Statisticsable{
         double sum = 0;
         ArrayList<Double> medianList = new ArrayList<Double>();
         for (Student s : c.getAllStudents()) {
-            double score = s.getGrade();
-            count++;
-            sum += score;
-            if (score < min) min = score;
-            if (score > max) max = score;
-            medianList.add(score);
+            if (s.isGradStudent() == is_grad && !s.getWithdrawn()) {
+                double score = s.getGrade();
+                count++;
+                sum += score;
+                if (score < min) min = score;
+                if (score > max) max = score;
+                medianList.add(score);
+            }
         }
         if (count == 0) {
             return as;
@@ -53,7 +55,7 @@ public class AcademicStatistics implements Statisticsable{
         return as;
     }
 
-    public static AcademicStatistics of(Category cat) {
+    public static AcademicStatistics of(Category cat, boolean is_grad) {
         AcademicStatistics as = new AcademicStatistics();
         HashMap<Student, Double> gradeMap = new HashMap<Student, Double>();
         for (AcademicObject aoa : cat.getAllDescendants()) {
@@ -63,17 +65,19 @@ public class AcademicStatistics implements Statisticsable{
             for (AcademicObject aosub : a.getAllDescendants()) {
                 Submission sub = (Submission) aosub;
                 Student s = sub.getStudent();
-                double score;
-                if (sub.getStyle()) {
-                    score = (sub.getScore() + sub.getBonus()) / outOf;
-                } else {
-                    score = (sub.getScore() + sub.getBonus() + outOf) / outOf;
-                }
-                score *= aWeight;
-                if (gradeMap.containsKey(s)) {
-                    gradeMap.put(s, gradeMap.get(s) + score);
-                } else {
-                    gradeMap.put(s, score);
+                if (s.isGradStudent() == is_grad && !s.getWithdrawn()) {
+                    double score;
+                    if (sub.getStyle()) {
+                        score = (sub.getScore() + sub.getBonus()) / outOf;
+                    } else {
+                        score = (sub.getScore() + sub.getBonus() + outOf) / outOf;
+                    }
+                    score *= aWeight;
+                    if (gradeMap.containsKey(s)) {
+                        gradeMap.put(s, gradeMap.get(s) + score);
+                    } else {
+                        gradeMap.put(s, score);
+                    }
                 }
             }
         }
@@ -100,7 +104,7 @@ public class AcademicStatistics implements Statisticsable{
         return as;
     }
 
-    public static AcademicStatistics of(Assignment a) {
+    public static AcademicStatistics of(Assignment a, boolean is_grad) {
         AcademicStatistics as = new AcademicStatistics();
         int count = 0;
         double max = -1;
@@ -110,17 +114,20 @@ public class AcademicStatistics implements Statisticsable{
         double outOf = a.getMaxScore();
         for (AcademicObject aosub : a.getAllDescendants()) {
             Submission sub = (Submission) aosub;
-            double score;
-            if (sub.getStyle()) {
-                score = (sub.getScore() + sub.getBonus()) / outOf;
-            } else {
-                score = (outOf + sub.getScore() + sub.getBonus()) / outOf;
+            Student s = sub.getStudent();
+            if (s.isGradStudent() == is_grad && !s.getWithdrawn()) {
+                double score;
+                if (sub.getStyle()) {
+                    score = (sub.getScore() + sub.getBonus()) / outOf;
+                } else {
+                    score = (outOf + sub.getScore() + sub.getBonus()) / outOf;
+                }
+                count++;
+                if (score > max) max = score;
+                if (score < min) min = score;
+                sum += score;
+                medianList.add(score);
             }
-            count++;
-            if (score > max) max = score;
-            if (score < min) min = score;
-            sum += score;
-            medianList.add(score);
         }
 
         if(count == 0) return as;
