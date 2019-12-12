@@ -274,7 +274,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 		tableScrollPane = new JScrollPane(cateTable);
 		tableScrollPane.setBounds(cateTableLabel.getX(), cateTableLabel.getY() + vGap, 
         		tableWidth, 
-        		(int) (cateTable.getPreferredSize().getHeight() + headerHeight + 3));
+        		/*(int) (cateTable.getPreferredSize().getHeight() + headerHeight + 3)*/100);
 	}
 
 	@Override
@@ -301,17 +301,38 @@ public class CoursePanel extends JPanel implements ActionListener {
 			if( cateForm != null ) {
 				cateForm.dispose();
 			}
-			cateForm = new CategoryForm(courseID);
+			cateForm = new CategoryForm(courseID, 0);
 		}
 		
 		if( event.getActionCommand().equals("Edit Category") ) {
-			Request request = new Request(RequestHead.UPDATE_CATEGORY);
-			request.addParams(selectedCate);
-			FrontController.getInstance().dispatchRequest(request);
+			
+			if( selectedCate == null ) {
+				JOptionPane.showMessageDialog(null, "Please Selected a category.");
+			}
+			else {
+				/*Request request = new Request(RequestHead.SELECT_COURSE);
+				request.addIds(Integer.parseInt(selectedCourse));  // course id
+				request.addIds(null);
+				request.addIds(null);
+				request.addIds(null);
+				FrontController.getInstance().dispatchRequest(request);*/
+				MainFrame.getInstance().removeCurPanel();
+				MainFrame.getInstance().setCategoryPanel();
+			}
 		}
 		
 		if( event.getActionCommand().equals("Delete Category") ) {
-			
+			if( selectedCate == null ) {
+				JOptionPane.showMessageDialog(null, "Please Selected a category.");
+			}
+			else {
+				Request request = new Request(RequestHead.DELETE_CATEGORY);
+				request.addIds(courseID);  // course id
+				request.addIds(Integer.parseInt(selectedCate));
+				request.addIds(null);
+				request.addIds(null);
+				FrontController.getInstance().dispatchRequest(request);				
+			}
 		}
 		
 		if( event.getActionCommand().equals("Student Overview") ) {

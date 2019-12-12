@@ -134,13 +134,19 @@ public class FrontController {
 	/**
 	 * Method: editCategory
 	 * */
-	private Response editCategory(Request request) {
-		System.out.println();
-		if( request.getParams().get(0) == null ) {
-			System.out.println("Please select a course.");
-			return new Response(request.getHead(), false);
-		}
-		return new Response(request.getHead(), true);
+	private Response updateCate(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;	
+	}
+	
+	/**
+	 * Method: deleteCategory
+	 * */
+	private Response deleteCate(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
 	}
 	
 	/**
@@ -219,13 +225,16 @@ public class FrontController {
 				}
 				break;
 			case UPDATE_CATEGORY:
-				response = editCategory(request);
+				response = updateCate(request);
 				if( response.getStatus() ) {
 					dispatcher.dispatch(response);
 				}
 				break;
 			case DELETE_CATEGORY:
-				// TODO:
+				response = deleteCate(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
 				break;
 			case GET_STUDENT_LIST:
 				// TODO:

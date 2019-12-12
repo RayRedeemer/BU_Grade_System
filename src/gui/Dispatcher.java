@@ -59,31 +59,36 @@ public class Dispatcher {
 		}
 		
 		if( response.getHead().equals(RequestHead.GET_CATEGORY_LIST) ) {
-			/*int numOfCates =  response.getBody().size();
+			int numOfCates =  response.getBody().size();
 			String[][] data = new String[numOfCates][3];
 			DecimalFormat decimalFormat = new DecimalFormat("0.00%");
 			for( int i = 0; i < numOfCates; i++ ) {
 				data[i][0] = Integer.toString(((AcademicObject) response.getBody().get(i)).getId());
-				data[i][1] = ((AcademicObject) response.getBody().get(i)).getName();		
+				data[i][1] = ((AcademicObject) response.getBody().get(i)).getName();	
+				System.out.println(((Category) response.getBody().get(i)).getWeight());
 				data[i][2] = decimalFormat.format(((Category) response.getBody().get(i)).getWeight()).toString();
-			}*/
+				System.out.println(((Category) response.getBody().get(i)).getDescription());
+			}
 			
-			String[][] data = { 
+			/*String[][] data = { 
 		            { "", "Homeworks", "30%" }, 
 		            { "", "Projects", "35%" },
 		            { "", "Exams", "35%" }
-			};
+			};*/
 			
 			MainFrame.getInstance().getCoursePanel().updateCateList(data);
 		}
 		
 		if( response.getHead().equals(RequestHead.ADD_CATEGORY) ) {
-			
+			MainFrame.getInstance().getCoursePanel().getCateList();
 		}
 		
 		if( response.getHead().equals(RequestHead.UPDATE_CATEGORY) ) {
-			MainFrame.getInstance().removeCurPanel();
-			MainFrame.getInstance().setCategoryPanel();
+			MainFrame.getInstance().getCoursePanel().getCateList();
+		}
+		
+		if( response.getHead().equals(RequestHead.DELETE_CATEGORY) ) {
+			MainFrame.getInstance().getCoursePanel().getCateList();
 		}
 		
 	}
