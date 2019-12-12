@@ -132,7 +132,16 @@ public class FrontController {
 	}
 	
 	/**
-	 * Method: editCategory
+	 * Method: selectCate
+	 * */
+	private Response selectCate(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;		
+	}
+	
+	/**
+	 * Method: updateCate
 	 * */
 	private Response updateCate(Request request) {
 		Response response = systemPortal.getResponse(request);
@@ -141,7 +150,7 @@ public class FrontController {
 	}
 	
 	/**
-	 * Method: deleteCategory
+	 * Method: deleteCate
 	 * */
 	private Response deleteCate(Request request) {
 		Response response = systemPortal.getResponse(request);
@@ -220,6 +229,12 @@ public class FrontController {
 				break;
 			case ADD_CATEGORY:
 				response = addCate(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case SELECT_CATEGORY:
+				response = selectCate(request);
 				if( response.getStatus() ) {
 					dispatcher.dispatch(response);
 				}

@@ -83,6 +83,12 @@ public class Dispatcher {
 			MainFrame.getInstance().getCoursePanel().getCateList();
 		}
 		
+		if( response.getHead().equals(RequestHead.SELECT_CATEGORY) ) {
+			Category cate = (Category) response.getBody().get(0);
+			MainFrame.getInstance().removeCurPanel();
+			MainFrame.getInstance().setCategoryPanel(cate.getParent().getId(), cate.getId(), cate.getName(), cate.getDescription(), cate.getWeight(), cate.getComment());
+		}
+		
 		if( response.getHead().equals(RequestHead.UPDATE_CATEGORY) ) {
 			MainFrame.getInstance().getCoursePanel().getCateList();
 		}

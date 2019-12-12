@@ -274,7 +274,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 		tableScrollPane = new JScrollPane(cateTable);
 		tableScrollPane.setBounds(cateTableLabel.getX(), cateTableLabel.getY() + vGap, 
         		tableWidth, 
-        		/*(int) (cateTable.getPreferredSize().getHeight() + headerHeight + 3)*/100);
+        		100);
 	}
 
 	@Override
@@ -310,14 +310,13 @@ public class CoursePanel extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Please Selected a category.");
 			}
 			else {
-				/*Request request = new Request(RequestHead.SELECT_COURSE);
-				request.addIds(Integer.parseInt(selectedCourse));  // course id
+				Request request = new Request(RequestHead.SELECT_CATEGORY);
+				request.addIds(courseID);  // course id
+				request.addIds(Integer.parseInt(selectedCate));
 				request.addIds(null);
 				request.addIds(null);
-				request.addIds(null);
-				FrontController.getInstance().dispatchRequest(request);*/
-				MainFrame.getInstance().removeCurPanel();
-				MainFrame.getInstance().setCategoryPanel();
+				FrontController.getInstance().dispatchRequest(request);
+				
 			}
 		}
 		

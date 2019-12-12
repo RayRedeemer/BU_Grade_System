@@ -115,7 +115,7 @@ public class CategoryForm extends JFrame {
 					JOptionPane.showMessageDialog(null, "Please fill the form.");
 					return ;
 				}
-			
+				
 				// Request
 				Request request1 = new Request(RequestHead.ADD_CATEGORY);
 				request1.addIds(courseID);

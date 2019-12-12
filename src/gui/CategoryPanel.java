@@ -22,18 +22,30 @@ public class CategoryPanel extends JPanel implements ActionListener {
 	private JButton btnLogout, btnSave, btnStatistics, btnReturn, btnAdd;
 	private JEditorPane epComment;
 	private JTable table;
-
+	
+	private int courseID;
+	private int cateID;
+	private String cateName;
+	private String desp;
+	private double weight;
+	
 	/**
 	 * Create the panel.
 	 */
-	public CategoryPanel() {
+	public CategoryPanel(int _courseID, int _cateID, String _cateName, String _desp, double _weight, String _comment) {
 		setLayout(null);
+		
+		this.courseID = _courseID;
+		System.out.println(courseID);
+		this.cateID = _cateID;
+		this.cateName = _cateName;
+		
 		
 		Font titleFont = new Font("Times New Roman", Font.BOLD, 25);
 		Font labelFont = new Font("Times New Roman", Font.PLAIN, 20);
 		Font btnFont = new Font("Microsoft YaHei UI", Font.PLAIN, 18);
 		
-		lblTitle = new JLabel("Title");
+		lblTitle = new JLabel(cateName);
 		lblTitle.setBounds(43, 48, 64, 27);
 		lblTitle.setFont(titleFont);
 		add(lblTitle);
@@ -96,6 +108,10 @@ public class CategoryPanel extends JPanel implements ActionListener {
 		table.setBounds(43, 239, 770, 295);
 		add(table);
 
+	}
+	
+	private void setId(int courseID, int cateID, String cateName, String desp, double weight, String comment) {
+		
 	}
 
 	@Override

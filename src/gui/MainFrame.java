@@ -145,9 +145,9 @@ public class MainFrame extends JFrame {
 		System.out.println("setStatPanel");		
 	}
 	
-	public void setCategoryPanel() {
+	public void setCategoryPanel(int courseID, int cateID, String cateName, String desp, double weight, String comment) {
 		if( categoryPanel == null ) {
-			categoryPanel = new CategoryPanel();
+			categoryPanel = new CategoryPanel(courseID, cateID, cateName, desp, weight, comment);
 		}
 		add(categoryPanel);
 		curPanel = categoryPanel;
