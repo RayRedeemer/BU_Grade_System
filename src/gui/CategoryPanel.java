@@ -110,13 +110,13 @@ public class CategoryPanel extends JPanel implements ActionListener {
 				}
 		);
 		
-		lblWeight = new JLabel("Weight: ");
+		lblWeight = new JLabel("Weight: %");
 		lblWeight.setBounds(x, y + vGap, labelWidth, textHeight);
 		lblWeight.setFont(labelFont);
 		add(lblWeight);
 		
 		weightField = new JTextField();
-		weightField.setText(Double.toString(weight));
+		weightField.setText(Double.toString(weight*100));
 		weightField.setBounds(x + lblWeight.getWidth(), lblWeight.getY(), 80, textHeight);
 		add(weightField);
 		
@@ -140,6 +140,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
 		add(lblComment);
 		
 		cateCommentArea = new JEditorPane();
+		cateCommentArea.setText(comment);
 		cateCommentArea.setBounds(lblComment.getX(), lblComment.getY() + lblComment.getHeight(), (int)(frameWidth*0.35), 100);
 		add(cateCommentArea);
 		
@@ -251,7 +252,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
             	    selectedColumn = assignmentTable.columnAtPoint(event.getPoint());
             	    System.out.println("Click: " + "Row: " + selectedRow + " Column: " + selectedColumn);
             	    selectedAssignment = data[selectedRow][0];
-            	    System.out.println("Selected course: " + selectedAssignment);
+            	    System.out.println("Selected assignment: " + selectedAssignment);
         		}
         		catch( Exception error ) {
         			System.out.println(error);
@@ -299,7 +300,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
 			// check the input format
 			double newWeight = 0.0;
 			try {
-				newWeight = Double.parseDouble(weightField.getText());
+				newWeight = Double.parseDouble(weightField.getText()) / 100;
 			}
 			catch(Exception error) {
 				System.out.println(error);
@@ -335,10 +336,19 @@ public class CategoryPanel extends JPanel implements ActionListener {
 			
 			FrontController.getInstance().dispatchRequest(request);
 			
-
 		}
 		
+		if( event.getActionCommand().equals("Add Assignment") ) {
+			
+		}
 		
+		if( event.getActionCommand().equals("Update Assignment") ) {
+			
+		}
+		
+		if( event.getActionCommand().equals("Delete Assignment") ) {
+			
+		}		
 		
 	}
 }
