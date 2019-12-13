@@ -179,7 +179,6 @@ public class AdminPanel extends JPanel implements ActionListener {
         	    
         	 }
         } );
-  
 	}
 	
 	/**
@@ -235,11 +234,12 @@ public class AdminPanel extends JPanel implements ActionListener {
 		}
 				
 		if( event.getActionCommand().equals("Select Course") ) {
-			Request request = new Request(RequestHead.SELECT_COURSE);
+			
 			if( selectedCourse == null ) {
 				JOptionPane.showMessageDialog(null, "Please Selected a course.");
 			}
 			else {
+				Request request = new Request(RequestHead.SELECT_COURSE);
 				request.addIds(Integer.parseInt(selectedCourse));  // course id
 				request.addIds(null);
 				request.addIds(null);
@@ -248,12 +248,12 @@ public class AdminPanel extends JPanel implements ActionListener {
 			}
 		}
 		
-		if( event.getActionCommand().equals("Delete Course") ) {
-			Request request = new Request(RequestHead.DELETE_COURSE);
+		if( event.getActionCommand().equals("Delete Course") ) {			
 			if( selectedCourse == null ) {
 				JOptionPane.showMessageDialog(null, "Please Selected a course.");
 			}
 			else {
+				Request request = new Request(RequestHead.DELETE_COURSE);
 				request.addIds(Integer.parseInt(selectedCourse));  // course id
 				request.addIds(null);
 				request.addIds(null);

@@ -4,6 +4,7 @@ import share.*;
 import db.*;
 import gui.MainFrame;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
@@ -19,10 +20,6 @@ public class SystemPortal {
 
     // Singleton Pattern
     private static SystemPortal systemPortal = new SystemPortal();
-
-    private SystemPortal() {
-
-    }
 
     public static SystemPortal getInstance() {
         return systemPortal;
@@ -143,13 +140,13 @@ public class SystemPortal {
                 updateCourse(ids.get(0), params);
                 return res;
             case UPDATE_CATEGORY:
-                updateCategory(ids.get(1), params);
+                updateCategory(ids.get(0), ids.get(1), params);
                 return res;
             case UPDATE_ASSIGNMENT:
-                updateAssignment(ids.get(2), params);
+                updateAssignment(ids.get(0), ids.get(1), ids.get(2), params);
                 return res;
             case UPDATE_SUBMISSION:
-                updateSubmission(ids.get(3), params);
+                updateSubmission(ids.get(0), ids.get(1), ids.get(2), ids.get(3), params);
                 return res;
 
             case COPY_COURSE:
@@ -162,24 +159,17 @@ public class SystemPortal {
                 copyAssignment(ids.get(1), ids.get(2), ids.get(3));
 
             case GET_COURSE_STATISTICS:
-                AcademicStatistics courseStatistics = getCourseStatistics((Integer) params.get(0));
+                AcademicStatistics courseStatistics = getCourseStatistics((Integer) params.get(0), (Boolean) params.get(1));
                 res.addBody(courseStatistics);
                 return res;
             case GET_CATEGORY_STATISTICS:
-                AcademicStatistics categoryStatistics = getCategoryStatistics((Integer) params.get(0), (Integer) params.get(1));
+                AcademicStatistics categoryStatistics = getCategoryStatistics((Integer) params.get(0), (Integer) params.get(1), (Boolean) params.get(2));
                 res.addBody(categoryStatistics);
                 return res;
             case GET_ASSIGNMENT_STATISTICS:
-                AcademicStatistics assignmentStatistics = getAssignmentStatistics((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2));
+                AcademicStatistics assignmentStatistics = getAssignmentStatistics((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2), (Boolean) params.get(3));
                 res.addBody(assignmentStatistics);
                 return res;
-
-            case CHECK_COURSE_VALID: // check weights of all its categories. If they sum up to 1.0, return true.
-                Boolean isCourseValid = isCourseValid((Integer) params.get(0));
-                return new Response(head, isCourseValid);
-            case CHECK_CATEGORY_VALID: // check weights of all its assignments. If they sum up to 1.0, return true.
-                Boolean isCategoryValid = isCategoryValid((Integer) params.get(0));
-                return new Response(head, isCategoryValid);
         }
         return null;
     }
@@ -363,31 +353,9 @@ public class SystemPortal {
      * @param courseId
      * @return
      */
-    private AcademicStatistics getCourseStatistics(int courseId) {
+    private AcademicStatistics getCourseStatistics(int courseId, Boolean isGrad) {
         Course course = DatabasePortal.getInstance().getCourseById(courseId);
-        return AcademicStatistics.of(course);
-    }
-
-    /**
-     * Check if the sum of weights of all categories is 1.0
-     *
-     * @param courseId course you want to check
-     * @return
-     */
-    private Boolean isCourseValid(int courseId) {
-        Course course = DatabasePortal.getInstance().getCourseById(courseId);
-        return course.isValid();
-    }
-
-    /**
-     * Check if the sum of weights of all submissions is 1.0
-     *
-     * @param categoryId category you want to check
-     * @return
-     */
-    private Boolean isCategoryValid(int categoryId) {
-        Category category = DatabasePortal.getInstance().getCategoryById((Course) _currentObj, categoryId);
-        return category.isValid();
+        return AcademicStatistics.of(course, isGrad);
     }
 
     /**
@@ -434,12 +402,14 @@ public class SystemPortal {
      * @param categoryId
      * @return
      */
-    private Boolean updateCategory(int categoryId, List<Object> params) {
-        Category category = DatabasePortal.getInstance().getCategoryById((Course) _currentObj, categoryId);
+    private Boolean updateCategory(int courseId, int categoryId, List<Object> params) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
         category.setName((String)params.get(0)); //name
         category.setDescription((String)params.get(1)); // desc
         category.setWeight((Double)params.get(2)); // weight
         category.setComment((String)params.get(3)); // comment
+
         return DatabasePortal.getInstance().updateCategory(category);
     }
 
@@ -462,10 +432,10 @@ public class SystemPortal {
      * @param categoryId
      * @return
      */
-    private AcademicStatistics getCategoryStatistics(int courseId, int categoryId) {
+    private AcademicStatistics getCategoryStatistics(int courseId, int categoryId, Boolean isGrad) {
         Course course = DatabasePortal.getInstance().getCourseById(courseId);
         Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
-        return AcademicStatistics.of(category);
+        return AcademicStatistics.of(category, isGrad);
     }
 
     /**
@@ -514,8 +484,10 @@ public class SystemPortal {
      * @param assignmentId
      * @return
      */
-    private Boolean updateAssignment(int assignmentId, List<Object> params) {
-        Assignment assignment = DatabasePortal.getInstance().getAssignmentById((Category) _currentObj, assignmentId);
+    private Boolean updateAssignment(int courseId, int categoryId, int assignmentId, List<Object> params) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
+        Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
         assignment.setName((String)params.get(0)); // name
         assignment.setDescription((String)params.get(1)); // desc
         assignment.setWeight((Double)params.get(2)); // weight
@@ -547,11 +519,11 @@ public class SystemPortal {
      * @param categoryId
      * @return
      */
-    private AcademicStatistics getAssignmentStatistics(int courseId, int categoryId, int assignmentId) {
+    private AcademicStatistics getAssignmentStatistics(int courseId, int categoryId, int assignmentId, Boolean isGrad) {
         Course course = DatabasePortal.getInstance().getCourseById(courseId);
         Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
         Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
-        return AcademicStatistics.of(assignment);
+        return AcademicStatistics.of(assignment, isGrad);
     }
 
     /**
@@ -602,8 +574,11 @@ public class SystemPortal {
      * @param submissionId
      * @return
      */
-    private Boolean updateSubmission(int submissionId, List<Object> params) {
-        Submission submission = DatabasePortal.getInstance().getSubmissionById((Assignment) _currentObj, submissionId);
+    private Boolean updateSubmission(int courseId, int categoryId, int assignmentId, int submissionId, List<Object> params) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
+        Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
+        Submission submission = DatabasePortal.getInstance().getSubmissionById(assignment, submissionId);
         submission.setScore((Double)params.get(0)); // score
         submission.setBonus((Double)params.get(1)); // bonus
         submission.setSubmittedDate((LocalDateTime)params.get(2)); // submittedDate

@@ -12,8 +12,8 @@ public class Student extends Person implements Commentable {
     private String _comment;
     private String _email;
     private String _buId;
-    private boolean _withdrawn;
-    private boolean _grad;
+    private boolean _hasWithdrawn;
+    private boolean _isGrad;
     private double _bonus;
     private double _adjustment;
 
@@ -21,10 +21,10 @@ public class Student extends Person implements Commentable {
         super(name, id);
         _grade = 0.0;
         _comment = "";
-        _withdrawn = false;
+        _hasWithdrawn = false;
         _email = email;
         _buId = buId;
-        _grad = grad;
+        _isGrad = grad;
         _bonus = 0.0;
         _adjustment = 0.0;
     }
@@ -62,23 +62,23 @@ public class Student extends Person implements Commentable {
     }
 
     public void setGrad(Boolean isGrad) {
-        _grad = isGrad;
+        _isGrad = isGrad;
     }
 
     public Boolean isGrad() {
-        return _grad;
+        return _isGrad;
     }
 
     public boolean getWithdrawn() {
-        return _withdrawn;
+        return _hasWithdrawn;
     }
 
     public void setWithdraw(boolean w){
-        _withdrawn = w;
+        _hasWithdrawn = w;
     }
 
     public boolean isGradStudent() {
-        return _grad;
+        return _isGrad;
     }
 
     public double getBonus() {

@@ -278,7 +278,7 @@ public class DatabasePortal {
         return null;
     }
 
-    public boolean updateCategory(Category cat){
+        public boolean updateCategory(Category cat){
         try {
             String sql = "UPDATE categories\n" +
                     "SET name=?,description=?,weight=?,comment=?\n" +

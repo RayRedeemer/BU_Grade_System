@@ -34,9 +34,7 @@ public class Response {
 	/**
 	 * setter()
 	 * */
-//	public void addBody(Object object) {
-//		body.add(object);
-//	}
+
 
 	public <T> void addBody(T object){
 		body.add(object);

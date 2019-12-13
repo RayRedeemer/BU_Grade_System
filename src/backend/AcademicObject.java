@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * its own unique _id for db, name, description and comment. We also use a tree-like structure to serve as the data
  * structure for our system, so _parent and _descendants are similar to pointers to its upper-level and lower-level
  * objects.
- *
+ * <p>
  * Note that _parent should be null if it's at the top level, which in this case, if it is a Course, _descendants also
  * follow this rule if the object is at the lowest level, such as Submission.
  */
@@ -118,22 +118,8 @@ public abstract class AcademicObject implements Commentable {
      * @param ao
      */
     public void deleteDescendant(AcademicObject ao) {
-//        if (this.hasDescendants()) {
-//            ao.deleteAllDescendants();
-//        }
         _descendants.remove(ao);
     }
-
-//    /**
-//     * remove all descendants
-//     */
-//    public void deleteAllDescendants() {
-//        if (this.hasDescendants()) {
-//            for (AcademicObject descendant : getAllDescendants()) {
-//                deleteDescendant(descendant);
-//            }
-//        }
-//    }
 
     /**
      * Check if the current object has descendants

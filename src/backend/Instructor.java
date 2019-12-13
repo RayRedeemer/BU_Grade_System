@@ -18,6 +18,4 @@ public class Instructor extends Person{
     }
 
     //no password getter as password should not be displayed anywhere
-
-    //TODO things having to do with making courses, though maybe that should not be part of this class
 }
