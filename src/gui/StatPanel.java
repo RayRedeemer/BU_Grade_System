@@ -47,8 +47,11 @@ public class StatPanel extends JPanel implements ActionListener {
 		Font lblFont = new Font("Times New Roman", Font.PLAIN, 25);
 		setLayout(null);
 		
+		int btnWidth = 200;
+		int btnHeight = 50;
+		
 		btnLogout = new JButton("Logout");
-		btnLogout.setBounds(696, 53, 101, 47);
+		btnLogout.setBounds(1168, 54, 112, 56);
 		btnLogout.setFont(btnFont);
 		add(btnLogout);
 		btnLogout.addActionListener(new ActionListener() {
@@ -60,17 +63,17 @@ public class StatPanel extends JPanel implements ActionListener {
 		});
 		
 		btnAll = new JButton("All");
-		btnAll.setBounds(49, 60, 280, 80);
+		btnAll.setBounds(171, 117, 200, 80);
 		btnAll.setFont(btnFont);
 		add(btnAll);
 		
 		btnUndergrad = new JButton("Undergrad");
-		btnUndergrad.setBounds(329, 60, 280, 80);
+		btnUndergrad.setBounds(371, 117, 200, 80);
 		btnUndergrad.setFont(btnFont);
 		add(btnUndergrad);
 		
 		btnGrad = new JButton("Grad");
-		btnGrad.setBounds(609, 60, 280, 80);
+		btnGrad.setBounds(571, 117, 200, 80);
 		btnGrad.setFont(btnFont);
 		add(btnGrad);
 		
@@ -80,22 +83,22 @@ public class StatPanel extends JPanel implements ActionListener {
 		//add(btnEmpty);
 		
 		btnAllAssignments = new JButton("All Assignments");
-		btnAllAssignments.setBounds(49, 140, 280, 80);
+		btnAllAssignments.setBounds(171, 197, 200, 80);
 		btnAllAssignments.setFont(btnFont);
 		add(btnAllAssignments);
 		
 		cbHomework = new JComboBox(new String[] {"Homework"});
-		cbHomework.setBounds(329, 140, 280, 80);
+		cbHomework.setBounds(371, 197, 200, 80);
 		cbHomework.setFont(btnFont);
 		add(cbHomework);
 		
 		cbProject = new JComboBox(new String[] {"Project"});
-		cbProject.setBounds(609, 140, 280, 80);
+		cbProject.setBounds(571, 197, 200, 80);
 		cbProject.setFont(btnFont);
 		add(cbProject);
 		
 		cbExam = new JComboBox(new String[] {"Exam"});
-		cbExam.setBounds(889, 140, 280, 80);
+		cbExam.setBounds(771, 197, 200, 80);
 		cbExam.setFont(btnFont);
 		add(cbExam);
 		
@@ -105,27 +108,27 @@ public class StatPanel extends JPanel implements ActionListener {
 		int lblHeight = 35;
 		
 		lbMean = new JLabel("Mean:");
-		lbMean.setBounds(137, 348, lblWidth, lblHeight);
+		lbMean.setBounds(171, 344, lblWidth, lblHeight);
 		lbMean.setFont(lblFont);
 		add(lbMean);
 		
 		lbMedian = new JLabel("Median:");
-		lbMedian.setBounds(137, 425, lblWidth, lblHeight);
+		lbMedian.setBounds(171, 421, lblWidth, lblHeight);
 		lbMedian.setFont(lblFont);
 		add(lbMedian);
 		
 		lbDeviation = new JLabel("Deviation:");
-		lbDeviation.setBounds(137, 502, lblWidth, lblHeight);
+		lbDeviation.setBounds(171, 498, lblWidth, lblHeight);
 		lbDeviation.setFont(lblFont);
 		add(lbDeviation);
 		
 		lbRange = new JLabel("Range:");
-		lbRange.setBounds(137, 573, lblWidth, lblHeight);
+		lbRange.setBounds(171, 569, lblWidth, lblHeight);
 		lbRange.setFont(lblFont);
 		add(lbRange);
 		
 		btnReturn = new JButton("Return");
-		btnReturn.setBounds(706, 631, 130, 56);
+		btnReturn.setBounds(1150, 593, 130, 56);
 		btnReturn.setFont(btnFont);
 		add(btnReturn);
 		btnReturn.addActionListener(new ActionListener() {
