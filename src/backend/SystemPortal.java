@@ -158,15 +158,15 @@ public class SystemPortal {
                 copyAssignment(ids.get(1), ids.get(2), ids.get(3));
 
             case GET_COURSE_STATISTICS:
-                AcademicStatistics courseStatistics = getCourseStatistics((Integer) params.get(0));
+                AcademicStatistics courseStatistics = getCourseStatistics((Integer) params.get(0), (Boolean) params.get(1));
                 res.addBody(courseStatistics);
                 return res;
             case GET_CATEGORY_STATISTICS:
-                AcademicStatistics categoryStatistics = getCategoryStatistics((Integer) params.get(0), (Integer) params.get(1));
+                AcademicStatistics categoryStatistics = getCategoryStatistics((Integer) params.get(0), (Integer) params.get(1), (Boolean) params.get(2));
                 res.addBody(categoryStatistics);
                 return res;
             case GET_ASSIGNMENT_STATISTICS:
-                AcademicStatistics assignmentStatistics = getAssignmentStatistics((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2));
+                AcademicStatistics assignmentStatistics = getAssignmentStatistics((Integer) params.get(0), (Integer) params.get(1), (Integer) params.get(2), (Boolean) params.get(3));
                 res.addBody(assignmentStatistics);
                 return res;
         }
@@ -352,9 +352,9 @@ public class SystemPortal {
      * @param courseId
      * @return
      */
-    private AcademicStatistics getCourseStatistics(int courseId) {
+    private AcademicStatistics getCourseStatistics(int courseId, Boolean isGrad) {
         Course course = DatabasePortal.getInstance().getCourseById(courseId);
-        return AcademicStatistics.of(course);
+        return AcademicStatistics.of(course, isGrad);
     }
 
     /**
@@ -430,10 +430,10 @@ public class SystemPortal {
      * @param categoryId
      * @return
      */
-    private AcademicStatistics getCategoryStatistics(int courseId, int categoryId) {
+    private AcademicStatistics getCategoryStatistics(int courseId, int categoryId, Boolean isGrad) {
         Course course = DatabasePortal.getInstance().getCourseById(courseId);
         Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
-        return AcademicStatistics.of(category);
+        return AcademicStatistics.of(category, isGrad);
     }
 
     /**
@@ -515,11 +515,11 @@ public class SystemPortal {
      * @param categoryId
      * @return
      */
-    private AcademicStatistics getAssignmentStatistics(int courseId, int categoryId, int assignmentId) {
+    private AcademicStatistics getAssignmentStatistics(int courseId, int categoryId, int assignmentId, Boolean isGrad) {
         Course course = DatabasePortal.getInstance().getCourseById(courseId);
         Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
         Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
-        return AcademicStatistics.of(assignment);
+        return AcademicStatistics.of(assignment, isGrad);
     }
 
     /**
