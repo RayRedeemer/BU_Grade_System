@@ -4,6 +4,7 @@ import share.*;
 import db.*;
 import gui.MainFrame;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
@@ -139,13 +140,13 @@ public class SystemPortal {
                 updateCourse(ids.get(0), params);
                 return res;
             case UPDATE_CATEGORY:
-                updateCategory(ids.get(1), params);
+                updateCategory(ids.get(0), ids.get(1), params);
                 return res;
             case UPDATE_ASSIGNMENT:
-                updateAssignment(ids.get(2), params);
+                updateAssignment(ids.get(0), ids.get(1), ids.get(2), params);
                 return res;
             case UPDATE_SUBMISSION:
-                updateSubmission(ids.get(3), params);
+                updateSubmission(ids.get(0), ids.get(1), ids.get(2), ids.get(3), params);
                 return res;
 
             case COPY_COURSE:
@@ -401,8 +402,9 @@ public class SystemPortal {
      * @param categoryId
      * @return
      */
-    private Boolean updateCategory(int categoryId, List<Object> params) {
-        Category category = DatabasePortal.getInstance().getCategoryById((Course) _currentObj, categoryId);
+    private Boolean updateCategory(int courseId, int categoryId, List<Object> params) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
         category.setName((String)params.get(0)); //name
         category.setDescription((String)params.get(1)); // desc
         category.setWeight((Double)params.get(2)); // weight
@@ -482,8 +484,10 @@ public class SystemPortal {
      * @param assignmentId
      * @return
      */
-    private Boolean updateAssignment(int assignmentId, List<Object> params) {
-        Assignment assignment = DatabasePortal.getInstance().getAssignmentById((Category) _currentObj, assignmentId);
+    private Boolean updateAssignment(int courseId, int categoryId, int assignmentId, List<Object> params) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
+        Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
         assignment.setName((String)params.get(0)); // name
         assignment.setDescription((String)params.get(1)); // desc
         assignment.setWeight((Double)params.get(2)); // weight
@@ -570,8 +574,11 @@ public class SystemPortal {
      * @param submissionId
      * @return
      */
-    private Boolean updateSubmission(int submissionId, List<Object> params) {
-        Submission submission = DatabasePortal.getInstance().getSubmissionById((Assignment) _currentObj, submissionId);
+    private Boolean updateSubmission(int courseId, int categoryId, int assignmentId, int submissionId, List<Object> params) {
+        Course course = DatabasePortal.getInstance().getCourseById(courseId);
+        Category category = DatabasePortal.getInstance().getCategoryById(course, categoryId);
+        Assignment assignment = DatabasePortal.getInstance().getAssignmentById(category, assignmentId);
+        Submission submission = DatabasePortal.getInstance().getSubmissionById(assignment, submissionId);
         submission.setScore((Double)params.get(0)); // score
         submission.setBonus((Double)params.get(1)); // bonus
         submission.setSubmittedDate((LocalDateTime)params.get(2)); // submittedDate
