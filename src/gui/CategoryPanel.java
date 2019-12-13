@@ -285,6 +285,11 @@ public class CategoryPanel extends JPanel implements ActionListener {
 		this.weight = _weight;
 		this.comment = _comment;
 		
+		lblTitle.setText(_cateName);
+		cateDespArea.setText(desp);
+		weightField.setText(Double.toString(weight*100));
+		cateCommentArea.setText(comment);
+		
 		// TODO: set text
 	}
 	

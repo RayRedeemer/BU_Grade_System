@@ -149,6 +149,7 @@ public class MainFrame extends JFrame {
 		if( categoryPanel == null ) {
 			categoryPanel = new CategoryPanel(courseID, cateID, cateName, desp, weight, comment);
 		}
+		categoryPanel.setCate(courseID, cateID, cateName, desp, weight, comment);
 		add(categoryPanel);
 		curPanel = categoryPanel;
 		categoryPanel.setEnabled(true);

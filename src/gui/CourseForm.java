@@ -68,8 +68,10 @@ public class CourseForm extends JFrame {
 		formPanel.add(semesterLabel);
 		
 		JLabel curveLabel = new JLabel("Curve: ");
-		curveLabel.setBounds(labelX, labelY + vGap * 2, labelWidth, labelHeight);
-		formPanel.add(curveLabel);
+		curveLabel.setBounds(labelX, labelY + vGap * 2, labelWidth, labelHeight);		
+		if( head == RequestHead.UPDATE_COURSE ) {
+			formPanel.add(curveLabel);
+		}
 		
 		JLabel despLabel = new JLabel("Description: ");
 		despLabel.setBounds(labelX, labelY + vGap * 3, labelWidth, labelHeight);
@@ -89,8 +91,10 @@ public class CourseForm extends JFrame {
 		curveField = new JTextField(20);
 		curveField.setText(Double.toString(_curve));
 		curveField.setBounds(labelX + curveLabel.getWidth() + hGap, curveLabel.getY(), textFieldWidth, labelHeight);
-		formPanel.add(curveField);
-		
+		if( head == RequestHead.UPDATE_COURSE ) {
+			formPanel.add(curveField);
+		}
+			
 		despArea = new JTextArea();
 		despArea.setLineWrap(true);
 		despArea.setText(_description);
@@ -99,15 +103,19 @@ public class CourseForm extends JFrame {
 		formPanel.add(textAreaScrollPane);
 		
 		JLabel commentLabel = new JLabel("Comment: ");
-		commentLabel.setBounds(labelX, textAreaScrollPane.getY() + textAreaScrollPane.getHeight() + vGap/2, labelWidth, labelHeight);
-		formPanel.add(commentLabel);
+		commentLabel.setBounds(labelX, textAreaScrollPane.getY() + textAreaScrollPane.getHeight() + vGap/2, labelWidth, labelHeight);		
+		if( head == RequestHead.UPDATE_COURSE ) {
+			formPanel.add(commentLabel);
+		}
 		
 		commentArea = new JTextArea();
 		commentArea.setLineWrap(true);
 		commentArea.setText(_comment);
 		JScrollPane commentAreaScrollPane = new JScrollPane(commentArea);
-		commentAreaScrollPane.setBounds(labelX + commentLabel.getWidth() + hGap, commentLabel.getY(), (int) (textFieldWidth * 2.3), 180);
-		formPanel.add(commentAreaScrollPane);
+		commentAreaScrollPane.setBounds(labelX + commentLabel.getWidth() + hGap, commentLabel.getY(), (int) (textFieldWidth * 2.3), 180);		
+		if( head == RequestHead.UPDATE_COURSE ) {
+			formPanel.add(commentAreaScrollPane);
+		}
 		
 		int buttonWidth = 80;
 		JButton submit;
