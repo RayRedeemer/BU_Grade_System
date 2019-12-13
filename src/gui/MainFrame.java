@@ -69,8 +69,7 @@ public class MainFrame extends JFrame {
 	 * */
 	public int getFrameWidth() {
 		return frameWidth;
-	}
-	
+	}	
 	public int getFrameHeight() {
 		return frameHeight;
 	}
@@ -82,6 +81,9 @@ public class MainFrame extends JFrame {
 	}
 	public CoursePanel getCoursePanel() {
 		return coursePanel;
+	}
+	public CategoryPanel getCategoryPanel() {
+		return categoryPanel;
 	}
 	
 	/**
@@ -150,6 +152,7 @@ public class MainFrame extends JFrame {
 			categoryPanel = new CategoryPanel(courseID, cateID, cateName, desp, weight, comment);
 		}
 		categoryPanel.setCate(courseID, cateID, cateName, desp, weight, comment);
+		categoryPanel.getAssignList();
 		add(categoryPanel);
 		curPanel = categoryPanel;
 		categoryPanel.setEnabled(true);

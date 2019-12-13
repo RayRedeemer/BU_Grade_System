@@ -54,11 +54,13 @@ public class CategoryPanel extends JPanel implements ActionListener {
 	private static final int headerHeight = 32;
 	
 	private String[] columnNames = { 
-		"ID", "Name", "Weight", "Assigned Date", "Due Date"
+		"ID", "Name", "Weight", "Perfect score", "Assigned Date", "Due Date"
 	};
 	private String[][] data = { 
-        { "1", "TicTacToe", "5%", "LocalDateTime", "LocalDateTime"}
+        { "1", "TicTacToe", "5%", "138", "LocalDateTime", "LocalDateTime"}
     }; 
+	
+	private AssignmentForm assignmentForm;
 	
 	/**
 	 * Create the panel.
@@ -164,14 +166,17 @@ public class CategoryPanel extends JPanel implements ActionListener {
 		btnAddAssign = new JButton("Add Assignment");
 		btnAddAssign.setBounds(buttonX, buttonY, buttonWidth * 2, textHeight);
 		add(btnAddAssign);
+		btnAddAssign.addActionListener(this);
 		
 		btnUpdateAssign = new JButton("Update Assignment");
 		btnUpdateAssign.setBounds(buttonX, buttonY + vGap, buttonWidth * 2, textHeight);
 		add(btnUpdateAssign);
+		btnUpdateAssign.addActionListener(this);
 		
 		btnDelAssign = new JButton("Delete Assignment");
 		btnDelAssign.setBounds(buttonX, buttonY + vGap * 2, buttonWidth * 2, textHeight);
 		add(btnDelAssign);
+		btnDelAssign.addActionListener(this);
 		
 		btnReturn = new JButton("Return");
 		btnReturn.setBounds(buttonX, buttonY + vGap * 3, buttonWidth * 2, textHeight);
@@ -206,10 +211,14 @@ public class CategoryPanel extends JPanel implements ActionListener {
 			
 	}
 	
+	/**
+	 * Method: createJTable
+	 * Function: create an assignment table.
+	 * */
 	private void createJTable() {
 		
 		int rowHeight = 20;
-		int columnWidth = 110;
+		int columnWidth = 140;
 		
         // Initializing the JTable
         assignmentTable = new JTable(data, columnNames);
@@ -289,19 +298,38 @@ public class CategoryPanel extends JPanel implements ActionListener {
 		cateDespArea.setText(desp);
 		weightField.setText(Double.toString(weight*100));
 		cateCommentArea.setText(comment);
-		
-		// TODO: set text
 	}
 	
-
+	/**
+	 * Method: getAssignList
+	 * */
+	public void getAssignList() {
+		Request request = new Request(RequestHead.GET_ASSIGNMENT_LIST);
+		request.addIds(courseID);
+		request.addIds(cateID);
+		request.addIds(null);
+		request.addIds(null);
+		FrontController.getInstance().dispatchRequest(request);
+	}
+	
+	/**
+	 * Method: updateAssignList
+	 * */
+	public void updateAssignList(String[][] _data) {
+		this.data = _data;		
+		remove(scrollPane);
+		createJTable();
+		setScrollPane();
+		add(scrollPane);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent event) {
 
 		if( event.getActionCommand().equals("Update Category") ) {
 			String cateDesp = cateDespArea.getText();
 			String cateComment = cateCommentArea.getText();
-			
-						
+								
 			// check the input format
 			double newWeight = 0.0;
 			try {
@@ -326,29 +354,34 @@ public class CategoryPanel extends JPanel implements ActionListener {
 				return ;
 			}*/
 			
-			// send request
-			
+			// send request			
 			Request request = new Request(RequestHead.UPDATE_CATEGORY);
 			request.addIds(courseID);
-			request.addIds(cateID); // TODO: need category id
+			request.addIds(cateID);
 			request.addIds(null);
 			request.addIds(null);
 			
 			request.addParams(cateName);
 			request.addParams(cateDesp);
 			request.addParams(newWeight);
-			request.addParams(cateComment);  // Comment
+			request.addParams(cateComment);
 			
-			FrontController.getInstance().dispatchRequest(request);
-			
+			FrontController.getInstance().dispatchRequest(request);			
 		}
 		
 		if( event.getActionCommand().equals("Add Assignment") ) {
-			
+			// CourseID, cateID
+			// "Name", "Weight", "Perfect score", "Assigned Date", "Due Date"
+			// Description
+			if( assignmentForm != null ) {
+				assignmentForm.dispose();
+			}
+			assignmentForm = new AssignmentForm(courseID, cateID);
 		}
 		
 		if( event.getActionCommand().equals("Update Assignment") ) {
-			
+			// Use current panel to update
+			// Comment
 		}
 		
 		if( event.getActionCommand().equals("Delete Assignment") ) {

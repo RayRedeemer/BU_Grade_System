@@ -159,6 +159,24 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: getAssignList
+	 * */
+	private Response getAssignList(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: addAssign
+	 * */
+	private Response addAssign(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
 	 * Method: trackRequest
 	 * @author Ziqi Tan
 	 * @param Request
@@ -247,6 +265,18 @@ public class FrontController {
 				break;
 			case DELETE_CATEGORY:
 				response = deleteCate(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case GET_ASSIGNMENT_LIST:
+				response = getAssignList(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case ADD_ASSIGNMENT:
+				response = addAssign(request);
 				if( response.getStatus() ) {
 					dispatcher.dispatch(response);
 				}
