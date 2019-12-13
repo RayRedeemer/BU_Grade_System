@@ -296,7 +296,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 			if( cateForm != null ) {
 				cateForm.dispose();
 			}
-			cateForm = new CategoryForm(courseID, 0);
+			cateForm = new CategoryForm(courseID);
 		}
 		
 		if( event.getActionCommand().equals("Edit Category") ) {

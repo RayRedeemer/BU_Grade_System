@@ -24,7 +24,7 @@ public class CategoryForm extends JFrame {
 	
 	private int courseID;
 	
-	public CategoryForm(int _courseID, int curWeight) {
+	public CategoryForm(int _courseID) {
 		this.courseID = _courseID;
 		System.out.println("A form is creating.");
 		setTitle("Course form");	
@@ -91,24 +91,6 @@ public class CategoryForm extends JFrame {
 				String cateName = nameField.getText();
 				String cateWeight = weightField.getText();
 				String cateDesp = despArea.getText();				
-				
-				// check the input format
-				double weight = 0.0;
-				try {
-					weight = Double.parseDouble(cateWeight);
-				}
-				catch(Exception error) {
-					System.out.println(error);
-					JOptionPane.showMessageDialog(null, "Please input a number!");
-					return ;
-				}
-				
-				// TODO: check the sum of the weight
-				weight /= 100;
-				if( weight + curWeight > 1.0 ) {
-					JOptionPane.showMessageDialog(null, "Total weight exceeds 100%.");
-					return ;
-				}
 								
 				if( cateName.length() == 0 || cateDesp.length() == 0 ) {
 					System.out.println("Please fill the form.");
@@ -127,19 +109,6 @@ public class CategoryForm extends JFrame {
 				request1.addParams(cateDesp);
 				
 				FrontController.getInstance().dispatchRequest(request1);
-								
-				/*Request request2 = new Request(RequestHead.UPDATE_CATEGORY);
-				request2.addIds(courseID);
-				request2.addIds(null); // TODO: need category id
-				request2.addIds(null);
-				request2.addIds(null);
-				
-				request2.addParams(cateName);
-				request2.addParams(cateDesp);
-				request2.addParams(weight);
-				request2.addParams("");  // Comment
-				
-				FrontController.getInstance().dispatchRequest(request2);*/
 				
 				JOptionPane.showMessageDialog(null, "Add/Updae successfully.");
 				dispose();

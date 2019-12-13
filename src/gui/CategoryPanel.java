@@ -3,6 +3,8 @@ package gui;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +31,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
 	
 	private JLabel lblTitle, lblWeight, lblDescription, lblComment, lblAssign, lblAssignDesp, lblAssignComment;
 	private JButton btnLogout, btnAddAssign, btnUpdateAssign, btnDelAssign, btnReturn, btnUpdate;
-	private JEditorPane cateDespArea, cateComment, assignDesp, assignComment;
+	private JEditorPane cateDespArea, cateCommentArea, assignDesp, assignComment;
 	private JTable assignmentTable;
 	private JTextField weightField;
 	private JScrollPane scrollPane;
@@ -40,6 +42,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
 	private String desp;
 	private double weight;
 	private String comment;
+	private double curWeightSum;
 	
 	private int frameWidth;
 	private int frameHeight;
@@ -60,7 +63,9 @@ public class CategoryPanel extends JPanel implements ActionListener {
 	/**
 	 * Create the panel.
 	 */
-	public CategoryPanel(int _courseID, int _cateID, String _cateName, String _desp, double _weight, String _comment) {
+	public CategoryPanel(int _courseID, int _cateID, 
+			String _cateName, String _desp, 
+			double _weight, String _comment) {
 		setLayout(null);
 		
 		this.courseID = _courseID;
@@ -134,13 +139,14 @@ public class CategoryPanel extends JPanel implements ActionListener {
 		lblComment.setFont(labelFont);
 		add(lblComment);
 		
-		cateComment = new JEditorPane();
-		cateComment.setBounds(lblComment.getX(), lblComment.getY() + lblComment.getHeight(), (int)(frameWidth*0.35), 100);
-		add(cateComment);
+		cateCommentArea = new JEditorPane();
+		cateCommentArea.setBounds(lblComment.getX(), lblComment.getY() + lblComment.getHeight(), (int)(frameWidth*0.35), 100);
+		add(cateCommentArea);
 		
 		btnUpdate = new JButton("Update Category");
 		btnUpdate.setBounds(x, cateDespArea.getY() + cateDespArea.getHeight() + 10, buttonWidth * 2, textHeight);
 		add(btnUpdate);
+		btnUpdate.addActionListener(this);
 				
 		lblAssign = new JLabel("Assignment:");
 		lblAssign.setBounds(x, btnUpdate.getY() + vGap, labelWidth, textHeight);
@@ -197,11 +203,6 @@ public class CategoryPanel extends JPanel implements ActionListener {
 		assignComment.setBounds(lblAssignComment.getX(), lblAssignComment.getY() + lblAssignComment.getHeight(), (int)(frameWidth*0.35), 100);
 		add(assignComment);
 			
-
-						
-		
-
-	
 	}
 	
 	private void createJTable() {
@@ -285,11 +286,59 @@ public class CategoryPanel extends JPanel implements ActionListener {
 		
 		// TODO: set text
 	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		// TODO Auto-generated method stub
 
+		if( event.getActionCommand().equals("Update Category") ) {
+			String cateDesp = cateDespArea.getText();
+			String cateComment = cateCommentArea.getText();
+			
+						
+			// check the input format
+			double newWeight = 0.0;
+			try {
+				newWeight = Double.parseDouble(weightField.getText());
+			}
+			catch(Exception error) {
+				System.out.println(error);
+				JOptionPane.showMessageDialog(null, "Please input a number!");
+				return ;
+			}
+			
+			// check input range: bigger or equal to 0 and less or equal to 100
+			if( newWeight < 0 || newWeight > 100 ) {
+				JOptionPane.showMessageDialog(null, "Please input a positive number less than 100!");
+				return ;
+			}
+			
+			// TODO: check the sum of the weight
+			// get category list
+			/*if( weight + curWeight > 1.0 ) {
+				JOptionPane.showMessageDialog(null, "Total weight exceeds 100%.");
+				return ;
+			}*/
+			
+			// send request
+			
+			Request request = new Request(RequestHead.UPDATE_CATEGORY);
+			request.addIds(courseID);
+			request.addIds(cateID); // TODO: need category id
+			request.addIds(null);
+			request.addIds(null);
+			
+			request.addParams(cateName);
+			request.addParams(cateDesp);
+			request.addParams(newWeight);
+			request.addParams(cateComment);  // Comment
+			
+			FrontController.getInstance().dispatchRequest(request);
+			
+
+		}
+		
+		
 		
 	}
 }
