@@ -25,13 +25,14 @@ import javax.swing.JEditorPane;
 
 public class OverviewPanel extends JPanel implements ActionListener {
 	
+	private int courseID;
+	private List<Integer> assignmentIds;
+	private List<Integer> stuIds;
+	
 	private JTable stuViewTable;
 	private JLabel lblTitle, lblComment;
 	private JButton btnLogout, btnCurve, btnSave, btnDelete, btnReturn;
 	private JEditorPane epComment;
-	
-	private List<Integer> assignmentIds;
-	private List<Integer> stuIds;
 	
 	private String[] columnNames = {
 		"Student", "A1 Weight", "A2 Weight", "A3 Weight"

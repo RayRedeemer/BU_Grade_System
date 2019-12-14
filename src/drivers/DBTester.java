@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class DBTester {
 
     public static void main(String[] args) {
-        DatabasePortal db = DatabasePortal.getInstance();
+        /*DatabasePortal db = DatabasePortal.getInstance();
 
         Instructor i = db.getInstructor("test","password");
         Course c1 = db.getCourseById(1);
@@ -42,6 +42,6 @@ public class DBTester {
         System.out.println(db.getSubmissionById(a2, 2).getComment());
         System.out.println(db.deleteSubmission(sub3));
         arr = db.getSubmissionsByAssignment(a1);
-        for (Submission sub : arr) System.out.println(sub.getScore());
+        for (Submission sub : arr) System.out.println(sub.getScore());*/
     }
 }

@@ -85,6 +85,9 @@ public class MainFrame extends JFrame {
 	public CategoryPanel getCategoryPanel() {
 		return categoryPanel;
 	}
+	public StuManagePanel getStuManagePanel() {
+		return stuManagePanel;
+	}
 	
 	/**
 	 * setter()
@@ -171,10 +174,12 @@ public class MainFrame extends JFrame {
 		System.out.println("setOverviewPanel");		
 	}
 	
-	public void setStuManagePanel() {
+	public void setStuManagePanel(int _courseID, String _courseName) {
 		if( stuManagePanel == null ) {
-			stuManagePanel = new StuManagePanel();
+			stuManagePanel = new StuManagePanel(_courseID, _courseName);
 		}
+		stuManagePanel.setCurCourse(_courseID, _courseName);
+		stuManagePanel.getStuList();
 		add(stuManagePanel);
 		curPanel = stuManagePanel;
 		stuManagePanel.setEnabled(true);

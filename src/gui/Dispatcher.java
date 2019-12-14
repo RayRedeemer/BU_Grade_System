@@ -7,6 +7,7 @@ import backend.AcademicObject;
 import backend.Assignment;
 import backend.Category;
 import backend.Course;
+import backend.Student;
 import share.Request;
 import share.RequestHead;
 import share.Response;
@@ -143,8 +144,41 @@ public class Dispatcher {
 			MainFrame.getInstance().getCategoryPanel().getAssignList();
 		}
 		
-
+		if( response.getHead().equals(RequestHead.GET_STUDENT_LIST) ) {
+			int numOfStus = response.getBody().size();
+			// "StuID", "StuName", "BU ID", "Grade", "Undergrad/Grad", "Bonus", "Adjustment", "A/W", "Email"
+			String[][] data = new String[numOfStus][9];
+			for( int i = 0; i < numOfStus; i++ ) {
+				Student stu = (Student)response.getBody().get(i);
+				data[i][0] = Integer.toString(stu.getId());
+				data[i][1] = stu.getName();
+				data[i][2] = stu.getBuId();
+				data[i][3] = Double.toString(stu.getGrade());
+				if( stu.isGradStudent() ) {
+					data[i][4] = "Grad";
+				}
+				else {
+					data[i][4] = "Undergrad";
+				}
+				data[i][5] = Double.toString(stu.getBonus());
+				data[i][6] = Double.toString(stu.getAdjustment());
+				if( stu.getWithdrawn() ) {
+					data[i][7] = "W";
+				}
+				else {
+					data[i][7] = "A";
+				}
+				
+				data[i][8] = stu.getEmail();
+				
+			}
+			
+			MainFrame.getInstance().getStuManagePanel().updateStuList(data);
+		}
 		
+		if( response.getHead().equals(RequestHead.ADD_STUDENT) ) {
+			MainFrame.getInstance().getStuManagePanel().getStuList();
+		}
 	}
 		
 }

@@ -213,6 +213,24 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: getStuList
+	 * */
+	private Response getStuList(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: addStudent
+	 * */
+	private Response addStudent(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
 	 * Method: trackRequest
 	 * @author Ziqi Tan
 	 * @param Request
@@ -342,7 +360,16 @@ public class FrontController {
 				}
 				break;
 			case GET_STUDENT_LIST:
-				// TODO:
+				response = getStuList(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case ADD_STUDENT:
+				response = addStudent(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
 				break;
 			default:
 				System.out.println("Error.");
