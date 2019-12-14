@@ -179,6 +179,10 @@ public class Dispatcher {
 		if( response.getHead().equals(RequestHead.ADD_STUDENT) ) {
 			MainFrame.getInstance().getStuManagePanel().getStuList();
 		}
+		
+		if( response.getHead().equals(RequestHead.WITHDRAW_STUDENT) ) {
+			MainFrame.getInstance().getStuManagePanel().getStuList();
+		}
 	}
 		
 }

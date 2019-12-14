@@ -3,6 +3,7 @@ package gui;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
@@ -31,7 +32,7 @@ public class StuManagePanel extends JPanel implements ActionListener {
 	private JScrollPane scrollPane;
 	private JEditorPane commentEditor;
 	private JLabel lblTitle, courseNameLabel, commentLabel;
-	private JButton btnLogout, btnAdd, btnUpdate, btnDelete, btnReturn;
+	private JButton btnLogout, btnAdd, btnUpdate, btnDrop, btnWithdraw, btnReturn;
 
 	private int frameWidth;
 	private int frameHeight;
@@ -117,22 +118,28 @@ public class StuManagePanel extends JPanel implements ActionListener {
 		int buttonY = commentEditor.getY() + commentEditor.getHeight() + vGap;
 		
 		btnAdd = new JButton("Add Student");
-		btnAdd.setBounds(buttonX, buttonY, (int) (buttonWidth * 1.6), buttonHeight);
+		btnAdd.setBounds(buttonX, buttonY, (int) (buttonWidth * 1.7), buttonHeight);
 		add(btnAdd);
 		btnAdd.addActionListener(this);
 		
 		btnUpdate = new JButton("Update Student");
-		btnUpdate.setBounds(buttonX + btnAdd.getWidth() + hGap, buttonY, (int) (buttonWidth * 1.6), buttonHeight);
+		btnUpdate.setBounds(buttonX + btnAdd.getWidth() + hGap, buttonY, (int) (buttonWidth * 1.7), buttonHeight);
 		add(btnUpdate);
 		btnUpdate.addActionListener(this);
 		
-		btnDelete = new JButton("Delete Student");
-		btnDelete.setBounds(btnUpdate.getX() + btnUpdate.getWidth() + hGap, buttonY, (int) (buttonWidth * 1.6), buttonHeight);
-		add(btnDelete);
-		btnDelete.addActionListener(this);
+		// TODO: withdraw
+		btnWithdraw = new JButton("Withdraw Student");
+		btnWithdraw.setBounds(btnUpdate.getX() + btnUpdate.getWidth() + hGap, buttonY, (int) (buttonWidth * 1.7), buttonHeight);
+		add(btnWithdraw);
+		btnWithdraw.addActionListener(this);
+		
+		btnDrop = new JButton("Drop Student");
+		btnDrop.setBounds(btnWithdraw.getX() + btnWithdraw.getWidth() + hGap, buttonY, (int) (buttonWidth * 1.7), buttonHeight);
+		add(btnDrop);
+		btnDrop.addActionListener(this);
 		
 		btnReturn = new JButton("Return");
-		btnReturn.setBounds(btnDelete.getX() + btnDelete.getWidth() + hGap, buttonY, (int) (buttonWidth * 1.6), buttonHeight);
+		btnReturn.setBounds(btnDrop.getX() + btnDrop.getWidth() + hGap, buttonY, (int) (buttonWidth * 1.7), buttonHeight);
 		add(btnReturn);
 		btnReturn.addActionListener(new ActionListener() {
 			@Override
@@ -258,10 +265,48 @@ public class StuManagePanel extends JPanel implements ActionListener {
 		}
 		
 		if( event.getActionCommand().equals("Update Student") ) {
-					
+			if( selectedStu == null ) {
+				JOptionPane.showMessageDialog(null, "Please Selected a student.");
+				return ;
+			}
+			
+			// "StuID", "StuName", "BU ID", "Grade", "Undergrad/Grad", "Bonus", "Adjustment", "A/W", "Email"
+			String stuID = data[selectedRow][0];
+			String stuName = data[selectedRow][1];
+			String buId = data[selectedRow][2];
+			String grade = data[selectedRow][3];
+			String uOrG = data[selectedRow][4];
+			String bonus = data[selectedRow][5];
+			String adjust = data[selectedRow][6];
+			String aOrW = data[selectedRow][7];
+			String email = data[selectedRow][8];
+			
+			/*try {
+				Request
+			}
+			catch (Exception error) {
+				System.out.println(error);
+			}*/
+			
+			
 		}
 		
-		if( event.getActionCommand().equals("Delete Student") ) {
+		if( event.getActionCommand().equals("Withdraw Student") ) {
+			if( selectedStu == null ) {
+				JOptionPane.showMessageDialog(null, "Please Selected a student.");
+				return ;
+			}
+			Request request = new Request(RequestHead.WITHDRAW_STUDENT);
+			request.addParams(Integer.parseInt(selectedStu));
+			request.addIds(null);
+			request.addIds(null);
+			request.addIds(null);
+			request.addIds(null);
+			FrontController.getInstance().dispatchRequest(request);
+		}
+		
+		
+		if( event.getActionCommand().equals("Drop Student") ) {
 			
 		}
 		
