@@ -97,6 +97,9 @@ public class SystemPortal {
                 updateStudent(params);
                 return res;
 
+            case SELECT_STUDENT:
+                res.addBody(getStudentById((Integer) params.get(0)));
+                return res;
             case SELECT_COURSE:
                 res.addBody(getCourse(ids.get(0)));
                 return res;
@@ -591,6 +594,15 @@ public class SystemPortal {
         return DatabasePortal.getInstance().updateSubmission(submission);
     }
 
+
+    /**
+     * return a student given studentId
+     * @param studentId
+     * @return
+     */
+    private Student getStudentById(int studentId) {
+        return DatabasePortal.getInstance().getStudentById(studentId);
+    }
 
     /**
      * return all courses as an ArrayList
