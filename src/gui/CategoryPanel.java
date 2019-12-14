@@ -437,6 +437,9 @@ public class CategoryPanel extends JPanel implements ActionListener {
 				
 				// input format
 				// Cancel the % symbol
+				if( aWeight.charAt(aWeight.length() - 1) == '%' ) {
+					aWeight = aWeight.substring(0, aWeight.length()-1);
+				}
 				double newWeight = Double.parseDouble(aWeight) / 100;
 				// TODO check sum of weight
 				double maxScore = Double.parseDouble(aMaxScore);
