@@ -10,6 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -22,6 +26,10 @@ import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
+import backend.Assignment;
+import backend.Category;
+import backend.Course;
+import db.DatabasePortal;
 import share.Request;
 import share.RequestHead;
 
@@ -381,7 +389,76 @@ public class CategoryPanel extends JPanel implements ActionListener {
 		
 		if( event.getActionCommand().equals("Update Assignment") ) {
 			// Use current panel to update
-			// Comment
+			// courseID, cateID, assignmentID
+			// name, description, weight, assignDate, dueDate, maxScore, comment
+			
+			if( selectedAssignment == null ) {
+				JOptionPane.showMessageDialog(null, "Please select an assignment!");
+				return ;
+			}
+			
+			try {
+				String aName = data[selectedRow][1];
+				String aDesp = assignDesp.getText();
+				String aWeight = data[selectedRow][2];
+				String aMaxScore = data[selectedRow][3];
+				String aDate = data[selectedRow][4];
+				String dDate = data[selectedRow][5];
+				String aComment = assignComment.getText();
+				
+				if( aName.length() == 0 || 
+						aWeight.length() == 0 || aMaxScore.length() == 0 || 
+						aDate.length() == 0 || dDate.length() == 0 ) {
+					JOptionPane.showMessageDialog(null, "Please fill enough information!");
+					return ;
+				}
+				
+				// input format
+				// Cancel the % symbol
+				double newWeight = Double.parseDouble(aWeight) / 100;
+				double maxScore = Double.parseDouble(aMaxScore);
+				
+				// LocalDateTime input format
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+				
+				LocalDateTime assignDate = LocalDateTime.parse(aDate, formatter);
+				LocalDateTime dueDate = LocalDateTime.parse(dDate, formatter);
+				
+				Request request = new Request(RequestHead.UPDATE_ASSIGNMENT);
+				request.addIds(courseID);
+				request.addIds(cateID);
+				request.addIds(Integer.parseInt(selectedAssignment));
+				request.addIds(null);
+				
+				request.addParams(aName);
+				request.addParams(aDesp);
+				request.addParams(newWeight);
+				
+				request.addParams(assignDate);
+				request.addParams(dueDate);
+				request.addParams(maxScore);
+				request.addParams(aComment);
+				
+				FrontController.getInstance().dispatchRequest(request);
+				
+			}
+			catch( NullPointerException error ) {
+				System.out.println(error);
+			}
+			catch(NumberFormatException error) {
+				System.out.println(error);
+				JOptionPane.showMessageDialog(null, "Input: 10 or 10.00, which means 10% of weight.");
+			}
+			catch(DateTimeParseException error) {
+				System.out.println(error);
+				JOptionPane.showMessageDialog(null, "Input: yyyy-MM-dd HH:mm LocalDateTime format.");
+			}
+			catch(Exception error) {
+				System.out.println(error);
+				error.printStackTrace();
+			}
+			
+			
 		}
 		
 		if( event.getActionCommand().equals("Delete Assignment") ) {

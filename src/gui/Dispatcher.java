@@ -126,6 +126,10 @@ public class Dispatcher {
 			MainFrame.getInstance().getCategoryPanel().getAssignList();
 		}
 		
+		if( response.getHead().equals(RequestHead.UPDATE_ASSIGNMENT) ) {
+			MainFrame.getInstance().getCategoryPanel().getAssignList();
+		}
+		
 	}
 		
 }

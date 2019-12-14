@@ -177,6 +177,15 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: updateAssign
+	 * */
+	private Response updateAssign(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
 	 * Method: trackRequest
 	 * @author Ziqi Tan
 	 * @param Request
@@ -277,6 +286,12 @@ public class FrontController {
 				break;
 			case ADD_ASSIGNMENT:
 				response = addAssign(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case UPDATE_ASSIGNMENT:
+				response = updateAssign(request);
 				if( response.getStatus() ) {
 					dispatcher.dispatch(response);
 				}
