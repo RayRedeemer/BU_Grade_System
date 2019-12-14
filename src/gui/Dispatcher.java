@@ -130,6 +130,11 @@ public class Dispatcher {
 			MainFrame.getInstance().getCategoryPanel().getAssignList();
 		}
 		
+		if( response.getHead().equals(RequestHead.SELECT_ASSIGNMENT) ) {
+			Assignment cate = (Assignment) response.getBody().get(0);			
+			MainFrame.getInstance().getCategoryPanel().updateCurAssignInfo(cate.getDescription(), cate.getComment());
+		}
+		
 		if( response.getHead().equals(RequestHead.UPDATE_ASSIGNMENT) ) {
 			MainFrame.getInstance().getCategoryPanel().getAssignList();
 		}

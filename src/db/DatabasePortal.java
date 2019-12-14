@@ -375,7 +375,7 @@ public class DatabasePortal {
                 a.setMaxScore(rs.getDouble(6));
                 a.setAssignedDate(ad);
                 a.setDueDate(dd);  // changed
-                a.setComment(rs.getString(9));  // should be 10 ?
+                a.setComment(rs.getString(7));  // should be 10 ?
                 ret.add(a);
             }
         } catch (Exception e) {
@@ -394,13 +394,13 @@ public class DatabasePortal {
             if (rs.next()) {
                 LocalDateTime ad;
                 try {
-                    ad = LocalDateTime.parse(rs.getString(7));
+                    ad = LocalDateTime.parse(rs.getString(8));
                 } catch (Exception e) {
                     ad = null;
                 }
                 LocalDateTime dd;
                 try {
-                    dd = LocalDateTime.parse(rs.getString(8));
+                    dd = LocalDateTime.parse(rs.getString(9));
                 } catch (Exception e) {
                     dd = null;
                 }
@@ -409,7 +409,7 @@ public class DatabasePortal {
                 a.setMaxScore(rs.getDouble(6));
                 a.setAssignedDate(ad);
                 a.setDueDate(dd);
-                a.setComment(rs.getString(9));
+                a.setComment(rs.getString(7));
                 return a;
             }
         } catch (Exception e) {

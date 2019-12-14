@@ -177,6 +177,15 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: selectAssign
+	 * */
+	private Response selectAssign(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
 	 * Method: updateAssign
 	 * */
 	private Response updateAssign(Request request) {
@@ -304,6 +313,12 @@ public class FrontController {
 				break;
 			case ADD_ASSIGNMENT:
 				response = addAssign(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case SELECT_ASSIGNMENT:
+				response = selectAssign(request);
 				if( response.getStatus() ) {
 					dispatcher.dispatch(response);
 				}

@@ -269,6 +269,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
             	    System.out.println("Click: " + "Row: " + selectedRow + " Column: " + selectedColumn);
             	    selectedAssignment = data[selectedRow][0];
             	    System.out.println("Selected assignment: " + selectedAssignment);
+            	    getAssign();
         		}
         		catch( Exception error ) {
         			System.out.println(error);
@@ -331,9 +332,25 @@ public class CategoryPanel extends JPanel implements ActionListener {
 	}
 	
 	/**
+	 * Method: getAssign
+	 * */
+	private void getAssign() {
+		Request request = new Request(RequestHead.SELECT_ASSIGNMENT);
+		request.addIds(courseID);
+		request.addIds(cateID);
+		request.addIds(Integer.parseInt(selectedAssignment));
+		request.addIds(null);
+		FrontController.getInstance().dispatchRequest(request);
+	}
+	
+	/**
 	 * Method: updateCurAssignInfo
 	 * */
 	// TODO
+	public void updateCurAssignInfo(String _desp, String _comment) {
+		assignDesp.setText(_desp);
+		assignComment.setText(_comment);
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent event) {
@@ -378,7 +395,8 @@ public class CategoryPanel extends JPanel implements ActionListener {
 			request.addParams(newWeight);
 			request.addParams(cateComment);
 			
-			FrontController.getInstance().dispatchRequest(request);			
+			FrontController.getInstance().dispatchRequest(request);	
+			JOptionPane.showMessageDialog(null, "Update successfully!");
 		}
 		
 		if( event.getActionCommand().equals("Add Assignment") ) {
