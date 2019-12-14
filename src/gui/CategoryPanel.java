@@ -344,6 +344,14 @@ public class CategoryPanel extends JPanel implements ActionListener {
 	}
 	
 	/**
+	 * Method: clearEditorPane
+	 * */
+	public void clearEditorPane() {
+		assignDesp.setText("");
+		assignComment.setText("");
+	}
+	
+	/**
 	 * Method: updateCurAssignInfo
 	 * */
 	// TODO

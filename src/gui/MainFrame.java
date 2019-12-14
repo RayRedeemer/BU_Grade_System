@@ -156,6 +156,7 @@ public class MainFrame extends JFrame {
 		}
 		categoryPanel.setCate(courseID, cateID, cateName, desp, weight, comment);
 		categoryPanel.getAssignList();
+		categoryPanel.clearEditorPane();
 		add(categoryPanel);
 		curPanel = categoryPanel;
 		categoryPanel.setEnabled(true);
