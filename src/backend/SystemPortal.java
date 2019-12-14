@@ -274,9 +274,10 @@ public class SystemPortal {
         student.setBuId((String) params.get(3)); // buId
         student.setGrade((Double) params.get(4)); // grade
         student.setAdjustment((Double) params.get(5)); // adjustment
-        student.setGrad((Boolean) params.get(6)); // isGrad
-        student.setGrad((Boolean) params.get(7)); // withdrawn
-        student.setComment((String) params.get(8)); // comment
+        student.setAdjustment((Double) params.get(6)); // bonus
+        student.setGrad((Boolean) params.get(7)); // isGrad
+        student.setGrad((Boolean) params.get(8)); // withdrawn
+        student.setComment((String) params.get(9)); // comment
         return DatabasePortal.getInstance().updateStudent(student);
     }
 
