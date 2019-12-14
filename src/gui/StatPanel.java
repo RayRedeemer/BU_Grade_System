@@ -36,6 +36,10 @@ public class StatPanel extends JPanel implements ActionListener {
 	private JLabel lbRange;
 	
 	private JComboBox cbHomework, cbProject, cbExam;
+	
+	private int selectedRow;
+	private int selectedColumn;
+	private String selectedAssignment;
 
 	/**
 	 * Create the panel.
@@ -65,41 +69,92 @@ public class StatPanel extends JPanel implements ActionListener {
 		btnAll = new JButton("All");
 		btnAll.setBounds(171, 117, 200, 80);
 		btnAll.setFont(btnFont);
+		btnAll.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				selectedRow = 0;
+				selectedColumn = 0;
+				selectedAssignment = null;
+			}
+		});
 		add(btnAll);
 		
 		btnUndergrad = new JButton("Undergrad");
 		btnUndergrad.setBounds(371, 117, 200, 80);
 		btnUndergrad.setFont(btnFont);
+		btnUndergrad.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				selectedRow = 0;
+				selectedColumn = 1;
+				selectedAssignment = null;
+			}
+		});
 		add(btnUndergrad);
 		
 		btnGrad = new JButton("Grad");
 		btnGrad.setBounds(571, 117, 200, 80);
 		btnGrad.setFont(btnFont);
+		btnGrad.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				selectedRow = 0;
+				selectedColumn = 2;
+				selectedAssignment = null;
+			}
+		});
 		add(btnGrad);
-		
-		btnEmpty = new JButton();
-		btnEmpty.setBounds(413, 18, 33, 9);
-		btnEmpty.setBackground(new Color(0, 0, 0, 0));
-		//add(btnEmpty);
 		
 		btnAllAssignments = new JButton("All Assignments");
 		btnAllAssignments.setBounds(171, 197, 200, 80);
 		btnAllAssignments.setFont(btnFont);
+		btnAllAssignments.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				selectedRow = 1;
+				selectedColumn = 0;
+				selectedAssignment = null;
+			}
+		});
 		add(btnAllAssignments);
 		
 		cbHomework = new JComboBox(new String[] {"Homework"});
 		cbHomework.setBounds(371, 197, 200, 80);
 		cbHomework.setFont(btnFont);
+		cbHomework.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				selectedRow = 1;
+				selectedColumn = 1;
+				selectedAssignment = cbHomework.getSelectedObjects().toString();
+			}
+		});
 		add(cbHomework);
 		
 		cbProject = new JComboBox(new String[] {"Project"});
 		cbProject.setBounds(571, 197, 200, 80);
 		cbProject.setFont(btnFont);
+		cbProject.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				selectedRow = 1;
+				selectedColumn = 2;
+				selectedAssignment = cbProject.getSelectedObjects().toString();
+			}
+		});
 		add(cbProject);
 		
 		cbExam = new JComboBox(new String[] {"Exam"});
 		cbExam.setBounds(771, 197, 200, 80);
 		cbExam.setFont(btnFont);
+		cbExam.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				selectedRow = 1;
+				selectedColumn = 3;
+				selectedAssignment = cbExam.getSelectedObjects().toString();
+			}
+		});
 		add(cbExam);
 		
 		//lable data
