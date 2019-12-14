@@ -230,7 +230,12 @@ public class AdminPanel extends JPanel implements ActionListener {
 		}
 		
 		if( event.getActionCommand().equals("Clone Course") ) {
-			
+			Request request = new Request(RequestHead.COPY_COURSE);
+			request.addIds(Integer.parseInt(selectedCourse));  // course id
+			request.addIds(null);
+			request.addIds(null);
+			request.addIds(null);
+			FrontController.getInstance().dispatchRequest(request);
 		}
 				
 		if( event.getActionCommand().equals("Select Course") ) {

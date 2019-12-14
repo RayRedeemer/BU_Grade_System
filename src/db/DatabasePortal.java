@@ -360,13 +360,13 @@ public class DatabasePortal {
             while(rs.next()) {
                 LocalDateTime ad;
                 try {
-                    ad = LocalDateTime.parse(rs.getString(7));
+                    ad = LocalDateTime.parse(rs.getString(8)); // changed
                 } catch (Exception e) {
                     ad = null;
                 }
                 LocalDateTime dd;
                 try {
-                    dd = LocalDateTime.parse(rs.getString(8));
+                    dd = LocalDateTime.parse(rs.getString(9)); // changed
                 } catch (Exception e) {
                     dd = null;
                 }
@@ -374,8 +374,8 @@ public class DatabasePortal {
                 a.setWeight(rs.getDouble(5));
                 a.setMaxScore(rs.getDouble(6));
                 a.setAssignedDate(ad);
-                a.setAssignedDate(dd);
-                a.setComment(rs.getString(9));
+                a.setDueDate(dd);  // changed
+                a.setComment(rs.getString(9));  // should be 10 ?
                 ret.add(a);
             }
         } catch (Exception e) {
@@ -408,7 +408,7 @@ public class DatabasePortal {
                 a.setWeight(rs.getDouble(5));
                 a.setMaxScore(rs.getDouble(6));
                 a.setAssignedDate(ad);
-                a.setAssignedDate(dd);
+                a.setDueDate(dd);
                 a.setComment(rs.getString(9));
                 return a;
             }

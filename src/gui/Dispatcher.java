@@ -48,6 +48,10 @@ public class Dispatcher {
 			MainFrame.getInstance().getAdminPanel().getCourseList();
 		}
 		
+		if( response.getHead().equals(RequestHead.COPY_COURSE) ) {
+			MainFrame.getInstance().getAdminPanel().getCourseList();
+		}
+		
 		if( response.getHead().equals(RequestHead.SELECT_COURSE) ) {
 			MainFrame.getInstance().removeCurPanel();
 			Course course = (Course) response.getBody().get(0);
@@ -133,6 +137,8 @@ public class Dispatcher {
 		if( response.getHead().equals(RequestHead.DELETE_ASSIGNMENT) ) {
 			MainFrame.getInstance().getCategoryPanel().getAssignList();
 		}
+		
+
 		
 	}
 		

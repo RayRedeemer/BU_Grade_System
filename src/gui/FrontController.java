@@ -195,6 +195,15 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: copyCourse
+	 * */
+	private Response copyCourse(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
 	 * Method: trackRequest
 	 * @author Ziqi Tan
 	 * @param Request
@@ -307,6 +316,12 @@ public class FrontController {
 				break;
 			case DELETE_ASSIGNMENT:
 				response = deleteAssign(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case COPY_COURSE:
+				response = copyCourse(request);
 				if( response.getStatus() ) {
 					dispatcher.dispatch(response);
 				}

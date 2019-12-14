@@ -420,6 +420,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
 				// input format
 				// Cancel the % symbol
 				double newWeight = Double.parseDouble(aWeight) / 100;
+				// TODO check sum of weight
 				double maxScore = Double.parseDouble(aMaxScore);
 				
 				// LocalDateTime input format
@@ -436,8 +437,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
 				
 				request.addParams(aName);
 				request.addParams(aDesp);
-				request.addParams(newWeight);
-				
+				request.addParams(newWeight);				
 				request.addParams(assignDate);
 				request.addParams(dueDate);  // TODO
 				request.addParams(maxScore);
