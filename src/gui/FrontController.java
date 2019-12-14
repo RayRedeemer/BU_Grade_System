@@ -240,6 +240,15 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: dropStudent
+	 * */
+	private Response dropStudent(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
 	 * Method: trackRequest
 	 * @author Ziqi Tan
 	 * @param Request
@@ -382,6 +391,12 @@ public class FrontController {
 				break;
 			case WITHDRAW_STUDENT:
 				response = withdrawStudent(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case DROP_STUDENT:
+				response = dropStudent(request);
 				if( response.getStatus() ) {
 					dispatcher.dispatch(response);
 				}

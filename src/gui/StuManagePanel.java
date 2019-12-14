@@ -307,7 +307,17 @@ public class StuManagePanel extends JPanel implements ActionListener {
 		
 		
 		if( event.getActionCommand().equals("Drop Student") ) {
-			
+			if( selectedStu == null ) {
+				JOptionPane.showMessageDialog(null, "Please Selected a student.");
+				return ;
+			}
+			Request request = new Request(RequestHead.DROP_STUDENT);
+			request.addParams(Integer.parseInt(selectedStu));
+			request.addIds(null);
+			request.addIds(null);
+			request.addIds(null);
+			request.addIds(null);
+			FrontController.getInstance().dispatchRequest(request);
 		}
 		
 	}
