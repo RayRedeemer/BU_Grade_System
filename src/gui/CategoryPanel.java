@@ -168,7 +168,6 @@ public class CategoryPanel extends JPanel implements ActionListener {
 		setScrollPane();
 		add(scrollPane);
 		
-		// TODO: add/update/delete assignment
 		int buttonX = scrollPane.getX() + scrollPane.getWidth() + hGap;
 		int buttonY = scrollPane.getY();
 		btnAddAssign = new JButton("Add Assignment");
@@ -331,6 +330,11 @@ public class CategoryPanel extends JPanel implements ActionListener {
 		add(scrollPane);
 	}
 	
+	/**
+	 * Method: updateCurAssignInfo
+	 * */
+	// TODO
+	
 	@Override
 	public void actionPerformed(ActionEvent event) {
 
@@ -435,7 +439,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
 				request.addParams(newWeight);
 				
 				request.addParams(assignDate);
-				request.addParams(dueDate);
+				request.addParams(dueDate);  // TODO
 				request.addParams(maxScore);
 				request.addParams(aComment);
 				
@@ -456,13 +460,17 @@ public class CategoryPanel extends JPanel implements ActionListener {
 			catch(Exception error) {
 				System.out.println(error);
 				error.printStackTrace();
-			}
-			
-			
+			}			
 		}
 		
 		if( event.getActionCommand().equals("Delete Assignment") ) {
+			Request request = new Request(RequestHead.DELETE_ASSIGNMENT);
+			request.addIds(courseID);
+			request.addIds(cateID);
+			request.addIds(Integer.parseInt(selectedAssignment));
+			request.addIds(null);
 			
+			FrontController.getInstance().dispatchRequest(request);
 		}		
 		
 	}

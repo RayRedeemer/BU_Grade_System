@@ -130,6 +130,10 @@ public class Dispatcher {
 			MainFrame.getInstance().getCategoryPanel().getAssignList();
 		}
 		
+		if( response.getHead().equals(RequestHead.DELETE_ASSIGNMENT) ) {
+			MainFrame.getInstance().getCategoryPanel().getAssignList();
+		}
+		
 	}
 		
 }

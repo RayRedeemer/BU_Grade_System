@@ -42,7 +42,7 @@ public class Response {
 
 	@Override
 	public String toString() {
-		String str = System.getProperty("line.separator") + "head: " + head + System.getProperty("line.separator");
+		String str = "Response log: " + System.getProperty("line.separator") + "head: " + head + System.getProperty("line.separator");
 		str += "status: " + status + System.getProperty("line.separator");
 		for( int i = 0; i < body.size(); i++ ) {
 			str += "body " + i + ": " + body.get(i) + System.getProperty("line.separator");
