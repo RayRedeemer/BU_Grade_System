@@ -336,7 +336,7 @@ public class CoursePanel extends JPanel implements ActionListener {
 		
 		if( event.getActionCommand().equals("Manage Student") ) {
 			MainFrame.getInstance().removeCurPanel();
-			MainFrame.getInstance().setStuManagePanel();
+			MainFrame.getInstance().setStuManagePanel(courseID, courseName);
 		}
 		
 		if( event.getActionCommand().equals("Course Statistics") ) {

@@ -69,8 +69,7 @@ public class MainFrame extends JFrame {
 	 * */
 	public int getFrameWidth() {
 		return frameWidth;
-	}
-	
+	}	
 	public int getFrameHeight() {
 		return frameHeight;
 	}
@@ -82,6 +81,12 @@ public class MainFrame extends JFrame {
 	}
 	public CoursePanel getCoursePanel() {
 		return coursePanel;
+	}
+	public CategoryPanel getCategoryPanel() {
+		return categoryPanel;
+	}
+	public StuManagePanel getStuManagePanel() {
+		return stuManagePanel;
 	}
 	
 	/**
@@ -149,6 +154,9 @@ public class MainFrame extends JFrame {
 		if( categoryPanel == null ) {
 			categoryPanel = new CategoryPanel(courseID, cateID, cateName, desp, weight, comment);
 		}
+		categoryPanel.setCate(courseID, cateID, cateName, desp, weight, comment);
+		categoryPanel.getAssignList();
+		categoryPanel.clearEditorPane();
 		add(categoryPanel);
 		curPanel = categoryPanel;
 		categoryPanel.setEnabled(true);
@@ -167,10 +175,13 @@ public class MainFrame extends JFrame {
 		System.out.println("setOverviewPanel");		
 	}
 	
-	public void setStuManagePanel() {
+	public void setStuManagePanel(int _courseID, String _courseName) {
 		if( stuManagePanel == null ) {
-			stuManagePanel = new StuManagePanel();
+			stuManagePanel = new StuManagePanel(_courseID, _courseName);
 		}
+		stuManagePanel.setCurCourse(_courseID, _courseName);
+		stuManagePanel.getStuList();
+		stuManagePanel.clearEditor();
 		add(stuManagePanel);
 		curPanel = stuManagePanel;
 		stuManagePanel.setEnabled(true);

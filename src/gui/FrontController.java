@@ -159,6 +159,114 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: getAssignList
+	 * */
+	private Response getAssignList(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: addAssign
+	 * */
+	private Response addAssign(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: selectAssign
+	 * */
+	private Response selectAssign(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: updateAssign
+	 * */
+	private Response updateAssign(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: deleteAssign
+	 * */
+	private Response deleteAssign(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: copyCourse
+	 * */
+	private Response copyCourse(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: getStuList
+	 * */
+	private Response getStuList(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: addStudent
+	 * */
+	private Response addStudent(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: updateStudent
+	 * */
+	private Response updateStudent(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: selectStudent
+	 * */
+	private Response selectStudent(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: withdrawStudent
+	 * */
+	private Response withdrawStudent(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
+	 * Method: dropStudent
+	 * */
+	private Response dropStudent(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
 	 * Method: trackRequest
 	 * @author Ziqi Tan
 	 * @param Request
@@ -251,8 +359,77 @@ public class FrontController {
 					dispatcher.dispatch(response);
 				}
 				break;
+			case GET_ASSIGNMENT_LIST:
+				response = getAssignList(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case ADD_ASSIGNMENT:
+				response = addAssign(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case SELECT_ASSIGNMENT:
+				response = selectAssign(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case UPDATE_ASSIGNMENT:
+				response = updateAssign(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case DELETE_ASSIGNMENT:
+				response = deleteAssign(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case COPY_COURSE:
+				response = copyCourse(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
 			case GET_STUDENT_LIST:
-				// TODO:
+				response = getStuList(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case ADD_STUDENT:
+				response = addStudent(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case UPDATE_STUDENT:
+				response = updateStudent(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case SELECT_STUDENT:
+				response = selectStudent(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case WITHDRAW_STUDENT:
+				response = withdrawStudent(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case DROP_STUDENT:
+				response = dropStudent(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
 				break;
 			default:
 				System.out.println("Error.");

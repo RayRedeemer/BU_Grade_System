@@ -360,13 +360,13 @@ public class DatabasePortal {
             while(rs.next()) {
                 LocalDateTime ad;
                 try {
-                    ad = LocalDateTime.parse(rs.getString(7));
+                    ad = LocalDateTime.parse(rs.getString(8)); // changed
                 } catch (Exception e) {
                     ad = null;
                 }
                 LocalDateTime dd;
                 try {
-                    dd = LocalDateTime.parse(rs.getString(8));
+                    dd = LocalDateTime.parse(rs.getString(9)); // changed
                 } catch (Exception e) {
                     dd = null;
                 }
@@ -374,8 +374,8 @@ public class DatabasePortal {
                 a.setWeight(rs.getDouble(5));
                 a.setMaxScore(rs.getDouble(6));
                 a.setAssignedDate(ad);
-                a.setAssignedDate(dd);
-                a.setComment(rs.getString(9));
+                a.setDueDate(dd);  // changed
+                a.setComment(rs.getString(7));  // should be 10 ?
                 ret.add(a);
             }
         } catch (Exception e) {
@@ -394,13 +394,13 @@ public class DatabasePortal {
             if (rs.next()) {
                 LocalDateTime ad;
                 try {
-                    ad = LocalDateTime.parse(rs.getString(7));
+                    ad = LocalDateTime.parse(rs.getString(8));
                 } catch (Exception e) {
                     ad = null;
                 }
                 LocalDateTime dd;
                 try {
-                    dd = LocalDateTime.parse(rs.getString(8));
+                    dd = LocalDateTime.parse(rs.getString(9));
                 } catch (Exception e) {
                     dd = null;
                 }
@@ -408,8 +408,8 @@ public class DatabasePortal {
                 a.setWeight(rs.getDouble(5));
                 a.setMaxScore(rs.getDouble(6));
                 a.setAssignedDate(ad);
-                a.setAssignedDate(dd);
-                a.setComment(rs.getString(9));
+                a.setDueDate(dd);
+                a.setComment(rs.getString(7));
                 return a;
             }
         } catch (Exception e) {
@@ -574,17 +574,18 @@ public class DatabasePortal {
             ps.setString(3, s.getBuId());
             ps.setDouble(4, s.getGrade());
             ps.setDouble(5, s.getBonus());
+            ps.setDouble(6, s.getAdjustment());
             if (s.isGradStudent()) {
-                ps.setInt(4, 1);
+                ps.setInt(7, 1);
             } else {
-                ps.setInt(4, 0);
+                ps.setInt(7, 0);
             }
             if (s.getWithdrawn()) {
-                ps.setInt(5, 1);
+                ps.setInt(8, 1);
             } else {
-                ps.setInt(5,0);
+                ps.setInt(8,0);
             }
-            ps.setString(6, s.getComment());
+            ps.setString(9, s.getComment());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Error during updateStudent for id " + s.getId());
