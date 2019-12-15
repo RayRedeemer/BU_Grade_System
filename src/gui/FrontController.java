@@ -240,6 +240,15 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: selectStudent
+	 * */
+	private Response selectStudent(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
 	 * Method: withdrawStudent
 	 * */
 	private Response withdrawStudent(Request request) {
@@ -400,6 +409,12 @@ public class FrontController {
 				break;
 			case UPDATE_STUDENT:
 				response = updateStudent(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case SELECT_STUDENT:
+				response = selectStudent(request);
 				if( response.getStatus() ) {
 					dispatcher.dispatch(response);
 				}

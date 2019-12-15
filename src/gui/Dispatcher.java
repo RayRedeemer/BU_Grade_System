@@ -177,6 +177,11 @@ public class Dispatcher {
 			MainFrame.getInstance().getStuManagePanel().getStuList();
 		}
 		
+		if( response.getHead().equals(RequestHead.SELECT_STUDENT) ) {
+			Student stu = (Student)response.getBody().get(0);
+			MainFrame.getInstance().getStuManagePanel().setCurStuComment(stu.getComment());
+		}
+		
 		if( response.getHead().equals(RequestHead.UPDATE_STUDENT) ) {
 			MainFrame.getInstance().getStuManagePanel().getStuList();
 		}

@@ -260,14 +260,27 @@ public class StuManagePanel extends JPanel implements ActionListener {
 	 * */
 	private void selectStudent() {
 		// TODO
-		// Request request = new Reqeust(RequestHead.selec)
+		Request request = new Request(RequestHead.SELECT_STUDENT);
+		request.addParams(Integer.parseInt(selectedStu));
+		request.addIds(null);
+		request.addIds(null);
+		request.addIds(null);
+		request.addIds(null);
+		FrontController.getInstance().dispatchRequest(request);
 	}
 	
 	/**
 	 * Method: setCurStuComment
 	 * */
-	public void setCurStuComment() {
-		// TODO
+	public void setCurStuComment(String _comment) {
+		commentEditor.setText(_comment);		
+	}
+	
+	/**
+	 * Method: clearEditor
+	 * */
+	public void clearEditor() {
+		commentEditor.setText("");
 	}
 
 	@Override

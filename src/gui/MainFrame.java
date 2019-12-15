@@ -181,6 +181,7 @@ public class MainFrame extends JFrame {
 		}
 		stuManagePanel.setCurCourse(_courseID, _courseName);
 		stuManagePanel.getStuList();
+		stuManagePanel.clearEditor();
 		add(stuManagePanel);
 		curPanel = stuManagePanel;
 		stuManagePanel.setEnabled(true);
