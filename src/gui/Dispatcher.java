@@ -167,16 +167,17 @@ public class Dispatcher {
 				}
 				else {
 					data[i][7] = "A";
-				}
-				
-				data[i][8] = stu.getEmail();
-				
-			}
-			
+				}				
+				data[i][8] = stu.getEmail();				
+			}			
 			MainFrame.getInstance().getStuManagePanel().updateStuList(data);
 		}
 		
 		if( response.getHead().equals(RequestHead.ADD_STUDENT) ) {
+			MainFrame.getInstance().getStuManagePanel().getStuList();
+		}
+		
+		if( response.getHead().equals(RequestHead.UPDATE_STUDENT) ) {
 			MainFrame.getInstance().getStuManagePanel().getStuList();
 		}
 		

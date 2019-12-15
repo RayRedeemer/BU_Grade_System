@@ -269,15 +269,14 @@ public class CategoryPanel extends JPanel implements ActionListener {
             	    System.out.println("Click: " + "Row: " + selectedRow + " Column: " + selectedColumn);
             	    selectedAssignment = data[selectedRow][0];
             	    System.out.println("Selected assignment: " + selectedAssignment);
-            	    getAssign();
+            	    selectAssign();
         		}
         		catch( Exception error ) {
         			System.out.println(error);
         		}
         	    
         	 }
-        } );
-    
+        } );   
 	}
 
 	/**
@@ -332,9 +331,9 @@ public class CategoryPanel extends JPanel implements ActionListener {
 	}
 	
 	/**
-	 * Method: getAssign
+	 * Method: selectAssign
 	 * */
-	private void getAssign() {
+	private void selectAssign() {
 		Request request = new Request(RequestHead.SELECT_ASSIGNMENT);
 		request.addIds(courseID);
 		request.addIds(cateID);
@@ -345,6 +344,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
 	
 	/**
 	 * Method: clearEditorPane
+	 * Function: dispatcher will call this.
 	 * */
 	public void clearEditorPane() {
 		assignDesp.setText("");
@@ -354,7 +354,6 @@ public class CategoryPanel extends JPanel implements ActionListener {
 	/**
 	 * Method: updateCurAssignInfo
 	 * */
-	// TODO
 	public void updateCurAssignInfo(String _desp, String _comment) {
 		assignDesp.setText(_desp);
 		assignComment.setText(_comment);
@@ -468,7 +467,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
 				request.addParams(aDesp);
 				request.addParams(newWeight);				
 				request.addParams(assignDate);
-				request.addParams(dueDate);  // TODO
+				request.addParams(dueDate); 
 				request.addParams(maxScore);
 				request.addParams(aComment);
 				

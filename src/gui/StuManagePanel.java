@@ -8,6 +8,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
+import backend.Student;
+import db.DatabasePortal;
 import share.Request;
 import share.RequestHead;
 
@@ -49,8 +51,6 @@ public class StuManagePanel extends JPanel implements ActionListener {
 	private String[][] data = { 
         { "666", "Jerry", "123456", "99", "Grad", "6", "6", "A", "Jerry@bu.edu"}
     };
-
-	private String comment;  
 	
 	/**
 	 * Create the panel.
@@ -202,6 +202,7 @@ public class StuManagePanel extends JPanel implements ActionListener {
             	    System.out.println("Click: " + "Row: " + selectedRow + " Column: " + selectedColumn);
             	    selectedStu = data[selectedRow][0];
             	    System.out.println("Selected assignment: " + selectedStu);
+            	    selectStudent();
         		}
         		catch( Exception error ) {
         			System.out.println(error);
@@ -253,6 +254,21 @@ public class StuManagePanel extends JPanel implements ActionListener {
 		setScrollPane();
 		add(scrollPane);
 	}
+	
+	/**
+	 * Method: selectStudent
+	 * */
+	private void selectStudent() {
+		// TODO
+		// Request request = new Reqeust(RequestHead.selec)
+	}
+	
+	/**
+	 * Method: setCurStuComment
+	 * */
+	public void setCurStuComment() {
+		// TODO
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
@@ -280,15 +296,67 @@ public class StuManagePanel extends JPanel implements ActionListener {
 			String adjust = data[selectedRow][6];
 			String aOrW = data[selectedRow][7];
 			String email = data[selectedRow][8];
+			String comment = commentEditor.getText();
 			
-			/*try {
-				Request
+			if( stuName.length() == 0 || buId.length() == 0 ||
+					grade.length() == 0 || uOrG.length() == 0 ||
+					bonus.length() == 0 || adjust.length() == 0
+					) {
+				JOptionPane.showMessageDialog(null, "Please fill enough information.");
+				return;
 			}
-			catch (Exception error) {
+			
+			try {
+				Request request = new Request(RequestHead.UPDATE_STUDENT);
+				request.addIds(null);
+				request.addIds(null);
+				request.addIds(null);
+				request.addIds(null);
+				request.addParams(Integer.parseInt(stuID));
+				request.addParams(email);
+				request.addParams(stuName);
+				request.addParams(buId);
+				request.addParams(Double.parseDouble(grade));
+				request.addParams(Double.parseDouble(adjust));
+				request.addParams(Double.parseDouble(bonus));
+				if( uOrG.charAt(0) == 'G' ) {
+					request.addParams(true);
+				}
+				else {
+					request.addParams(false);
+				}
+				if( aOrW.equals("W") ) {
+					request.addParams(true);
+				}
+				else {
+					request.addParams(false);
+				}
+				request.addParams(comment);
+				FrontController.getInstance().dispatchRequest(request);
+				
+			}
+			catch(NumberFormatException error) {
 				System.out.println(error);
-			}*/
+				JOptionPane.showMessageDialog(null, "Input number for grade, adjustment and bonus.");
+			}
+			catch( Exception error ) {
+				System.out.println(error);
+			}
 			
-			
+			/*
+	        Integer studentId = (Integer) params.get(0);
+	        Student student = DatabasePortal.getInstance().getStudentById(studentId);
+
+	        student.setName((String) params.get(1)); // name
+	        student.setEmail((String) params.get(2)); // email
+	        student.setBuId((String) params.get(3)); // buId
+	        student.setGrade((Double) params.get(4)); // grade
+	        student.setAdjustment((Double) params.get(5)); // adjustment
+	        student.setAdjustment((Double) params.get(6)); // bonus
+	        student.setGrad((Boolean) params.get(7)); // isGrad
+	        student.setGrad((Boolean) params.get(8)); // withdrawn
+	        student.setComment((String) params.get(9)); // comment*/
+						
 		}
 		
 		if( event.getActionCommand().equals("Withdraw Student") ) {
@@ -303,6 +371,7 @@ public class StuManagePanel extends JPanel implements ActionListener {
 			request.addIds(null);
 			request.addIds(null);
 			FrontController.getInstance().dispatchRequest(request);
+			JOptionPane.showMessageDialog(null, "Withdraw successfully.");
 		}
 		
 		
@@ -318,6 +387,7 @@ public class StuManagePanel extends JPanel implements ActionListener {
 			request.addIds(null);
 			request.addIds(null);
 			FrontController.getInstance().dispatchRequest(request);
+			JOptionPane.showMessageDialog(null, "Drop successfully.");
 		}
 		
 	}

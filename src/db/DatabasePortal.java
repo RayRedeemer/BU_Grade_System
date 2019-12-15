@@ -574,17 +574,18 @@ public class DatabasePortal {
             ps.setString(3, s.getBuId());
             ps.setDouble(4, s.getGrade());
             ps.setDouble(5, s.getBonus());
+            ps.setDouble(6, s.getAdjustment());
             if (s.isGradStudent()) {
-                ps.setInt(4, 1);
+                ps.setInt(7, 1);
             } else {
-                ps.setInt(4, 0);
+                ps.setInt(7, 0);
             }
             if (s.getWithdrawn()) {
-                ps.setInt(5, 1);
+                ps.setInt(8, 1);
             } else {
-                ps.setInt(5,0);
+                ps.setInt(8,0);
             }
-            ps.setString(6, s.getComment());
+            ps.setString(9, s.getComment());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Error during updateStudent for id " + s.getId());

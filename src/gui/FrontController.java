@@ -231,6 +231,15 @@ public class FrontController {
 	}
 	
 	/**
+	 * Method: updateStudent
+	 * */
+	private Response updateStudent(Request request) {
+		Response response = systemPortal.getResponse(request);
+		System.out.println(response);		
+		return response;
+	}
+	
+	/**
 	 * Method: withdrawStudent
 	 * */
 	private Response withdrawStudent(Request request) {
@@ -385,6 +394,12 @@ public class FrontController {
 				break;
 			case ADD_STUDENT:
 				response = addStudent(request);
+				if( response.getStatus() ) {
+					dispatcher.dispatch(response);
+				}
+				break;
+			case UPDATE_STUDENT:
+				response = updateStudent(request);
 				if( response.getStatus() ) {
 					dispatcher.dispatch(response);
 				}
