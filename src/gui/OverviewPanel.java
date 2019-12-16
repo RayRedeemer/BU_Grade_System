@@ -255,11 +255,11 @@ public class OverviewPanel extends JPanel implements ActionListener {
 	}
 	
 	/**
-	 * Method: getCateList
+	 * Method: getAllCate
 	 * */
 	
 	/**
-	 * Method: getAssignmentList
+	 * Method: getAllAssignmentFromAllCate
 	 * */
 	
 	@Override
