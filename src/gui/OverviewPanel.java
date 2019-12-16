@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -25,30 +27,43 @@ import javax.swing.JEditorPane;
 
 public class OverviewPanel extends JPanel implements ActionListener {
 	
-	private int courseID;
-	private List<Integer> assignmentIds;
-	private List<Integer> stuIds;
+	
+	// Use a map
+	private HashMap<Integer, List<Integer>> assignmentMap;
+	// < CategoryID, List<AssignmentID> >
 	
 	private JTable stuViewTable;
+	private JScrollPane scrollPane;
 	private JLabel lblTitle, lblComment;
-	private JButton btnLogout, btnCurve, btnSave, btnDelete, btnReturn;
+	private JButton btnLogout, btnAdd, btnUpdate, btnDelete, btnReturn;
 	private JEditorPane epComment;
+		
+	// add
+	// int studentId, double score, double bonus, LocalDateTime submitTime, Boolean style
 	
+	// update
+	// int courseId, int categoryId, int assignmentId, int submissionId, 
+	// List<Object> params (score, bonus, submittedDate, earnOrLose, comment)
+	// Student ID		
 	private String[] columnNames = {
-		"Student", "A1 Weight", "A2 Weight", "A3 Weight"
+		"ID", "Student", "Homework1", "Homework2", "TicTacToe", "Blackjack", "Trianta Ena", "Cave Adventure", "Fancy Bank", "Exam1", "Exam2"
 	};
 	
 	private String[][] data = {
-		{"Charles", "-10", "-5", "-15"},
-		{"Ziqi", "-20", "-30", "-40"}
+		{"2", "Charles", "-10", "-5", "A", "-1", "-10", "-1", "-2", "-15", "B", "A"},
+		{"4", "Ziqi", "-20", "-30", "-40", "B", "-10", "-1", "-2", "-15", "B", "C"},
+		{"8", "Someone", "-15", "-30", "A", "B", "-6", "-3", "-6", "-10", "C", "A"}, 
+		{"9", "Somebody", "-10", "C", "-40", "B", "-10", "-1", "-7", "-8", "B", "A"}
 	};
 	
+	private int courseID;
 	private int selectedRow;
 	private int selectedColumn;
 	private int selectedStuId;
 	private int selectedAssignmentId;
-	private JScrollPane scrollPane;
-
+	private int selectedSubmissionId;
+	private int selectedCateId;
+	
 	private int frameWidth;
 	private int frameHeight;
 	
@@ -65,9 +80,19 @@ public class OverviewPanel extends JPanel implements ActionListener {
 		Font labelFont = new Font("Times New Roman", Font.PLAIN, 20);
 		Font btnFont = new Font("Microsoft YaHei UI", Font.PLAIN, 20);
 		
+		int textHeight = 25;
+		int labelWidth = 80;
+		int buttonWidth = 120;
+				
+		int x = (int)(frameWidth*0.1);
+		int y = (int)(frameHeight*0.1);
+		
+		int hGap = 50;
+		int vGap = 50;
+		
 		lblTitle = new JLabel("Student Overview");
 		lblTitle.setFont(titleFont);
-		lblTitle.setBounds(58, 38, 219, 57);
+		lblTitle.setBounds(x, y, 200, 25);
 		add(lblTitle);
 		
 		createStuViewTable();
@@ -75,8 +100,7 @@ public class OverviewPanel extends JPanel implements ActionListener {
 		add(scrollPane);
 		
 		btnLogout = new JButton("Logout");
-		btnLogout.setBounds(1042, 43, 113, 50);
-		btnLogout.setFont(btnFont);
+		btnLogout.setBounds(x + lblTitle.getWidth() + hGap, lblTitle.getY(), buttonWidth, textHeight);
 		add(btnLogout);
 		btnLogout.addActionListener(new ActionListener() {
 			@Override
@@ -85,37 +109,41 @@ public class OverviewPanel extends JPanel implements ActionListener {
 				FrontController.getInstance().dispatchRequest(request);
 			}
 		});
-				
+		
+		JLabel cateNameLabel = new JLabel("Category: Homework/Project");
+		cateNameLabel.setBounds(x, scrollPane.getY() + scrollPane.getHeight() + 10, 200, textHeight);
+		cateNameLabel.setFont(labelFont);
+		add(cateNameLabel);
+		
 		lblComment = new JLabel("Comment:");
-		lblComment.setBounds(58, 541, 87, 18);
+		lblComment.setBounds(x, scrollPane.getY() + scrollPane.getHeight() + vGap, 87, 18);
 		lblComment.setFont(labelFont);
 		add(lblComment);
 		
 		epComment = new JEditorPane();
-		epComment.setBounds(53, 579, 586, 123);
+		epComment.setBounds(x, lblComment.getY() + lblComment.getHeight(), scrollPane.getWidth(), 100);
 		add(epComment);
 		
-		btnCurve = new JButton("Curve");
-		btnCurve.setBounds(778, 575, 100, 50);
-		btnCurve.setFont(btnFont);
-		add(btnCurve);
-		btnCurve.addActionListener(this);
+		int buttonX = scrollPane.getX() + scrollPane.getWidth() + hGap;
+		int buttonY = scrollPane.getY() + vGap;
 		
-		btnSave = new JButton("Save");
-		btnSave.setBounds(1055, 579, 100, 50);
-		btnSave.setFont(btnFont);
-		add(btnSave);
-		btnSave.addActionListener(this);
+		btnAdd = new JButton("Add Submission");
+		btnAdd.setBounds(buttonX, buttonY, (int) (buttonWidth*1.4), textHeight);
+		add(btnAdd);
+		btnAdd.addActionListener(this);
 		
-		btnDelete = new JButton("Delete");
-		btnDelete.setBounds(778, 651, 100, 50);
-		btnDelete.setFont(btnFont);
+		btnUpdate = new JButton("Update Submission");
+		btnUpdate.setBounds(buttonX, btnAdd.getY() + vGap, (int) (buttonWidth*1.4), textHeight);
+		add(btnUpdate);
+		btnUpdate.addActionListener(this);
+		
+		btnDelete = new JButton("Delete Submission");
+		btnDelete.setBounds(buttonX, btnUpdate.getY() + vGap, (int) (buttonWidth*1.4), textHeight);
 		add(btnDelete);
 		btnDelete.addActionListener(this);
 		
 		btnReturn = new JButton("Return");
-		btnReturn.setBounds(1055, 652, 100, 50);
-		btnReturn.setFont(btnFont);
+		btnReturn.setBounds(buttonX, btnDelete.getY() + vGap, (int) (buttonWidth*1.4), textHeight);
 		add(btnReturn);
 		btnReturn.addActionListener(new ActionListener() {
 			@Override
@@ -124,7 +152,6 @@ public class OverviewPanel extends JPanel implements ActionListener {
 				MainFrame.getInstance().setCoursePanel();
 			}
 		});
-
 	}
 	
 	/**
@@ -132,7 +159,7 @@ public class OverviewPanel extends JPanel implements ActionListener {
 	 * */
 	private void createStuViewTable() {
 		int rowHeight = 20;
-		int columnWidth = 110;
+		int columnWidth = 75;
 		int headerHeight = 32;
 		
 		// Initializing the JTable
@@ -195,14 +222,49 @@ public class OverviewPanel extends JPanel implements ActionListener {
 	private void setScrollPane() {
 		int tableWidth = (int) stuViewTable.getPreferredSize().getWidth();
         scrollPane = new JScrollPane(stuViewTable); 
-        scrollPane.setBounds((int) (frameWidth * 0.25), lblTitle.getY() + lblTitle.getHeight(), 
+        scrollPane.setBounds((int) (frameWidth * 0.1), lblTitle.getY() + lblTitle.getHeight() + 10, 
         		tableWidth, 
         		(int)(frameHeight*0.5));
 	}
 	
+	/**
+	 * Method: getSubmissionList
+	 * */
+	public void getSubmissionList() {
+		
+	}
+	/**
+	 * Method: updateSubmissionList
+	 * */
+	public void updateSubmissionList( String[][] _data ) {
+	
+	}
+	
+	/**
+	 * Method: selectSubmission
+	 * */
+	public void selectSubmission() {
+		
+	}
+	
+	/**
+	 * Method: setCurSubmission
+	 * */
+	public void setCurSubmission() {
+		
+	}
+	
+	/**
+	 * Method: getAllCate
+	 * */
+	
+	/**
+	 * Method: getAllAssignmentFromAllCate
+	 * */
+	
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		// TODO Auto-generated method stub
+
 		if( event.getActionCommand().equals("Curve") ) {
 			
 		}
@@ -210,6 +272,19 @@ public class OverviewPanel extends JPanel implements ActionListener {
 		if( event.getActionCommand().equals("Save") ) {
 			// TODO: save comment
 		}
+		
+		if( event.getActionCommand().equals("Add Submission") ) {
+			
+		}
+		
+		if( event.getActionCommand().equals("Update Submission") ) {
+			
+		}
+		
+		if( event.getActionCommand().equals("Delete Submission") ) {
+			
+		}
+		
 	}
 
 }

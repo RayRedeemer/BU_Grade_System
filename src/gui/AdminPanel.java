@@ -187,7 +187,7 @@ public class AdminPanel extends JPanel implements ActionListener {
 	private void setScrollPane() {
 		tableWidth = (int) courseListTable.getPreferredSize().getWidth();
         scrollPane = new JScrollPane(courseListTable); 
-        scrollPane.setBounds((int) (frameWidth * 0.25), titleLabel.getY() + titleLabel.getHeight(), 
+        scrollPane.setBounds((int) (frameWidth * 0.3), titleLabel.getY() + titleLabel.getHeight() + vGap, 
         		tableWidth, 
         		(int)(frameHeight*0.5));
 	}

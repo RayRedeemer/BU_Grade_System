@@ -254,7 +254,7 @@ public class StuManagePanel extends JPanel implements ActionListener {
 		setScrollPane();
 		add(scrollPane);
 	}
-	
+	 
 	/**
 	 * Method: selectStudent
 	 * */
@@ -345,8 +345,7 @@ public class StuManagePanel extends JPanel implements ActionListener {
 					request.addParams(false);
 				}
 				request.addParams(comment);
-				FrontController.getInstance().dispatchRequest(request);
-				
+				FrontController.getInstance().dispatchRequest(request);				
 			}
 			catch(NumberFormatException error) {
 				System.out.println(error);
