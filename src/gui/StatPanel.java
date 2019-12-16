@@ -41,21 +41,32 @@ public class StatPanel extends JPanel implements ActionListener {
 	private int selectedColumn;
 	private String selectedAssignment;
 
+	private int frameWidth;
+	private int frameHeight;
+	
 	/**
 	 * Create the panel.
 	 */
 	public StatPanel() {
 		
 		// new font
-		Font btnFont = new Font("Microsoft YaHei UI", Font.PLAIN, 20);
+		Font btnFont = new Font("Microsoft YaHei UI", Font.PLAIN, 16);
 		Font lblFont = new Font("Times New Roman", Font.PLAIN, 25);
 		setLayout(null);
 		
-		int btnWidth = 200;
-		int btnHeight = 50;
+		int btnWidth = 160;
+		int btnHeight = 30;
+		
+		int hGap = 10;
+		
+		frameWidth = MainFrame.getInstance().getWidth();
+		frameHeight = MainFrame.getInstance().getHeight();
+		
+		int x = (int)(frameWidth*0.2);
+		int y = (int)(frameHeight*0.2);
 		
 		btnLogout = new JButton("Logout");
-		btnLogout.setBounds(1168, 54, 112, 56);
+		btnLogout.setBounds((int)(frameWidth*0.8), (int)(frameHeight*0.2), btnWidth, btnHeight);
 		btnLogout.setFont(btnFont);
 		add(btnLogout);
 		btnLogout.addActionListener(new ActionListener() {
@@ -67,7 +78,7 @@ public class StatPanel extends JPanel implements ActionListener {
 		});
 		
 		btnAll = new JButton("All");
-		btnAll.setBounds(171, 117, 200, 80);
+		btnAll.setBounds(x, y, btnWidth, btnHeight);
 		btnAll.setFont(btnFont);
 		btnAll.addActionListener(new ActionListener() {
 			@Override
@@ -80,7 +91,7 @@ public class StatPanel extends JPanel implements ActionListener {
 		add(btnAll);
 		
 		btnUndergrad = new JButton("Undergrad");
-		btnUndergrad.setBounds(371, 117, 200, 80);
+		btnUndergrad.setBounds(btnAll.getX() + btnAll.getWidth() + hGap, y, btnWidth, btnHeight);
 		btnUndergrad.setFont(btnFont);
 		btnUndergrad.addActionListener(new ActionListener() {
 			@Override
@@ -93,7 +104,7 @@ public class StatPanel extends JPanel implements ActionListener {
 		add(btnUndergrad);
 		
 		btnGrad = new JButton("Grad");
-		btnGrad.setBounds(571, 117, 200, 80);
+		btnGrad.setBounds(btnUndergrad.getX() + btnUndergrad.getWidth() + hGap, y, btnWidth, btnHeight);
 		btnGrad.setFont(btnFont);
 		btnGrad.addActionListener(new ActionListener() {
 			@Override
@@ -105,8 +116,9 @@ public class StatPanel extends JPanel implements ActionListener {
 		});
 		add(btnGrad);
 		
+		y = y + btnHeight * 2;
 		btnAllAssignments = new JButton("All Assignments");
-		btnAllAssignments.setBounds(171, 197, 200, 80);
+		btnAllAssignments.setBounds(x, y, btnWidth, btnHeight);
 		btnAllAssignments.setFont(btnFont);
 		btnAllAssignments.addActionListener(new ActionListener() {
 			@Override
@@ -118,8 +130,8 @@ public class StatPanel extends JPanel implements ActionListener {
 		});
 		add(btnAllAssignments);
 		
-		cbHomework = new JComboBox(new String[] {"Homework"});
-		cbHomework.setBounds(371, 197, 200, 80);
+		cbHomework = new JComboBox(new String[] {"All Homeworks", "Homework1", "Homework2", "Homework3"});
+		cbHomework.setBounds(btnAllAssignments.getX() + btnAllAssignments.getWidth() + hGap, y, btnWidth, btnHeight);
 		cbHomework.setFont(btnFont);
 		cbHomework.addActionListener(new ActionListener() {
 			@Override
@@ -131,8 +143,8 @@ public class StatPanel extends JPanel implements ActionListener {
 		});
 		add(cbHomework);
 		
-		cbProject = new JComboBox(new String[] {"Project"});
-		cbProject.setBounds(571, 197, 200, 80);
+		cbProject = new JComboBox(new String[] {"All Projects", "TicTacToe", "Blackjack", "Trianta Ena", "Cave Adventure", "Fancy Bank"});
+		cbProject.setBounds(cbHomework.getX() + cbHomework.getWidth() + hGap, y, btnWidth, btnHeight);
 		cbProject.setFont(btnFont);
 		cbProject.addActionListener(new ActionListener() {
 			@Override
@@ -144,8 +156,8 @@ public class StatPanel extends JPanel implements ActionListener {
 		});
 		add(cbProject);
 		
-		cbExam = new JComboBox(new String[] {"Exam"});
-		cbExam.setBounds(771, 197, 200, 80);
+		cbExam = new JComboBox(new String[] {"All Exams", "Midterm1", "Midterm2", "Final exam"});
+		cbExam.setBounds(cbProject.getX() + cbProject.getWidth() + hGap, y, btnWidth, btnHeight);
 		cbExam.setFont(btnFont);
 		cbExam.addActionListener(new ActionListener() {
 			@Override
@@ -183,7 +195,7 @@ public class StatPanel extends JPanel implements ActionListener {
 		add(lbRange);
 		
 		btnReturn = new JButton("Return");
-		btnReturn.setBounds(1150, 593, 130, 56);
+		btnReturn.setBounds((int)(frameWidth*0.8), (int)(frameHeight*0.8), btnWidth, btnHeight);
 		btnReturn.setFont(btnFont);
 		add(btnReturn);
 		btnReturn.addActionListener(new ActionListener() {

@@ -254,7 +254,7 @@ public class StuManagePanel extends JPanel implements ActionListener {
 		setScrollPane();
 		add(scrollPane);
 	}
-	
+	 
 	/**
 	 * Method: selectStudent
 	 * */
